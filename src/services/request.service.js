@@ -15,11 +15,11 @@ class RequestService {
     createRoom(req, res) {
         // creates a websocket and returns a room code that can be used to interact with the websocket
         let roomHandler = new RoomHandlerCreator().getInstance();
-        let roomCode = roomHandler.addRoom();
+        let room = roomHandler.addRoom();
 
         res.send({
             success: true,
-            roomCode: roomCode,
+            room: room,
             web_socket_url: `ws://localhost:${PORT}`
         });
     }

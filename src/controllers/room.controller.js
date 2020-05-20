@@ -18,7 +18,7 @@ class RoomController {
     addRoom() {
         var roomCode = this.getRandomRoomCode();
         this.rooms[roomCode] = roomCode;
-        return roomCode;
+        return this.rooms[roomCode];
     }
 
     deleteRoom() {
