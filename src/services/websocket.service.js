@@ -1,10 +1,12 @@
 class WebSocketController {
     constructor(io) {
         this.callbacks = {};
+        this.socket = {};
 
         io.on('connection', (socket) => {
             socket.on('join', data => this.onJoin(socket, data));
-            socket.on('event', this.onEvent);
+
+            this.socket = socket;
         });
     }
 
@@ -13,24 +15,18 @@ class WebSocketController {
         socket.join(room.roomcode);
     }
 
-    onEvent(jsonString) {
-        let data = JSON.parse(jsonString);
-        let { action } = data;
-
-        if (this.callbacks[action]) {
-            this.callbacks[action](data.event);
+    addEvent(name, callback) {
+        if (typeof callback === 'function') {
+            this.socket.on(name, callback);
+            return true;
+        } else {
+            return false;
         }
     }
 
     sendToRoom(roomcode, action, obj) {
         let jsonString = JSON.stringify(obj);
         io.to(roomcode).emit(action, jsonString);
-    }
-
-    addCallBack(type,  callback) {
-        if (typeof callback === 'function') {
-            this.callbacks[type] = callback;
-        }
     }
 }
 
