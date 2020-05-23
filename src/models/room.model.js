@@ -1,29 +1,39 @@
 export class Room {
-    get isFull() {
-        return this.players.length === 10;
-    }
+	get isFull() {
+		return this.players.length === 10;
+	}
 
-    get isInProgress() {
-        return this.inProgress;
-    }
+	get isInProgress() {
+		return this.state !== 'lobby';
+	}
 
-    constructor(roomCode) {
-        this.roomCode = roomCode;
-        this.state = null;
-        this.players = {};
-        this.inProgress = false;
-    }
+	constructor(roomCode) {
+		this.roomCode = roomCode;
+		this.state = 'lobby';
+		this.players = {};
+		this.episodes = [];
+	}
 
-    addPlayer(player) {
-        this.players[player.name] = player;
-    }
+	addPlayer(player) {
+		this.players[player.name] = player;
+	}
 
-    startGame() {
-        this.inProgress = true;
-    }
+	startGame() {
+		if (this.state !== 'lobby') return false;
 
-    hasPlayer(player) {
-        let roomPlayer = this.players[player.name];
-        return typeof roomPlayer !== 'undefined';
-    }
+		this.state = 'game-welcome';
+		return true;
+	}
+
+	startWelcome() {
+		if (this.state !== 'game-welcome') return false;
+
+		this.state = 'episode-start';
+		return true;
+	}
+
+	hasPlayer(player) {
+		let roomPlayer = this.players[player.name];
+		return typeof roomPlayer !== 'undefined';
+	}
 }
