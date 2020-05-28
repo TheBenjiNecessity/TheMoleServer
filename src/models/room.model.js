@@ -12,6 +12,9 @@ export class Room {
 		this.state = 'lobby';
 		this.players = [];
 		this.episodes = [];
+
+		this.agreedPlayers = [];
+		this.raisedHands = {};
 	}
 
 	addPlayer(player) {
