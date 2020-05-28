@@ -1,11 +1,6 @@
 import { Challenge } from '../../models/challenge.model';
 
-const questions = [ new Challenge('Odd Man Out', 'P'), new Challenge('Odd Man Out', '') ];
-
 export class QuizService {
-	static questions = questions;
-	availableQuestions = [];
-
 	constructor() {
 		this.availableQuestions = QuizService.questions;
 	}
