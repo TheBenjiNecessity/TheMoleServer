@@ -1,34 +1,28 @@
 class ChallengeController {
-	agreedPlayers = [];
-	raisedHands = {};
-
 	constructor(webSocketController) {
 		this.webSocketController = webSocketController;
-		webSocketController.addEvent('raise-hand', this.raiseHand);
-		webSocketController.addEvent('agree-to-roles', this.agreeRoles);
+		this.challengeClasses = {
+			platter: new PlatterChallengeController(webSocketController)
+		};
 	}
 
-	raiseHand(obj) {
-		let { player, room, role } = obj;
-
-		if (!raisedHands[role].length) {
-			raisedHands[role] = [ player ];
-		} else {
-			raisedHands[role].push(player);
-		}
-
-		this.webSocketController.sendToRoom(room.roomCode, 'raise-hand', this.raisedHands);
+	event(obj) {
+		this.challengeClasses[obj.type][obj.event](obj.data);
 	}
+}
 
-	agreeToRoles(obj) {
-		let { player, room } = obj;
-		this.agreedPlayers.push(player);
-		this.webSocketController.sendToRoom(room.roomCode, 'agree-to-roles', this.agreedPlayers);
+class PlatterChallengeController {
+	constructor(webSocketController) {
+		this.webSocketController = webSocketController;
 	}
 }
 
 export class ChallengeControllerCreator {
 	constructor() {}
+
+	getInstance() {
+		return RequestServiceCreator.instance;
+	}
 
 	static createController(webSocketController) {
 		if (!ChallengeControllerCreator.instance) {

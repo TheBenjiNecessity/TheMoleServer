@@ -1,4 +1,6 @@
 import { Room } from '../models/room.model';
+import EpisodeService from '../services/game/episode.service';
+import { ChallengeControllerCreator } from '../controllers/challenge.controller';
 
 class RoomController {
 	constructor(webSocketController) {
@@ -43,9 +45,9 @@ class RoomController {
 			'0'
 		];
 
+		this.episodeService = new EpisodeService();
+
 		this.webSocketController = webSocketController;
-		webSocketController.addEvent('start-game', this.startGame);
-		webSocketController.addEvent('start-welcome', this.startWelcome);
 	}
 
 	/**
@@ -64,8 +66,12 @@ class RoomController {
      *  - Generate room with code
      * Socket Events:
      *  - to server:
-     *      start-game: the start game button was clicked by one of the players from the game lobby screen.
-     *      start-welcome: the start button was clicked by one of the players from the welcome screen
+     *      start-game: 
+	 * 			the start game button was clicked by one of the players from the game lobby screen.
+	 * 			result: send this event to all other players
+     *      start-welcome: 
+	 * 			the start button was clicked by one of the players from the welcome screen
+	 * 			result: send this event to all other players
      *  - from server:
      *      game-start: a player has clicked on the start game button from the lobby and the server is telling everyone else
      *      welcome-start: a player has clicked on the start game button from the welcome screen and the server is telling everyone else
@@ -135,6 +141,8 @@ class RoomController {
 	startGame(roomcode) {
 		if (this.rooms[roomcode].startGame()) {
 			this.webSocketController.sendToRoom(roomcode, 'start-game', this.rooms[roomcode]);
+			this.rooms[roomcode].episodes = this.episodeService.getEpisodes(this.rooms[roomcode].players.length);
+			this.webSocketController.sendToRoom(roomcode, 'game-loaded', this.rooms[roomcode]);
 		}
 	}
 
@@ -143,10 +151,55 @@ class RoomController {
 			this.webSocketController.sendToRoom(roomcode, 'start-welcome', this.rooms[roomcode]);
 		}
 	}
+
+	raiseHand(obj) {
+		let { player, room, role } = obj;
+		let { roomcode } = room;
+
+		if (!this.rooms[roomcode].raisedHands[role].length) {
+			this.rooms[roomcode].raisedHands[role] = [ player ];
+		} else {
+			this.rooms[roomcode].raisedHands[role].push(player);
+		}
+
+		this.webSocketController.sendToRoom(roomcode, 'raise-hand', this.rooms[roomcode]);
+	}
+
+	agreeToRoles(obj) {
+		let { player, room } = obj;
+		let { roomcode } = room;
+		this.rooms[roomcode].agreedPlayers.push(player);
+
+		if (this.rooms[roomcode].agreedPlayers.length > this.rooms[roomcode].players.length / 2) {
+			this.rooms[roomcode].agreedPlayers = [];
+			this.rooms[roomcode].raisedHands = {};
+			this.webSocketController.sendToRoom(roomCode, 'start-challenge', this.rooms[roomcode]);
+		} else {
+			this.webSocketController.sendToRoom(roomCode, 'agree-to-roles', this.rooms[roomcode]);
+		}
+	}
+
+	challengeEvent(obj) {
+		ChallengeControllerCreator.getInstance().event(obj);
+	}
+
+	setupSocket(socket) {
+		socket.on('start-game', this.startGame);
+		socket.on('start-welcome', this.startWelcome);
+
+		socket.on('raise-hand', this.raiseHand);
+		socket.on('agree-to-roles', this.agreeToRoles);
+
+		socket.on('challenge-event', this.challengeEvent);
+	}
 }
 
 export class RoomHandlerCreator {
 	constructor() {}
+
+	getInstance() {
+		return RoomHandlerCreator.instance;
+	}
 
 	static createController(webSocketController) {
 		if (!RoomHandlerCreator.instance) {

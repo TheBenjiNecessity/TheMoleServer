@@ -1,43 +1,41 @@
+import { RoomHandlerCreator } from '../controllers/room.controller';
+
 class WebSocketController {
-    constructor(io) {
-        this.callbacks = {};
-        this.socket = {};
+	constructor(io) {
+		this.callbacks = {};
 
-        io.on('connection', (socket) => {
-            socket.on('join', data => this.onJoin(socket, data));
+		io.on('connection', (socket) => {
+			socket.on('join', (data) => {
+				socket.join(data.room.roomcode);
+			});
 
-            this.socket = socket;
-        });
-    }
+			RoomHandlerCreator.getInstance().setupSocket(socket);
+		});
+	}
 
-    onJoin(socket, data) {
-        let { room } = data;
-        socket.join(room.roomcode);
-    }
+	addEvent(name, callback) {
+		if (typeof callback === 'function') {
+			this.socket.on(name, callback);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    addEvent(name, callback) {
-        if (typeof callback === 'function') {
-            this.socket.on(name, callback);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    sendToRoom(roomcode, action, obj) {
-        let jsonString = JSON.stringify(obj);
-        io.to(roomcode).emit(action, jsonString);
-    }
+	sendToRoom(roomcode, action, obj) {
+		let jsonString = JSON.stringify(obj);
+		io.to(roomcode).emit(action, jsonString);
+	}
 }
 
 export class WebSocketControllerCreator {
-    constructor() {}
+	constructor() {}
 
-    static createController(io) {
-        if (!WebSocketControllerCreator.instance) {
-            WebSocketControllerCreator.instance = new WebSocketController(io);
-        }
+	static createController(io) {
+		if (!WebSocketControllerCreator.instance) {
+			WebSocketControllerCreator.instance = new WebSocketController(io);
+		}
 
-        return WebSocketControllerCreator.instance;
-    }
+		return WebSocketControllerCreator.instance;
+	}
 }
