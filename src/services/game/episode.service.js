@@ -1,7 +1,7 @@
 import { Episode } from '../../models/episode.model';
-import { ChallengeService } from './challenge.service';
+import ChallengeService from './challenge.service';
 
-export class EpisodeService {
+export default class EpisodeService {
 	constructor() {
 		this.challengeService = new ChallengeService();
 	}

@@ -3,10 +3,7 @@ import { ArrayUtilsService } from '../utils/array-utils.service';
 
 const challenges = [ new Challenge('Odd Man Out', 'P'), new Challenge('Odd Man Out', '') ];
 
-export class ChallengeService {
-	static challenges = challenges;
-	availableChallenges = [];
-
+export default class ChallengeService {
 	constructor() {
 		this.availableChallenges = ChallengeService.challenges;
 	}
