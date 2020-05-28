@@ -10,12 +10,12 @@ export class Room {
 	constructor(roomCode) {
 		this.roomCode = roomCode;
 		this.state = 'lobby';
-		this.players = {};
+		this.players = [];
 		this.episodes = [];
 	}
 
 	addPlayer(player) {
-		this.players[player.name] = player;
+		this.players.push(player);
 	}
 
 	startGame() {
@@ -33,7 +33,7 @@ export class Room {
 	}
 
 	hasPlayer(player) {
-		let roomPlayer = this.players[player.name];
+		let roomPlayer = this.players.find((p) => p.name === player.name);
 		return typeof roomPlayer !== 'undefined';
 	}
 }
