@@ -109,7 +109,6 @@ class RequestService {
 
         roomHandler.addPlayerToRoom(room, playerObj.player);
 
-		console.log(`Player ${playerObj.player.name} has joined room ${room.roomcode}`);
         res.send({
             success: true,
             room: room,
