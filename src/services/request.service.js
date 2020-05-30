@@ -29,7 +29,7 @@ class RequestService {
         let { player } = req.body;
 
         // Check if roomcode given
-        if (!roomCode) {
+		if (!roomcode) {
             res.status(422);
             res.send({
                 success: false,
@@ -48,8 +48,7 @@ class RequestService {
             return;
         }
 
-        let roomHandler = RoomHandlerCreator().getInstance();
-        let room = roomHandler.getRoom(roomCode);
+		let room = roomHandler.getRoom(roomcode);
 
         // Check if room exists
         if (!room) {
@@ -99,7 +98,7 @@ class RequestService {
 
         roomHandler.addPlayerToRoom(room, playerObj.player);
 
-        console.log(`Player ${playerObj.player.name} has joined room ${room.roomCode}`);
+		console.log(`Player ${playerObj.player.name} has joined room ${room.roomcode}`);
         res.send({
             success: true,
             room: room,
@@ -109,9 +108,9 @@ class RequestService {
     }
 
     getRoom(req, res) {
-        let roomCode = req.query.room;
+		let roomcode = req.query.room;
         // Check if room exists
-        if (!roomCode) {
+		if (!roomcode) {
             res.status(400);
             res.send({
                 success: false,
@@ -123,7 +122,7 @@ class RequestService {
         }
 
         let roomHandler = RoomHandlerCreator().getInstance();
-        let room = roomHandler.getRoom(roomCode);
+		let room = roomHandler.getRoom(roomcode);
 
         // Check if room exists
         if (!room) {

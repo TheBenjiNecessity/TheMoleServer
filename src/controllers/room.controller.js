@@ -97,30 +97,29 @@ class RoomController {
      */
 
 	addRoom() {
-		var roomCode = this.getRandomRoomCode();
-		this.rooms[roomCode] = new Room(roomCode);
-		return this.rooms[roomCode];
+		var roomcode = this.getRandomRoomCode();
+		this.rooms[roomcode] = new Room(roomcode);
+		return this.rooms[roomcode];
 	}
 
 	deleteRoom(room) {
 		// TODO when do rooms get deleted?
 	}
 
-	getRoom(roomCode) {
-		return this.rooms[roomCode];
+	getRoom(roomcode) {
+		return this.rooms[roomcode];
 	}
 
 	addPlayerToRoom(room, player) {
-		this.rooms[room.roomCode].addPlayer(player);
-		let obj = { room: this.rooms[room.roomCode] };
-		this.webSocketController.sendToRoom(room.roomCode, 'add-player', obj);
+		this.rooms[room.roomcode].addPlayer(player);
+		let obj = { room: this.rooms[room.roomcode] };
+		this.webSocketController.sendToRoom(room.roomcode, 'add-player', obj);
 	}
 
 	getRandomRoomCode() {
 		var found = false;
 
 		while (!found) {
-			// TODO create better algo
 			var number1 = Math.floor(Math.random() * this.characters.length);
 			var number2 = Math.floor(Math.random() * this.characters.length);
 			var number3 = Math.floor(Math.random() * this.characters.length);
@@ -173,9 +172,9 @@ class RoomController {
 		if (this.rooms[roomcode].agreedPlayers.length > this.rooms[roomcode].players.length / 2) {
 			this.rooms[roomcode].agreedPlayers = [];
 			this.rooms[roomcode].raisedHands = {};
-			this.webSocketController.sendToRoom(roomCode, 'start-challenge', this.rooms[roomcode]);
+			this.webSocketController.sendToRoom(roomcode, 'start-challenge', this.rooms[roomcode]);
 		} else {
-			this.webSocketController.sendToRoom(roomCode, 'agree-to-roles', this.rooms[roomcode]);
+			this.webSocketController.sendToRoom(roomcode, 'agree-to-roles', this.rooms[roomcode]);
 		}
 	}
 

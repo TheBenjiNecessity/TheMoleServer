@@ -7,8 +7,8 @@ export class Room {
 		return this.state !== 'lobby';
 	}
 
-	constructor(roomCode) {
-		this.roomCode = roomCode;
+	constructor(roomcode) {
+		this.roomcode = roomcode;
 		this.state = 'lobby';
 		this.players = [];
 		this.episodes = [];
