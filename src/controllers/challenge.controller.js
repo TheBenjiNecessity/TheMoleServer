@@ -20,7 +20,7 @@ class PlatterChallengeController {
 export class ChallengeControllerCreator {
 	constructor() {}
 
-	getInstance() {
+	static getInstance() {
 		return RequestServiceCreator.instance;
 	}
 

@@ -197,7 +197,7 @@ class RoomController {
 export class RoomHandlerCreator {
 	constructor() {}
 
-	getInstance() {
+	static getInstance() {
 		return RoomHandlerCreator.instance;
 	}
 

@@ -147,7 +147,7 @@ class RequestService {
 export class RequestServiceCreator {
     constructor() {}
 
-    getInstance() {
+	static getInstance() {
         return RequestServiceCreator.instance;
     }
 
