@@ -5,10 +5,10 @@ class WebSocketController {
 		this.callbacks = {};
 		this.io = io;
 
-		io.on('connection', (socket) => {
-			socket.on('join', (data) => {
-				if (data && data.room) {
-				socket.join(data.room.roomcode);
+		this.io.on('connection', (socket) => {
+			socket.on('join', (roomcode) => {
+				if (roomcode) {
+					socket.join(roomcode);
 				}
 			});
 
@@ -26,8 +26,7 @@ class WebSocketController {
 	}
 
 	sendToRoom(roomcode, action, obj) {
-		let jsonString = JSON.stringify(obj);
-		this.io.to(roomcode).emit(action, jsonString);
+		this.io.in(roomcode).emit(action, obj);
 	}
 }
 
