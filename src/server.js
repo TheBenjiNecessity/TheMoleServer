@@ -1,4 +1,6 @@
 var express = require('express');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 var http = require('http');
 var cors = require('cors');
 
@@ -11,7 +13,11 @@ const app = require('express')();
 const server = http.createServer(app);
 const io = require('socket.io')(server);
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride());
 app.use(cors());
+
 server.listen(process.env.PORT || 8999);
 
 let webSocketController = WebSocketControllerCreator.createController(io);
