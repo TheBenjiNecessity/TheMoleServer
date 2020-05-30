@@ -14,7 +14,7 @@ class RequestService {
 
     createRoom(req, res) {
         // creates a websocket and returns a room code that can be used to interact with the websocket
-        let roomHandler = new RoomHandlerCreator().getInstance();
+		let roomHandler = new RoomHandlerCreator.getInstance();
         let room = roomHandler.addRoom();
 
         res.send({
@@ -48,6 +48,7 @@ class RequestService {
             return;
         }
 
+		let roomHandler = RoomHandlerCreator.getInstance();
 		let room = roomHandler.getRoom(roomcode);
 
         // Check if room exists
