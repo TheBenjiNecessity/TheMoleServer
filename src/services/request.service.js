@@ -1,10 +1,10 @@
-import {RoomHandlerCreator} from '../controllers/room.controller';
+import { RoomHandlerCreator } from '../controllers/room.controller';
 import { Player, PlayerCreator } from '../models/player.model';
 
 const PORT = process.env.PORT || 8999;
 
 class RequestService {
-    constructor (app) {
+	constructor(app) {
         app.post('/create', this.createRoom);
         app.put('/join/:roomcode', this.joinRoom);
         app.get('/room', this.getRoom);
@@ -33,9 +33,11 @@ class RequestService {
             res.status(422);
             res.send({
                 success: false,
-                errors: [{
+				errors: [
+					{
                     message: 'no_room_code_given'
-                }]
+					}
+				]
             });
             return;
         }
@@ -56,9 +58,11 @@ class RequestService {
             res.status(404);
             res.send({
                 success: false,
-                errors: [{
+				errors: [
+					{
                     message: 'no_room_by_code'
-                }]
+					}
+				]
             });
             return;
         }
@@ -68,9 +72,11 @@ class RequestService {
             res.status(403);
             res.send({
                 success: false,
-                errors: [{
+				errors: [
+					{
                     message: 'room_is_full'
-                }]
+					}
+				]
             });
             return;
         }
@@ -79,9 +85,11 @@ class RequestService {
             res.status(403);
             res.send({
                 success: false,
-                errors: [{
+				errors: [
+					{
                     message: 'room_is_in_progress'
-                }]
+					}
+				]
             });
             return;
         }
@@ -90,9 +98,11 @@ class RequestService {
             res.status(403);
             res.send({
                 success: false,
-                errors: [{
+				errors: [
+					{
                     message: 'room_already_has_player'
-                }]
+					}
+				]
             });
             return;
         }
@@ -115,9 +125,11 @@ class RequestService {
             res.status(400);
             res.send({
                 success: false,
-                errors: [{
+				errors: [
+					{
                     message: 'no_room_code_given'
-                }]
+					}
+				]
             });
             return;
         }
@@ -130,9 +142,11 @@ class RequestService {
             res.status(404);
             res.send({
                 success: false,
-                errors: [{
+				errors: [
+					{
                     message: 'no_room_by_code'
-                }]
+					}
+				]
             });
             return;
         }
