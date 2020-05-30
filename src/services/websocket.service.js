@@ -6,7 +6,9 @@ class WebSocketController {
 
 		io.on('connection', (socket) => {
 			socket.on('join', (data) => {
+				if (data && data.room) {
 				socket.join(data.room.roomcode);
+				}
 			});
 
 			RoomHandlerCreator.getInstance().setupSocket(socket);
