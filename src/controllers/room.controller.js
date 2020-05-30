@@ -2,6 +2,8 @@ import { Room } from '../models/room.model';
 import EpisodeService from '../services/game/episode.service';
 import { ChallengeControllerCreator } from '../controllers/challenge.controller';
 
+const badwords = [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT' ];
+
 class RoomController {
 	constructor(webSocketController) {
 		this.rooms = {};
@@ -121,6 +123,11 @@ class RoomController {
 				this.characters[number4];
 
 			found = typeof this.rooms[code] === 'undefined';
+
+			// Avoid code being a bad word
+			if (badwords.indexOf(code) >= 0) {
+				found = false;
+			}
 		}
 
 		return code;
