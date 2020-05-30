@@ -134,16 +134,22 @@ class RoomController {
 	}
 
 	startGame(roomcode) {
-		if (this.rooms[roomcode].startGame()) {
-			this.webSocketController.sendToRoom(roomcode, 'start-game', this.rooms[roomcode]);
-			this.rooms[roomcode].episodes = this.episodeService.getEpisodes(this.rooms[roomcode].players.length);
-			this.webSocketController.sendToRoom(roomcode, 'game-loaded', this.rooms[roomcode]);
+		let roomHandler = RoomHandlerCreator.getInstance();
+		let room = roomHandler.rooms[roomcode];
+
+		if (room.startGame()) {
+			roomHandler.webSocketController.sendToRoom(roomcode, 'start-game', room);
+			room.episodes = roomHandler.episodeService.getEpisodes(room.players.length);
+			roomHandler.webSocketController.sendToRoom(roomcode, 'game-loaded', room);
 		}
 	}
 
 	startWelcome(roomcode) {
-		if (this.rooms[roomcode].startWelcome()) {
-			this.webSocketController.sendToRoom(roomcode, 'start-welcome', this.rooms[roomcode]);
+		let roomHandler = RoomHandlerCreator.getInstance();
+		let room = roomHandler.rooms[roomcode];
+
+		if (room.startWelcome()) {
+			this.webSocketController.sendToRoom(roomcode, 'start-welcome', room);
 		}
 	}
 
@@ -151,26 +157,33 @@ class RoomController {
 		let { player, room, role } = obj;
 		let { roomcode } = room;
 
-		if (!this.rooms[roomcode].raisedHands[role].length) {
-			this.rooms[roomcode].raisedHands[role] = [ player ];
+		let roomHandler = RoomHandlerCreator.getInstance();
+		let room2 = roomHandler.rooms[roomcode];
+
+		if (!room2.raisedHands[role].length) {
+			room2.raisedHands[role] = [ player ];
 		} else {
-			this.rooms[roomcode].raisedHands[role].push(player);
+			room2.raisedHands[role].push(player);
 		}
 
-		this.webSocketController.sendToRoom(roomcode, 'raise-hand', this.rooms[roomcode]);
+		roomHandler.webSocketController.sendToRoom(roomcode, 'raise-hand', room2);
 	}
 
 	agreeToRoles(obj) {
 		let { player, room } = obj;
 		let { roomcode } = room;
-		this.rooms[roomcode].agreedPlayers.push(player);
 
-		if (this.rooms[roomcode].agreedPlayers.length > this.rooms[roomcode].players.length / 2) {
-			this.rooms[roomcode].agreedPlayers = [];
-			this.rooms[roomcode].raisedHands = {};
-			this.webSocketController.sendToRoom(roomcode, 'start-challenge', this.rooms[roomcode]);
+		let roomHandler = RoomHandlerCreator.getInstance();
+		let room2 = roomHandler.rooms[roomcode];
+
+		room2.agreedPlayers.push(player);
+
+		if (room2.agreedPlayers.length > room2.players.length / 2) {
+			room2.agreedPlayers = [];
+			room2.raisedHands = {};
+			roomHandler.webSocketController.sendToRoom(roomcode, 'start-challenge', room2);
 		} else {
-			this.webSocketController.sendToRoom(roomcode, 'agree-to-roles', this.rooms[roomcode]);
+			roomHandler.webSocketController.sendToRoom(roomcode, 'agree-to-roles', room2);
 		}
 	}
 
