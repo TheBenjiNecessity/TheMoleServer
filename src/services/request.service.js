@@ -25,7 +25,7 @@ class RequestService {
     }
 
     joinRoom(req, res) {
-        let { roomCode } = req.params;
+		let { roomcode } = req.params;
         let { player } = req.body;
 
         // Check if roomcode given
