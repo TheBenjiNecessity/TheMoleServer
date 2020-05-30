@@ -3,6 +3,7 @@ import { RoomHandlerCreator } from '../controllers/room.controller';
 class WebSocketController {
 	constructor(io) {
 		this.callbacks = {};
+		this.io = io;
 
 		io.on('connection', (socket) => {
 			socket.on('join', (data) => {
@@ -26,7 +27,7 @@ class WebSocketController {
 
 	sendToRoom(roomcode, action, obj) {
 		let jsonString = JSON.stringify(obj);
-		io.to(roomcode).emit(action, jsonString);
+		this.io.to(roomcode).emit(action, jsonString);
 	}
 }
 
