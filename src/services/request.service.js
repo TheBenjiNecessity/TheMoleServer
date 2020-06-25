@@ -7,7 +7,7 @@ class RequestService {
 	constructor(app) {
         app.post('/create', this.createRoom);
         app.put('/join/:roomcode', this.joinRoom);
-        app.get('/room', this.getRoom);
+		app.get('/room/:roomcode', this.getRoom);
 
         app.listen(process.env.PORT || 3001);
     }
@@ -118,7 +118,7 @@ class RequestService {
     }
 
     getRoom(req, res) {
-		let roomcode = req.query.room;
+		let roomcode = req.params.roomcode;
         // Check if room exists
 		if (!roomcode) {
             res.status(400);
@@ -133,7 +133,7 @@ class RequestService {
             return;
         }
 
-        let roomHandler = RoomHandlerCreator().getInstance();
+		let roomHandler = RoomHandlerCreator.getInstance();
 		let room = roomHandler.getRoom(roomcode);
 
         // Check if room exists
