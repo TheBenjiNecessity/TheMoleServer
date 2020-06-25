@@ -2,7 +2,6 @@ import { RoomHandlerCreator } from '../controllers/room.controller';
 
 class WebSocketController {
 	constructor(io) {
-		this.callbacks = {};
 		this.io = io;
 
 		this.io.on('connection', (socket) => {
@@ -14,15 +13,6 @@ class WebSocketController {
 
 			RoomHandlerCreator.getInstance().setupSocket(socket);
 		});
-	}
-
-	addEvent(name, callback) {
-		if (typeof callback === 'function') {
-			this.socket.on(name, callback);
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	sendToRoom(roomcode, action, obj) {
