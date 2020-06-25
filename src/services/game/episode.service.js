@@ -9,19 +9,23 @@ export default class EpisodeService {
 	getEpisodes(numPlayers) {
 		let episodes = [];
 		for (let i = numPlayers; i >= 2; i--) {
-			episodes.push(this.getEpisode(i));
+			episodes.push(this.getEpisode(numPlayers, i));
 		}
 
 		return episodes;
 	}
 
-	getEpisode(numPlayers) {
-		let challenges = [];
-		let numChallengesPerEpisode = this.getNumChallenges(numPlayers);
-		for (let i = 0; i < numChallengesPerEpisode; i++) {
-			challenges.push(this.challengeService.getChallenge(numPlayers));
+	getEpisode(numAllPlayers, numPlayers) {
+		if (numPlayers === 2) {
+			return new Episode(numPlayers, this.challengeService.getChallenge(numPlayers));
+		} else {
+			let challenges = [];
+			let numChallengesPerEpisode = this.getNumChallenges(numAllPlayers);
+			for (let i = 0; i < numChallengesPerEpisode; i++) {
+				challenges.push(this.challengeService.getChallenge(numPlayers));
+			}
+			return new Episode(numPlayers, challenges);
 		}
-		return new Episode(numPlayers, challenges);
 	}
 
 	getNumChallenges(numPlayers) {
