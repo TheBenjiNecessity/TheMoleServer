@@ -1,4 +1,4 @@
-class ArrayUtilsService {
+export default class ArrayUtilsService {
 	constructor() {}
 
 	static shuffleArray(array) {

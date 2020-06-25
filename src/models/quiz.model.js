@@ -1,3 +1,3 @@
-export class Quiz {
-    constructor() { }
+export default class Quiz {
+	constructor() {}
 }
