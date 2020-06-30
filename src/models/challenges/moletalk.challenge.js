@@ -2,11 +2,15 @@ import Challenge from './challenge.model';
 
 import challengeData from './challenge.data'; // Lang?
 
-const type = 'platter';
+const type = 'mole-talk';
 
-export default class PlatterChallenge extends Challenge {
+export default class MoleTalkChallenge extends Challenge {
 	constructor() {
 		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData[type];
 		super(title, type, description, maxPlayers, minPlayers, questions, initialState);
 	}
 }
+
+/**
+ * Players can have a chat with the mole.
+ */

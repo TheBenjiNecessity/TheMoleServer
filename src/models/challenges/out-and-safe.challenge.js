@@ -1,13 +1,12 @@
-import { Question } from '../question.model';
 import Challenge from './challenge.model';
 
-const title = 'Out/Safe';
-const type = 'out-and-safe';
-const description = 'description';
-const questions = [ new Question('During the "Out and Safe" challenge, did the mole play an out card?') ];
+import challengeData from './challenge.data'; // Lang?
 
-export class OutAndSafeChallenge extends Challenge {
+const type = 'out-and-safe';
+
+export default class OutAndSafeChallenge extends Challenge {
 	constructor() {
-		super(title, type, description, 5, 5, questions);
+		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData[type];
+		super(title, type, description, maxPlayers, minPlayers, questions, initialState);
 	}
 }

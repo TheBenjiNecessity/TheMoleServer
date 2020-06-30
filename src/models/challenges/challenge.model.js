@@ -1,14 +1,14 @@
 import RaisedHand from '../raisedHand.model';
 
 export default class Challenge {
-	constructor(title, type, description, maxPlayers, minPlayers, questions) {
+	constructor(title, type, description, maxPlayers, minPlayers, questions, state = 'roles') {
 		this.title = title;
 		this.type = type;
 		this.description = description;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
 		this.questions = questions;
-		this.state = 'roles';
+		this.state = state;
 		this.agreedPlayers = [];
 		this.raisedHands = [];
 	}
