@@ -12,8 +12,4 @@ export default class ChallengeFactory {
 				return null;
 		}
 	}
-
-	canSupportNumPlayers(numPlayers) {
-		return numPlayers >= this.minPlayers && numPlayers <= this.maxPlayers;
-	}
 }
