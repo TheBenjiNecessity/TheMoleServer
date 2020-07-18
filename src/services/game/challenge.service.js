@@ -8,7 +8,7 @@ export default class ChallengeService {
 		this.availableChallenges = ChallengeService.challenges;
 	}
 
-	getChallenge(numPlayers) {
+	getRandomChallengeForPlayers(numPlayers) {
 		let numRestrictedChallenges = this.availableChallenges.filter((c) => c.canSupportNumPlayers(numPlayers));
 
 		if (numRestrictedChallenges.length > 0) {

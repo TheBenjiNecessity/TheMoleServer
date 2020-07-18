@@ -17,12 +17,12 @@ export default class EpisodeService {
 
 	getEpisode(numAllPlayers, numPlayers) {
 		if (numPlayers === 2) {
-			return new Episode(numPlayers, this.challengeService.getChallenge(numPlayers));
+			return new Episode(numPlayers, this.challengeService.getRandomChallengeForPlayers(numPlayers));
 		} else {
 			let challenges = [];
 			let numChallengesPerEpisode = this.getNumChallenges(numAllPlayers);
 			for (let i = 0; i < numChallengesPerEpisode; i++) {
-				challenges.push(this.challengeService.getChallenge(numPlayers));
+				challenges.push(this.challengeService.getRandomChallengeForPlayers(numPlayers));
 			}
 			return new Episode(numPlayers, challenges);
 		}
