@@ -1,33 +1,33 @@
-import { RoomHandlerCreator } from '../controllers/room.controller';
+class WebSocketService {
+	constructor() {}
 
-class WebSocketController {
-	constructor(io) {
-		this.io = io;
+	static init(io, roomHandler) {
+		WebSocketService.io = io;
 
-		this.io.on('connection', (socket) => {
+		WebSocketService.io.on('connection', (socket) => {
 			socket.on('join', (roomcode) => {
 				if (roomcode) {
 					socket.join(roomcode);
 				}
 			});
 
-			RoomHandlerCreator.getInstance().setupSocket(socket);
+			roomHandler.setupSocket(socket);
 		});
 	}
 
-	sendToRoom(roomcode, action, obj) {
-		this.io.in(roomcode).emit(action, obj);
+	static sendToRoom(roomcode, action, obj) {
+		WebSocketService.io.in(roomcode).emit(action, obj);
 	}
 }
 
-export class WebSocketControllerCreator {
+export default class WebSocketServiceCreator {
 	constructor() {}
 
-	static createController(io) {
-		if (!WebSocketControllerCreator.instance) {
-			WebSocketControllerCreator.instance = new WebSocketController(io);
+	static getInstance() {
+		if (!WebSocketServiceCreator.instance) {
+			WebSocketServiceCreator.instance = new WebSocketService();
 		}
 
-		return WebSocketControllerCreator.instance;
+		return WebSocketServiceCreator.instance;
 	}
 }
