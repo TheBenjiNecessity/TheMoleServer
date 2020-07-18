@@ -1,73 +1,91 @@
+import { RoomHandlerCreator } from './room.controller';
+import challengeData from '../models/challenges/challenge.data';
+import WebSocketServiceCreator from '../services/websocket.service';
+
 class ChallengeController {
-	constructor(webSocketController) {
-		this.webSocketController = webSocketController;
-		this.challengeClasses = {
-			platter: new PlatterChallengeController(webSocketController)
-		};
+	constructor() {
+		this.challengeClasses = {};
 	}
 
 	event(obj) {
-		this.challengeClasses[obj.type][obj.event](obj.data);
+		this[obj.event](obj.data);
+	}
+
+	raiseHand({ room, player, role }) {
+		let { roomcode } = room;
+
+		let roomHandler = RoomHandlerCreator.getInstance();
+		let room2 = roomHandler.rooms[roomcode];
+		room2.currentChallenge.raiseHandForPlayer(player, role);
+
+		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'raise-hand', room2);
+	}
+
+	agreeToRoles({ room, player }) {
+		let { roomcode } = room;
+
+		let roomHandler = RoomHandlerCreator.getInstance();
+		roomHandler.rooms[roomcode].currentChallenge.addAgreedPlayer(player);
+
+		if (
+			roomHandler.rooms[roomcode].currentChallenge.agreedPlayers.length >
+			roomHandler.rooms[roomcode].players.length / 2
+		) {
+			roomHandler.rooms[roomcode].currentChallenge.agreedPlayers = [];
+			roomHandler.rooms[roomcode].raisedHands = {};
+			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', roomHandler.rooms[roomcode]);
+		} else {
+			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'agree-to-roles', roomHandler.rooms[roomcode]);
+		}
+	}
+
+	addPlayerVote({ room, player }) {
+		let newRoom = RoomHandlerCreator.getInstance().rooms[room.roomcode];
+		newRoom.currentChallenge.setVotedPlayer(player);
+		WebSocketServiceCreator.getInstance().sendToRoom(room.roomcode, 'voted-player', newRoom);
+	}
+
+	removePlayerVote({ room, player }) {
+		let newRoom = RoomHandlerCreator.getInstance().rooms[room.roomcode];
+		newRoom.currentChallenge.removeVotedPlayer(player);
+		WebSocketServiceCreator.getInstance().sendToRoom(room.roomcode, 'remove-voted-player', newRoom);
+	}
+
+	setupSocket(socket) {
+		socket.on('raise-hand', this.raiseHand);
+
+		socket.on('agree-to-roles', this.agreeToRoles);
+
+		socket.on('add-player-vote', this.addPlayerVote);
+
+		socket.on('remove-player-vote', this.removePlayerVote);
+
+		for (let type of Object.keys(challengeData)) {
+			let childInstance = ChallengeControllerCreator.getChildInstance(type);
+			if (childInstance) {
+				childInstance.setupSocket(socket);
+			}
+		}
 	}
 }
 
-class PlatterChallengeController {
-	constructor(webSocketController) {
-		this.webSocketController = webSocketController;
-	}
-}
-
-export class ChallengeControllerCreator {
+export default class ChallengeControllerCreator {
 	constructor() {}
 
 	static getInstance() {
-		return RequestServiceCreator.instance;
-	}
-
-	static createController(webSocketController) {
 		if (!ChallengeControllerCreator.instance) {
-			ChallengeControllerCreator.instance = new ChallengeController(webSocketController);
+			ChallengeControllerCreator.instance = new ChallengeController();
 		}
 
 		return ChallengeControllerCreator.instance;
 	}
-}
 
-/**
- * What does this controller do?:
- *  - handles challenge based events
- * Events:
- *  - from client
- *      - raiseHand: a player has raised their hand to be a certain role on the roles screen
- *      - agreeToRoles: a player has agreed to the current roles on the role select screen
- *  - to client
- *      - start challenge:
- *      - other events are specific to the subclass
- * Standard Challenge:
- * - Raise hand screen
- *      - components:
- *          - "Title text"
- *          - "instruction text" describing how certain roles for players is needed
- *          - multiple "raise hand" buttons with lists of "player names" under each
- *          - "agree" button at bottom with list of "player checkmarks" beside it
- *      - events:
- *          - "raise hand" button click
- *              - clicking on this button will add the player to a list under that button
- *              - all of the players in the "agree list" are removed
- *              - if the player belonged to another list, they will be removed from that list
- *          - "agree" button click
- *              - clicking on this button will add a checkmark next to the "agree" button
- *                signifying that they agree to the roles
- *          - once the majority of players click on the agree button then move onto the next screen
- *      - explanation
- *          - the idea of this screen is to pick roles that each player will have during the challenge
- *          - players must agree as a majority to the assigned roles in order to proceed
- *          - once a majority is reached, play moves to the next screen
- *          - it is possible for a challenge to not need to assign roles. If that is the case then this
- *            screen is skipped and players are moved right into the challenge
- * - Challenge Screen
- *      - components
- *          - Title text
- *          - Instructions
- *          - 
- */
+	static getChildInstance(type) {
+		switch (type) {
+			case 'platter':
+				return new PlatterChallengeController();
+			default:
+				return null;
+		}
+	}
+}
