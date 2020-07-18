@@ -11,6 +11,7 @@ export default class Challenge {
 		this.state = state;
 		this.agreedPlayers = [];
 		this.raisedHands = [];
+		this.votedPlayers = {};
 	}
 
 	canSupportNumPlayers(numPlayers) {
@@ -32,6 +33,20 @@ export default class Challenge {
 			this.raisedHands[indexOfRaisedHand].role = role;
 		} else {
 			this.raisedHands.push(new RaisedHand(player, role));
+		}
+	}
+
+	setVotedPlayer(player) {
+		if (!this.votedPlayers[player.name]) {
+			this.votedPlayers[player.name] = 1;
+		} else {
+			this.votedPlayers[player.name]++;
+		}
+	}
+
+	removeVotedPlayer(player) {
+		if (this.votedPlayers[player.name]) {
+			this.votedPlayers[player.name]--;
 		}
 	}
 }
