@@ -1,11 +1,26 @@
-import { Challenge } from '../../models/challenge.model';
-import { ArrayUtilsService } from '../utils/array-utils.service';
+import ArrayUtilsService from '../utils/array-utils.service';
 
-const challenges = [ new Challenge('Odd Man Out', 'P'), new Challenge('Odd Man Out', '') ];
+import OutAndSafeChallenge from '../../models/challenges/out-and-safe.challenge';
+import PlatterChallenge from '../../models/challenges/platter.challenge';
+import MoleTalkChallenge from '../../models/challenges/moletalk.challenge';
+import PushYourLuckChallenge from '../../models/challenges/push-your-luck.challenge';
+import StacksChallenge from '../../models/challenges/stacks.challenge';
+import TradersChallenge from '../../models/challenges/traders.challenge';
+import ButtonChallenge from '../../models/challenges/button.challenge';
+
+const challenges = [
+	new OutAndSafeChallenge(),
+	new PlatterChallenge(),
+	new MoleTalkChallenge(),
+	new PushYourLuckChallenge(),
+	new StacksChallenge(),
+	new TradersChallenge(),
+	new ButtonChallenge()
+];
 
 export default class ChallengeService {
 	constructor() {
-		this.availableChallenges = ChallengeService.challenges;
+		this.availableChallenges = challenges;
 	}
 
 	getRandomChallengeForPlayers(numPlayers) {
