@@ -1,3 +1,6 @@
+import PlatterChallenge from './challenges/platter.challenge';
+import PathChallenge from './challenges/path.challenge';
+
 const roomstate = {
 	LOBBY: 'lobby',
 	WELCOME: 'game-welcome',
@@ -66,6 +69,17 @@ export class Room {
 				this.players[i].removeObjects(object, quantity);
 				break;
 			}
+		}
+	}
+
+	initCurrentChallenge(type) {
+		switch (type) {
+			case 'platter':
+				this.currentChallenge = new PlatterChallenge();
+			case 'path':
+				this.currentChallenge = new PathChallenge(this.players);
+			default:
+				return null;
 		}
 	}
 }
