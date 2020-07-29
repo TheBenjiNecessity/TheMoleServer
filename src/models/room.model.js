@@ -19,7 +19,7 @@ export class Room {
 
 	constructor(roomcode) {
 		this.roomcode = roomcode;
-		this.state = roomstate.WELCOME;
+		this.state = roomstate.LOBBY;
 		this.players = [];
 		this.episodes = [];
 		this.currentEpisode = 0; //TODO make sure episodes are zero indexed
