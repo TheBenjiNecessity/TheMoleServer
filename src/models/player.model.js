@@ -8,7 +8,7 @@ class Player {
 		};
 	}
 
-	getObjects(object, quantity = 1) {
+	setObjects(object, quantity = 1) {
 		this.objects[object] += quantity;
 	}
 
