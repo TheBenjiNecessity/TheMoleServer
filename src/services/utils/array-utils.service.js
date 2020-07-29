@@ -13,6 +13,11 @@ export default class ArrayUtilsService {
 		return array;
 	}
 
+	static getRandomElement(array) {
+		let r = Math.floor(Math.random() * array.length);
+		return array[r];
+	}
+
 	static removeElementAt(array, index) {
 		return array.filter((element) => array.indexOf(element) !== index);
 	}
