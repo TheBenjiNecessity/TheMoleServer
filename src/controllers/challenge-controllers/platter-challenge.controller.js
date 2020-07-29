@@ -1,8 +1,7 @@
-import ChallengeController from '../challenge.controller';
 import RoomHandlerCreator from '../room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
 
-export default class PlatterChallengeController extends ChallengeController {
+export default class PlatterChallengeController {
 	constructor() {}
 
 	chooseExemption({ room, player }) {
