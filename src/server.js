@@ -23,3 +23,5 @@ let webSocketService = WebSocketServiceCreator.getInstance();
 webSocketService.init(io, RoomHandlerCreator.getInstance());
 
 server.listen(process.env.PORT || 8999);
+
+console.log('Server started');
