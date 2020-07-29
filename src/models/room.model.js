@@ -54,7 +54,7 @@ export class Room {
 	giveObjectsToPlayer(player, object, quantity) {
 		for (let i = 0; i < this.players.length; i++) {
 			if (this.players[i].name === player.name) {
-				this.players[i].getObjects(object, quantity);
+				this.players[i].setObjects(object, quantity);
 				break;
 			}
 		}
