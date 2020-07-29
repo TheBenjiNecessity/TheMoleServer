@@ -3,7 +3,8 @@ import EpisodeService from '../services/game/episode.service';
 import ChallengeControllerCreator from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 
-const badwords = [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT' ];
+const MAX_LETTERS = 4;
+const BAD_WORDS = [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT', 'JIZZ', 'TITS', 'CUMS' ];
 
 class RoomController {
 	constructor() {
@@ -67,24 +68,20 @@ class RoomController {
 	}
 
 	getRandomRoomCode() {
-		var found = false;
+		let found = false;
 
 		while (!found) {
-			var number1 = Math.floor(Math.random() * this.characters.length);
-			var number2 = Math.floor(Math.random() * this.characters.length);
-			var number3 = Math.floor(Math.random() * this.characters.length);
-			var number4 = Math.floor(Math.random() * this.characters.length);
+			let code = '';
 
-			var code =
-				this.characters[number1] +
-				this.characters[number2] +
-				this.characters[number3] +
-				this.characters[number4];
+			for (let i = 0; i < MAX_LETTERS; i++) {
+				let number = Math.floor(Math.random() * this.characters.length);
+				code += this.characters[number];
+			}
 
 			found = typeof this.rooms[code] === 'undefined';
 
 			// Avoid code being a bad word
-			if (badwords.indexOf(code) >= 0) {
+			if (BAD_WORDS.indexOf(code) >= 0) {
 				found = false;
 			}
 		}
