@@ -1,10 +1,10 @@
 class WebSocketService {
 	constructor() {}
 
-	static init(io, roomHandler) {
-		WebSocketService.io = io;
+	init(io, roomHandler) {
+		this.io = io;
 
-		WebSocketService.io.on('connection', (socket) => {
+		this.io.on('connection', (socket) => {
 			socket.on('join', (roomcode) => {
 				if (roomcode) {
 					socket.join(roomcode);
@@ -15,8 +15,8 @@ class WebSocketService {
 		});
 	}
 
-	static sendToRoom(roomcode, action, obj) {
-		WebSocketService.io.in(roomcode).emit(action, obj);
+	sendToRoom(roomcode, action, obj) {
+		this.io.in(roomcode).emit(action, obj);
 	}
 }
 
