@@ -6,7 +6,7 @@ export default class EpisodeService {
 		this.challengeService = new ChallengeService();
 	}
 
-	getEpisodes(numPlayers) {
+	static getEpisodes(numPlayers) {
 		let episodes = [];
 		for (let i = numPlayers; i >= 2; i--) {
 			episodes.push(this.getEpisode(numPlayers, i));
@@ -15,7 +15,7 @@ export default class EpisodeService {
 		return episodes;
 	}
 
-	getEpisode(numAllPlayers, numPlayers) {
+	static getEpisode(numAllPlayers, numPlayers) {
 		if (numPlayers === 2) {
 			return new Episode(numPlayers, this.challengeService.getRandomChallengeForPlayers(numPlayers));
 		} else {
@@ -28,7 +28,7 @@ export default class EpisodeService {
 		}
 	}
 
-	getNumChallenges(numPlayers) {
+	static getNumChallenges(numPlayers) {
 		switch (numPlayers) {
 			case 10:
 			case 9:
