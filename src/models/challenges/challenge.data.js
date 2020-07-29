@@ -51,7 +51,7 @@ export default {
 		description: '',
 		maxPlayers: 5,
 		minPlayers: 5,
-		initialState: 'game',
+		initialState: 'walker',
 		questions: [
 			{
 				text: 'In "The Path" challenge, what position did the mole walk the path?',
