@@ -60,18 +60,18 @@ export default class Room {
 		return typeof roomPlayer !== 'undefined';
 	}
 
-	giveObjectsToPlayer(player, object, quantity) {
+	giveObjectsToPlayer(playerName, object, quantity) {
 		for (let i = 0; i < this.players.length; i++) {
-			if (this.players[i].name === player.name) {
+			if (this.players[i].name === playerName) {
 				this.players[i].setObjects(object, quantity);
 				break;
 			}
 		}
 	}
 
-	removeObjectsFromPlayer(player, object, quantity) {
+	removeObjectsFromPlayer(playerName, object, quantity) {
 		for (let i = 0; i < this.players.length; i++) {
-			if (this.players[i].name === player.name) {
+			if (this.players[i].name === playerName) {
 				this.players[i].removeObjects(object, quantity);
 				break;
 			}
