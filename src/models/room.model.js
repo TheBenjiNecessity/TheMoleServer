@@ -7,7 +7,7 @@ const roomstate = {
 	EPISODESTART: 'episode-start'
 };
 
-export class Room {
+export default class Room {
 	get isFull() {
 		return this.players.length === 10;
 	}
