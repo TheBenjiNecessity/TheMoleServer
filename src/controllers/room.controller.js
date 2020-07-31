@@ -4,12 +4,7 @@ import ChallengeControllerCreator from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 
 const MAX_LETTERS = 4;
-const BAD_WORDS = [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT', 'JIZZ', 'TITS', 'CUMS' ];
-
-class RoomController {
-	constructor() {
-		this.rooms = {};
-		this.characters = [
+const CHARACTERS = [
 			'A',
 			'B',
 			'C',
@@ -37,6 +32,11 @@ class RoomController {
 			'Y',
 			'Z'
 		];
+const BAD_WORDS = [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT', 'JIZZ', 'TITS', 'CUMS' ];
+
+class RoomController {
+	constructor() {
+		this.rooms = {};
 
 		this.episodeService = new EpisodeService();
 	}
@@ -74,8 +74,8 @@ class RoomController {
 			let code = '';
 
 			for (let i = 0; i < MAX_LETTERS; i++) {
-				let number = Math.floor(Math.random() * this.characters.length);
-				code += this.characters[number];
+				let number = Math.floor(Math.random() * CHARACTERS.length);
+				code += CHARACTERS[number];
 			}
 
 			found = typeof this.rooms[code] === 'undefined';
