@@ -1,6 +1,7 @@
 import PlatterChallenge from './challenges/platter.challenge';
 import PathChallenge from './challenges/path.challenge';
 
+const MAX_PLAYERS = 10;
 const roomstate = {
 	LOBBY: 'lobby',
 	WELCOME: 'game-welcome',
@@ -9,7 +10,7 @@ const roomstate = {
 
 export default class Room {
 	get isFull() {
-		return this.players.length === 10;
+		return this.players.length === MAX_PLAYERS;
 	}
 
 	get isInProgress() {
