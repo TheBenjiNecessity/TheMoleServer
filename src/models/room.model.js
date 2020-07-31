@@ -34,7 +34,12 @@ export default class Room {
 	}
 
 	addPlayer(player) {
+		if (this.isFull) {
+			return false;
+		}
+
 		this.players.push(player);
+		return true;
 	}
 
 	moveNext() {
