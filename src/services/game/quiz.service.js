@@ -10,10 +10,7 @@ export class QuizService {
 			numRestrictedChallenges = ArrayUtilsService.shuffleArray(numRestrictedChallenges);
 
 			let elementToRemove = numRestrictedChallenges[0];
-			this.availableChallenges = ArrayUtilsService.removeElementByValue(
-				this.availableChallenges,
-				elementToRemove
-			);
+			this.availableQuestions = ArrayUtilsService.removeElementByValue(this.availableQuestions, elementToRemove);
 
 			return elementToRemove;
 		}
