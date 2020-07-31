@@ -1,5 +1,5 @@
 import { RoomHandlerCreator } from '../controllers/room.controller';
-import { Player, PlayerCreator } from '../models/player.model';
+import Player from '../models/player.model';
 
 const PORT = process.env.PORT || 8999;
 
@@ -42,14 +42,32 @@ class RequestService {
 			return;
 		}
 
-		let playerObj = PlayerCreator.createPlayer(player);
-
-		if (!playerObj.success) {
-			res.status(422);
-			res.send({ playerObj });
+		if (!player) {
+			res.status(404);
+			res.send({
+				success: false,
+				errors: [
+					{
+						message: 'player_data_not_given'
+					}
+				]
+			});
 			return;
 		}
 
+		if (!player.name) {
+			res.status(404);
+			res.send({
+				success: false,
+				errors: [
+					{
+						message: 'name_not_given'
+					}
+				]
+			});
+		}
+
+		let newPlayer = new Player(player.name);
 		let roomHandler = RoomHandlerCreator.getInstance();
 		let room = roomHandler.getRoom(roomcode);
 
@@ -94,7 +112,7 @@ class RequestService {
 			return;
 		}
 
-		if (room.hasPlayer(playerObj.player)) {
+		if (room.hasPlayer(newPlayer)) {
 			res.status(403);
 			res.send({
 				success: false,
@@ -107,12 +125,12 @@ class RequestService {
 			return;
 		}
 
-		roomHandler.addPlayerToRoom(room.roomcode, playerObj.player);
+		roomHandler.addPlayerToRoom(room.roomcode, newPlayer);
 
 		res.send({
 			success: true,
 			room: room,
-			player: playerObj.player,
+			player: newPlayer,
 			web_socket_url: `ws://localhost:${PORT}`
 		});
 	}

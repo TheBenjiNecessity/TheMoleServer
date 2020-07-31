@@ -1,5 +1,5 @@
 import Room from './room.model';
-import { PlayerCreator } from '../models/player.model';
+import Player from '../models/player.model';
 
 test('Tests room init', () => {
 	let room = new Room('TEST');
@@ -48,7 +48,7 @@ test('Tests full room', () => {
 
 test('Tests adding player to empty room', () => {
 	let room = Room.getTestRoomWithNoPlayers();
-	let newTestPlayer = PlayerCreator.createPlayer({ name: 'test11' }).player;
+	let newTestPlayer = new Player('test11');
 
 	expect(room.addPlayer(newTestPlayer)).toBe(true);
 	expect(room.players.length).toBe(1);
@@ -57,7 +57,7 @@ test('Tests adding player to empty room', () => {
 
 test('Tests adding player to partially full room', () => {
 	let room = Room.getTestRoomWithFivePlayers();
-	let newTestPlayer = PlayerCreator.createPlayer({ name: 'test11' }).player;
+	let newTestPlayer = new Player('test11');
 	expect(room.addPlayer(newTestPlayer)).toBe(true);
 	expect(room.players.length).toBe(6);
 	expect(room.players[room.players.length - 1].name).toBe('test11');
@@ -65,14 +65,14 @@ test('Tests adding player to partially full room', () => {
 
 test('Tests adding player to full room', () => {
 	let room = Room.getTestRoomWithTenPlayers();
-	let newTestPlayer = PlayerCreator.createPlayer({ name: 'test11' }).player;
+	let newTestPlayer = new Player('test11');
 	expect(room.addPlayer(newTestPlayer)).toBe(false);
 	expect(room.players.length).toBe(10);
 });
 
 test('Tests "hasPlayer" method', () => {
 	let room = Room.getTestRoomWithNoPlayers();
-	let newTestPlayer = PlayerCreator.createPlayer({ name: 'test11' }).player;
+	let newTestPlayer = new Player('test11');
 
 	expect(room.hasPlayer(newTestPlayer)).toBe(false);
 
