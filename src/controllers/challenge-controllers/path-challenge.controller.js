@@ -4,21 +4,27 @@ import WebSocketServiceCreator from '../../services/websocket.service';
 class PathChallengeController {
 	constructor() {}
 
-	chooseChest({ room, player, choice }) {
-		this.updateRoom(room.roomcode, choice, 'chest', 'path-choose-chest');
+	chooseChest({ roomcode, choice }) {
+		this.applyAction(roomcode, choice, 'chest', 'path-choose-chest');
 	}
 
-	addVoteForChest({ room, player, choice }) {
-		this.updateRoom(room.roomcode, choice, 'vote', 'path-vote-chest');
+	addVoteForChest({ roomcode, choice }) {
+		this.applyAction(roomcode, choice, 'vote', 'path-vote-chest');
 	}
 
-	removeVoteForChest({ room, player, choice }) {
-		this.updateRoom(room.roomcode, choice, 'remove', 'path-remove-vote-chest');
+	removeVoteForChest({ roomcode, choice }) {
+		this.applyAction(roomcode, choice, 'remove', 'path-remove-vote-chest');
 	}
 
-	updateRoom(roomcode, choice, action, socketFunctionName) {
-		let { roomcode } = rooms;
-		let newRoom = RoomHandlerCreator.getInstance().rooms[roomcode];
+	applyAction(roomcode, choice, action, socketFunctionName) {
+		let room = RoomHandlerCreator.getInstance().getRoom(roomcode);
+		let newRoom = this.updateRoom(room, choice, action);
+		RoomHandlerCreator.getInstance().setRoom(newRoom);
+		WebSocketServiceCreator.getInstance().sendToRoom(newRoom.roomcode, socketFunctionName, newRoom);
+	}
+
+	updateRoom(room, choice, action) {
+		let newRoom = room;
 		let pathChallenge = newRoom.currentChallenge;
 
 		if (choice === 'left') {
@@ -40,8 +46,7 @@ class PathChallengeController {
 		}
 
 		newRoom.currentChallenge = pathChallenge;
-		RoomHandlerCreator.getInstance().rooms[roomcode] = newRoom;
-		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, socketFunctionName, newRoom);
+		return newRoom;
 	}
 
 	setupSocket(socket) {
