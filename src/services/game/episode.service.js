@@ -2,27 +2,31 @@ import { Episode } from '../../models/episode.model';
 import ChallengeService from './challenge.service';
 
 export default class EpisodeService {
-	constructor() {
-		this.challengeService = new ChallengeService();
-	}
+	constructor() {}
 
 	static getEpisodes(numPlayers) {
 		let episodes = [];
+		let challenges = [];
 		for (let i = numPlayers; i >= 2; i--) {
-			episodes.push(this.getEpisode(numPlayers, i));
+			let episode = this.getEpisode(numPlayers, i, challenges);
+			challenges = challenges.concat(episode.challenges);
+			episodes.push(episode);
 		}
 
 		return episodes;
 	}
 
-	static getEpisode(numAllPlayers, numPlayers) {
+	static getEpisode(numAllPlayers, numPlayers, currentChallenges) {
 		if (numPlayers === 2) {
-			return new Episode(numPlayers, this.challengeService.getRandomChallengeForPlayers(numPlayers));
+			return new Episode(
+				numPlayers,
+				ChallengeService.getRandomChallengeForPlayers(numPlayers, currentChallenges)
+			);
 		} else {
 			let challenges = [];
 			let numChallengesPerEpisode = this.getNumChallenges(numAllPlayers);
 			for (let i = 0; i < numChallengesPerEpisode; i++) {
-				challenges.push(this.challengeService.getRandomChallengeForPlayers(numPlayers));
+				challenges.push(ChallengeService.getRandomChallengeForPlayers(numPlayers, currentChallenges));
 			}
 			return new Episode(numPlayers, challenges);
 		}

@@ -19,23 +19,13 @@ const challenges = [
 ];
 
 export default class ChallengeService {
-	constructor() {
-		this.availableChallenges = challenges;
-	}
+	constructor() {}
 
-	getRandomChallengeForPlayers(numPlayers) {
-		let numRestrictedChallenges = this.availableChallenges.filter((c) => c.canSupportNumPlayers(numPlayers));
+	static getRandomChallengeForPlayers(numPlayers, currentChallenges) {
+		let numRestrictedChallenges = challenges.filter((c) => c.canSupportNumPlayers(numPlayers));
 
 		if (numRestrictedChallenges.length > 0) {
-			numRestrictedChallenges = ArrayUtilsService.shuffleArray(numRestrictedChallenges);
-
-			let elementToRemove = numRestrictedChallenges[0];
-			this.availableChallenges = ArrayUtilsService.removeElementByValue(
-				this.availableChallenges,
-				elementToRemove
-			);
-
-			return elementToRemove;
+			return ArrayUtilsService.getRandomElementNotInOtherArray(numRestrictedChallenges, currentChallenges);
 		}
 
 		return null;

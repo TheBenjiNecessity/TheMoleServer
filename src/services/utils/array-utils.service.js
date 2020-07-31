@@ -25,4 +25,9 @@ export default class ArrayUtilsService {
 	static removeElementByValue(array, oldElement) {
 		return array.filter((element) => element !== oldElement);
 	}
+
+	static getRandomElementNotInOtherArray(fullArray, otherArray) {
+		let intersection = fullArray.filter((value) => !otherArray.includes(value));
+		return this.getRandomElement(intersection);
+	}
 }

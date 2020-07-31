@@ -5,33 +5,33 @@ import WebSocketServiceCreator from '../services/websocket.service';
 
 const MAX_LETTERS = 4;
 const CHARACTERS = [
-			'A',
-			'B',
-			'C',
-			'D',
-			'E',
-			'F',
-			'G',
-			'H',
-			'I',
-			'J',
-			'K',
-			'L',
-			'M',
-			'N',
-			'O',
-			'P',
-			'Q',
-			'R',
-			'S',
-			'T',
-			'U',
-			'V',
-			'W',
-			'X',
-			'Y',
-			'Z'
-		];
+	'A',
+	'B',
+	'C',
+	'D',
+	'E',
+	'F',
+	'G',
+	'H',
+	'I',
+	'J',
+	'K',
+	'L',
+	'M',
+	'N',
+	'O',
+	'P',
+	'Q',
+	'R',
+	'S',
+	'T',
+	'U',
+	'V',
+	'W',
+	'X',
+	'Y',
+	'Z'
+];
 const BAD_WORDS = [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT', 'JIZZ', 'TITS', 'CUMS' ];
 
 class RoomController {
@@ -99,7 +99,7 @@ class RoomController {
 
 			if (this.rooms[roomcode].isStateWelcome) {
 				let numPlayers = this.rooms[roomcode].players.length;
-				this.rooms[roomcode].episodes = this.episodeService.getEpisodes(numPlayers);
+				this.rooms[roomcode].episodes = EpisodeService.getEpisodes(numPlayers);
 				WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'game-loaded', this.rooms[roomcode]);
 			}
 		}
