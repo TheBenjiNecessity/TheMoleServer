@@ -9,7 +9,7 @@ class PathChallengeController {
 	chooseChest({ roomcode, choice }) {
 		let event = 'choose-' + choice;
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
-		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'path-choose-chest', room);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'path-choose-chest', room);
 	}
 
 	addVoteForChest({ roomcode, player, choice }) {

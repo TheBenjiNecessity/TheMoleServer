@@ -8,13 +8,13 @@ export default class PlatterChallengeController {
 		let event = 'take-exemption';
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
 		RoomControllerCreator.getInstance().giveObjectsToPlayer(roomcode, player, 'exemption', 1);
-		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'took-exemption', room);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'took-exemption', room);
 	}
 
 	chooseMoney({ roomcode }) {
 		let event = 'take-money';
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
-		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'took-money', room);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'took-money', room);
 	}
 
 	setupSocket(socket) {
