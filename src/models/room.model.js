@@ -80,7 +80,7 @@ export default class Room {
 	initCurrentChallenge(type) {
 		switch (type) {
 			case 'platter':
-				this.currentChallenge = new PlatterChallenge();
+				this.currentChallenge = new PlatterChallenge(this.players);
 				break;
 			case 'path':
 				this.currentChallenge = new PathChallenge(this.players);
