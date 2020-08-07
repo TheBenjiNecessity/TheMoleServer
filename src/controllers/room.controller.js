@@ -37,8 +37,6 @@ const BAD_WORDS = [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT', 'JIZZ', 'TIT
 class RoomController {
 	constructor() {
 		this.rooms = {};
-
-		this.episodeService = new EpisodeService();
 	}
 
 	addRoom() {
