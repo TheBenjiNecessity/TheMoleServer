@@ -6,7 +6,7 @@ var cors = require('cors');
 
 import { RequestServiceCreator } from './services/request.service';
 import WebSocketServiceCreator from './services/websocket.service';
-import { RoomHandlerCreator } from './controllers/room.controller';
+import { RoomControllerCreator } from './controllers/room.controller';
 
 const app = require('express')();
 const server = http.createServer(app);
@@ -20,7 +20,7 @@ app.use(cors());
 RequestServiceCreator.createService(app);
 
 let webSocketService = WebSocketServiceCreator.getInstance();
-webSocketService.init(io, RoomHandlerCreator.getInstance());
+webSocketService.init(io, RoomControllerCreator.getInstance());
 
 server.listen(process.env.PORT || 8999);
 
