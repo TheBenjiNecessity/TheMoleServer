@@ -63,10 +63,11 @@ class RoomController {
 		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'add-player', obj);
 	}
 
-	giveObjectsToPlayer(roomcode, player, obj, quantity) {
+	giveObjectsToPlayer(roomcode, playerName, obj, quantity) {
 		// various object could be:
 		// exemption, joker, black exemption
-		this.rooms[roomcode].giveObjectsToPlayer(player, obj, quantity);
+		this.rooms[roomcode].giveObjectsToPlayer(playerName, obj, quantity);
+	}
 	}
 
 	getRandomRoomCode() {
