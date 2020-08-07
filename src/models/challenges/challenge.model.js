@@ -49,4 +49,23 @@ export default class Challenge {
 			this.votedPlayers[player.name]--;
 		}
 	}
+
+	performEvent(event, { player, role }) {
+		switch (event) {
+			case 'add-agreed-player':
+				addAgreedPlayer(player);
+				break;
+			case 'raise-hand-for-player':
+				raiseHandForPlayer(player, role);
+				break;
+			case 'set-voted-player':
+				setVotedPlayer(player);
+				break;
+			case 'remove-voted-player':
+				removeVotedPlayer(player);
+				break;
+			default:
+				break;
+		}
+	}
 }

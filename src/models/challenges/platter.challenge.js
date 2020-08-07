@@ -23,5 +23,17 @@ export default class PlatterChallenge extends Challenge {
 		}
 	}
 
+	performEvent(event, obj) {
+		switch (event) {
+			case 'platter-take-exemption':
+				takeExemption();
+				break;
+			case 'platter-take-money':
+				takeMoney();
+				break;
+			default:
+				super.performEvent(event, obj);
+				break;
+		}
 	}
 }

@@ -69,7 +69,7 @@ export default class PathChallenge extends Challenge {
 		if (!foundPlayerVote) {
 			this.removeVotesForPlayer(player);
 			this.votes[direction].push(player);
-	}
+		}
 	}
 
 	removeVotesForPlayer(player) {
@@ -99,6 +99,29 @@ export default class PathChallenge extends Challenge {
 			}
 
 			this.chests.push(chestRow);
+		}
+	}
+
+	performEvent(event, { player, role }) {
+		switch (event) {
+			case 'choose-left':
+				this.chooseLeft();
+				break;
+			case 'choose-right':
+				this.chooseRight();
+				break;
+			case 'add-left-vote':
+				this.addLeftVote();
+				break;
+			case 'add-right-vote':
+				this.addRightVote();
+				break;
+			case 'move-to-new-row':
+				this.moveToNewRow();
+				break;
+			default:
+				super.performEvent(event, { player, role });
+				break;
 		}
 	}
 }
