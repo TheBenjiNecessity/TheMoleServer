@@ -16,7 +16,11 @@ class WebSocketService {
 	}
 
 	sendToRoom(roomcode, action, obj) {
-		this.io.in(roomcode).emit(action, obj);
+		if (this.io) {
+			this.io.in(roomcode).emit(action, obj);
+		}
+
+		return { roomcode, action, obj };
 	}
 }
 
