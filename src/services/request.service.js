@@ -1,4 +1,4 @@
-import { RoomControllerCreator } from '../controllers/room.controller';
+import RoomControllerCreator from '../controllers/room.controller';
 import Player from '../models/player.model';
 
 const PORT = process.env.PORT || 8999;

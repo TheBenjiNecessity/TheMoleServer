@@ -1,4 +1,4 @@
-import { RoomControllerCreator } from './room.controller';
+import RoomControllerCreator from './room.controller';
 import challengeData from '../models/challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
 import PlatterChallengeControllerCreator from '../controllers/challenge-controllers/platter-challenge.controller';

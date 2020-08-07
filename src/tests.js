@@ -1,6 +1,6 @@
 import { RequestServiceCreator } from './services/request.service';
 import { WebSocketControllerCreator } from './services/websocket.service';
-import { RoomHandlerCreator } from './controllers/room.controller';
+import RoomControllerCreator from './controllers/room.controller';
 import { ChallengeControllerCreator } from './controllers/challenge.controller';
 
 import EpisodeService from './services/game/episode.service';
