@@ -52,40 +52,39 @@ export default class PathChallenge extends Challenge {
 		this.currentChoice = 'right';
 	}
 
-	get contentsOfChosenChest() {
-		return this.chests[0][this.currentChoice];
+	moveToNewRow() {
+		return this.currentChestIndex++;
 	}
 
-	addLeftVote() {
-		this.votes[0]++;
+	addLeftVote(player) {
+		this.addVote(player, 'left');
 	}
 
-	removeLeftVote() {
-		this.votes[0]--;
+	addRightVote(player) {
+		this.addVote(player, 'right');
 	}
 
-	addRightVote() {
-		this.votes[1]++;
+	addVote(player, direction) {
+		let foundPlayerVote = this.votes[direction].find((p) => p.name === player.name);
+		if (!foundPlayerVote) {
+			this.removeVotesForPlayer(player);
+			this.votes[direction].push(player);
+	}
 	}
 
-	removeRightVote() {
-		this.votes[1]--;
-	}
-
-	get leftVotes() {
-		return this.votes[0];
-	}
-
-	get rightVotes() {
-		return this.votes[1];
+	removeVotesForPlayer(player) {
+		this.votes.left = this.votes.left.filter((p) => p.name !== player.name);
+		this.votes.right = this.votes.right.filter((p) => p.name !== player.name);
 	}
 
 	setNewWalker() {
-		this.votes = [ 0, 0 ];
+		this.votes = { left: [], right: [] };
+		this.rightVotes = [];
 		this.chests = [];
 		this.currentWalker = ArrayUtilsService.getRandomElement(this.walkers);
 		this.walkers = ArrayUtilsService.removeElementByValue(this.walkers, this.currentWalker);
 		this.currentChoice = null;
+		this.currentChestIndex = 0;
 
 		let tempValues = ArrayUtilsService.shuffleArray(possibleValues);
 		for (let i = 0; i < 5; i++) {
