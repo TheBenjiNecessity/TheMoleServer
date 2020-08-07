@@ -29,9 +29,7 @@ export default class Room {
 		this.episodes = [];
 		this.currentEpisode = 0; //TODO make sure episodes are zero indexed
 		this.currentChallenge = {};
-
-		this.agreedPlayers = [];
-		this.raisedHands = {};
+		this.points = 0;
 	}
 
 	addPlayer(player) {
@@ -90,6 +88,14 @@ export default class Room {
 			default:
 				return null;
 		}
+	}
+
+	addPoints(points = 1) {
+		this.points += points;
+	}
+
+	removePoints(points = 1) {
+		this.points -= points;
 	}
 
 	static getTestRoomWithTenPlayers() {
