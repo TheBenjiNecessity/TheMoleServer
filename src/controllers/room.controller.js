@@ -112,13 +112,13 @@ class RoomController {
 	}
 }
 
-export class RoomHandlerCreator {
+export default class RoomControllerCreator {
 	constructor() {}
 
 	static getInstance() {
-		if (!RoomHandlerCreator.instance) {
-			RoomHandlerCreator.instance = new RoomController();
+		if (!RoomControllerCreator.instance) {
+			RoomControllerCreator.instance = new RoomController();
 		}
-		return RoomHandlerCreator.instance;
+		return RoomControllerCreator.instance;
 	}
 }

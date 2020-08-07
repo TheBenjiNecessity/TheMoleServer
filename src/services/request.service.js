@@ -1,4 +1,4 @@
-import { RoomHandlerCreator } from '../controllers/room.controller';
+import { RoomControllerCreator } from '../controllers/room.controller';
 import Player from '../models/player.model';
 
 const PORT = process.env.PORT || 8999;
@@ -14,7 +14,7 @@ class RequestService {
 
 	createRoom(req, res) {
 		// creates a websocket and returns a room code that can be used to interact with the websocket
-		let roomHandler = new RoomHandlerCreator.getInstance();
+		let roomHandler = new RoomControllerCreator.getInstance();
 		let room = roomHandler.addRoom();
 
 		res.send({
@@ -68,7 +68,7 @@ class RequestService {
 		}
 
 		let newPlayer = new Player(player.name);
-		let roomHandler = RoomHandlerCreator.getInstance();
+		let roomHandler = RoomControllerCreator.getInstance();
 		let room = roomHandler.getRoom(roomcode);
 
 		// Check if room exists
@@ -151,7 +151,7 @@ class RequestService {
 			return;
 		}
 
-		let roomHandler = RoomHandlerCreator.getInstance();
+		let roomHandler = RoomControllerCreator.getInstance();
 		let room = roomHandler.getRoom(roomcode);
 
 		// Check if room exists
