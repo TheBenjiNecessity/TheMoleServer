@@ -1,52 +1,70 @@
-import RoomHandlerCreator from '../room.controller';
+import RoomControllerCreator from '../room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
+
+const POINTS_FOR_CONTINUING = 7;
 
 class PathChallengeController {
 	constructor() {}
 
 	chooseChest({ roomcode, choice }) {
-		this.applyAction(roomcode, choice, 'chest', 'path-choose-chest');
+		let event = 'choose-' + choice;
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
+		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'path-choose-chest', room);
 	}
 
-	addVoteForChest({ roomcode, choice }) {
-		this.applyAction(roomcode, choice, 'vote', 'path-vote-chest');
-	}
+	addVoteForChest({ roomcode, player, choice }) {
+		let event = 'add-' + choice + '-vote';
+		let obj = { player };
+		let instance = RoomControllerCreator.getInstance();
+		let room = instance.performEventOnChallenge(roomcode, event, obj);
+		let wsMessage = 'path-vote-chest';
 
-	removeVoteForChest({ roomcode, choice }) {
-		this.applyAction(roomcode, choice, 'remove', 'path-remove-vote-chest');
-	}
+		let pathChallenge = room.currentChallenge;
+		if (pathChallenge.majorityVote) {
+			let { contentsOfChosenChest } = pathChallenge;
 
-	applyAction(roomcode, choice, action, socketFunctionName) {
-		let room = RoomHandlerCreator.getInstance().getRoom(roomcode);
-		let newRoom = this.updateRoom(room, choice, action);
-		RoomHandlerCreator.getInstance().setRoom(newRoom);
-		WebSocketServiceCreator.getInstance().sendToRoom(newRoom.roomcode, socketFunctionName, newRoom);
-	}
+			if (contentsOfChosenChest === 'continue') {
+				instance.performEventOnChallenge(roomcode, 'move-to-new-row', obj);
 
-	updateRoom(room, choice, action) {
-		let newRoom = room;
-		let pathChallenge = newRoom.currentChallenge;
+				if (pathChallenge.walkerIsDone) {
+					instance.addPoints(roomcode, POINTS_FOR_CONTINUING);
+				}
 
-		if (choice === 'left') {
-			if (action === 'chest') {
-				pathChallenge.chooseLeft();
-			} else if (action === 'vote') {
-				pathChallenge.addLeftVote();
+				wsMessage = 'walker-continued';
 			} else {
-				pathChallenge.removeLeftVote();
-			}
-		} else {
-			if (action === 'chest') {
-				pathChallenge.chooseRight();
-			} else if (action === 'vote') {
-				pathChallenge.addRightVote();
-			} else {
-				pathChallenge.removeRightVote();
+				switch (contentsOfChosenChest) {
+					case 'exemption':
+					case 'black-exemption':
+					case 'joker':
+						instance.giveObjectsToPlayer(roomcode, player.name, contentsOfChosenChest, 1);
+						wsMessage = 'walker-got-' + contentsOfChosenChest;
+						break;
+					case 'two jokers':
+						instance.giveObjectsToPlayer(roomcode, player.name, 'joker', 2);
+						wsMessage = 'walker-got-' + contentsOfChosenChest;
+						wsMessage.replace(' ', '-');
+						break;
+					case 'three jokers':
+						instance.giveObjectsToPlayer(roomcode, player.name, 'joker', 3);
+						wsMessage = 'walker-got-' + contentsOfChosenChest;
+						wsMessage.replace(' ', '-');
+						break;
+					case 'minus 3 points':
+						instance.removePoints(roomcode, 3);
+						wsMessage = 'walker-lost-three-points';
+						break;
+					case 'minus 5 points':
+						instance.removePoints(roomcode, 5);
+						wsMessage = 'walker-lost-five-points';
+						break;
+					default:
+						break;
+				}
 			}
 		}
 
-		newRoom.currentChallenge = pathChallenge;
-		return newRoom;
+		room = instance.getRoom(roomcode);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, wsMessage, room);
 	}
 
 	setupSocket(socket) {

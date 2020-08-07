@@ -1,4 +1,4 @@
-import { RoomHandlerCreator } from './room.controller';
+import { RoomControllerCreator } from './room.controller';
 import challengeData from '../models/challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
 import PlatterChallengeControllerCreator from '../controllers/challenge-controllers/platter-challenge.controller';
@@ -9,48 +9,37 @@ class ChallengeController {
 		this.challengeClasses = {};
 	}
 
-	event(obj) {
-		this[obj.event](obj.data);
+	raiseHand({ roomcode, player, role }) {
+		let event = 'raise-hand-for-player';
+		let obj = { player, role };
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
+		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'raise-hand', room);
 	}
 
-	raiseHand({ room, player, role }) {
-		let { roomcode } = room;
+	agreeToRoles({ roomcode, player }) {
+		let event = 'add-agreed-player';
+		let obj = { player };
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
 
-		let roomHandler = RoomHandlerCreator.getInstance();
-		let room2 = roomHandler.rooms[roomcode];
-		room2.currentChallenge.raiseHandForPlayer(player, role);
-
-		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'raise-hand', room2);
-	}
-
-	agreeToRoles({ room, player }) {
-		let { roomcode } = room;
-
-		let roomHandler = RoomHandlerCreator.getInstance();
-		roomHandler.rooms[roomcode].currentChallenge.addAgreedPlayer(player);
-
-		if (
-			roomHandler.rooms[roomcode].currentChallenge.agreedPlayers.length >
-			roomHandler.rooms[roomcode].players.length / 2
-		) {
-			roomHandler.rooms[roomcode].currentChallenge.agreedPlayers = [];
-			roomHandler.rooms[roomcode].raisedHands = {};
-			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', roomHandler.rooms[roomcode]);
+		if (room.currentChallenge.agreedPlayers.length > room.players.length / 2) {
+			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', room);
 		} else {
-			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'agree-to-roles', roomHandler.rooms[roomcode]);
+			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'agree-to-roles', room);
 		}
 	}
 
-	addPlayerVote({ room, player }) {
-		let newRoom = RoomHandlerCreator.getInstance().rooms[room.roomcode];
-		newRoom.currentChallenge.setVotedPlayer(player);
-		WebSocketServiceCreator.getInstance().sendToRoom(room.roomcode, 'voted-player', newRoom);
+	addPlayerVote({ roomcode, player }) {
+		let event = 'set-voted-player';
+		let obj = { player };
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
+		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'voted-player', room);
 	}
 
-	removePlayerVote({ room, player }) {
-		let newRoom = RoomHandlerCreator.getInstance().rooms[room.roomcode];
-		newRoom.currentChallenge.removeVotedPlayer(player);
-		WebSocketServiceCreator.getInstance().sendToRoom(room.roomcode, 'remove-voted-player', newRoom);
+	removePlayerVote({ roomcode, player }) {
+		let event = 'remove-voted-player';
+		let obj = { player };
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
+		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'remove-voted-player', room);
 	}
 
 	setupSocket(socket) {
