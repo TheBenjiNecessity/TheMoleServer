@@ -52,7 +52,6 @@ class PathChallengeController {
 	setupSocket(socket) {
 		socket.on('path-choose-chest', this.chooseChest);
 		socket.on('path-add-vote-chest', this.addVoteForChest);
-		socket.on('path-remove-vote-chest', this.removeVoteForChest);
 	}
 }
 
