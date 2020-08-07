@@ -53,16 +53,16 @@ export default class Challenge {
 	performEvent(event, { player, role }) {
 		switch (event) {
 			case 'add-agreed-player':
-				addAgreedPlayer(player);
+				this.addAgreedPlayer(player);
 				break;
 			case 'raise-hand-for-player':
-				raiseHandForPlayer(player, role);
+				this.raiseHandForPlayer(player, role);
 				break;
 			case 'set-voted-player':
-				setVotedPlayer(player);
+				this.setVotedPlayer(player);
 				break;
 			case 'remove-voted-player':
-				removeVotedPlayer(player);
+				this.removeVotedPlayer(player);
 				break;
 			default:
 				break;
