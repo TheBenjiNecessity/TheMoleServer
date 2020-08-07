@@ -25,10 +25,10 @@ export default class PlatterChallenge extends Challenge {
 
 	performEvent(event, obj) {
 		switch (event) {
-			case 'platter-take-exemption':
+			case 'take-exemption':
 				takeExemption();
 				break;
-			case 'platter-take-money':
+			case 'take-money':
 				takeMoney();
 				break;
 			default:

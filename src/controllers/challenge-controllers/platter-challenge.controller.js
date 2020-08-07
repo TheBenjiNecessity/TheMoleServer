@@ -1,18 +1,20 @@
-import RoomHandlerCreator from '../room.controller';
+import RoomControllerCreator from '../room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
 
 export default class PlatterChallengeController {
 	constructor() {}
 
-	chooseExemption({ room, player }) {
-		RoomHandlerCreator.getInstance().giveObjectsToPlayer(room.roomcode, player, 'exemption', 1);
-		let newRoom = RoomHandlerCreator.getInstance().rooms[room.roomcode];
-		WebSocketServiceCreator.getInstance().sendToRoom(room.roomcode, 'took-exemption', newRoom);
+	chooseExemption({ roomcode, player }) {
+		let event = 'take-exemption';
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
+		RoomControllerCreator.getInstance().giveObjectsToPlayer(roomcode, player, 'exemption', 1);
+		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'took-exemption', room);
 	}
 
-	chooseMoney({ room, player }) {
-		let newRoom = RoomHandlerCreator.getInstance().rooms[room.roomcode];
-		WebSocketServiceCreator.getInstance().sendToRoom(room.roomcode, 'took-money', newRoom);
+	chooseMoney({ roomcode }) {
+		let event = 'take-money';
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
+		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'took-money', room);
 	}
 
 	setupSocket(socket) {
