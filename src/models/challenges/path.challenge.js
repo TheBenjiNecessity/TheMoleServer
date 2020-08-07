@@ -15,6 +15,25 @@ const possibleValues = [
 ];
 
 export default class PathChallenge extends Challenge {
+	get contentsOfChosenChest() {
+		return this.chests[this.currentChestIndex][this.currentChoice];
+	}
+
+	get walkerIsDone() {
+		return this.currentChestIndex >= this.chests.length;
+	}
+
+	get majorityVote() {
+		let majorityCount = (this.players.length - 1) / 2;
+		if (this.votes.left.length > majorityCount) {
+			return 'left';
+		} else if (this.votes.right.length > majorityCount) {
+			return 'right';
+		} else {
+			return null;
+		}
+	}
+
 	constructor(players) {
 		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData[type];
 		super(title, type, description, maxPlayers, minPlayers, questions, initialState);
