@@ -7,7 +7,7 @@ const type = 'path';
 const possibleValues = [
 	'exemption',
 	'black-exemption',
-	'a joker',
+	'joker',
 	'two jokers',
 	'three jokers',
 	'minus 3 points',
