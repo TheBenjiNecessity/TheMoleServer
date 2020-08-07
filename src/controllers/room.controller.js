@@ -68,6 +68,13 @@ class RoomController {
 		// exemption, joker, black exemption
 		this.rooms[roomcode].giveObjectsToPlayer(playerName, obj, quantity);
 	}
+
+	addPoints(roomcode, points = 1) {
+		this.rooms[roomcode].addPoints(points);
+	}
+
+	removePoints(roomcode, points = 1) {
+		this.rooms[roomcode].removePoints(points);
 	}
 
 	getRandomRoomCode() {
@@ -102,6 +109,13 @@ class RoomController {
 				WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'game-loaded', this.rooms[roomcode]);
 			}
 		}
+	}
+
+	performEventOnChallenge(roomcode, event, obj) {
+		let room = this.rooms[roomcode];
+		room.currentChallenge.performEvent(event, obj);
+		this.setRoom(room);
+		return room;
 	}
 
 	setupSocket(socket) {
