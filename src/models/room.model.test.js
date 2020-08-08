@@ -179,11 +179,3 @@ test('Tests moveNext', () => {
 	expect(room.moveNext()).toBe(true);
 	expect(room.state).toBe('episode-start');
 });
-
-test('Tests initCurrentChallenge', () => {
-	let room = Room.getTestRoomWithFivePlayers();
-	room.initCurrentChallenge('platter');
-	expect(room.currentChallenge.constructor.name).toBe('PlatterChallenge');
-	room.initCurrentChallenge('path');
-	expect(room.currentChallenge.constructor.name).toBe('PathChallenge');
-});
