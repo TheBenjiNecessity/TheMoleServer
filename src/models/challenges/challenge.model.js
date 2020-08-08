@@ -1,4 +1,5 @@
 import RaisedHand from '../raisedHand.model';
+import Room from '../room.model';
 
 export default class Challenge {
 	static get CHALLENGE_EVENTS() {
@@ -11,6 +12,16 @@ export default class Challenge {
 	}
 
 	constructor(title, type, description, maxPlayers, minPlayers, questions, state = 'roles') {
+		if (
+			maxPlayers > Room.MAX_PLAYERS ||
+			minPlayers > Room.MAX_PLAYERS ||
+			maxPlayers < 1 ||
+			minPlayers < 1 ||
+			maxPlayers < minPlayers
+		) {
+			throw 'Min/Max players out of acceptable range';
+		}
+
 		this.title = title;
 		this.type = type;
 		this.description = description;

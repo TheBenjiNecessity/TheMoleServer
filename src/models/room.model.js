@@ -2,16 +2,9 @@ import PlatterChallenge from './challenges/platter.challenge';
 import PathChallenge from './challenges/path.challenge';
 import Player from '../models/player.model';
 
-const MAX_PLAYERS = 10;
-const roomstate = {
-	LOBBY: 'lobby',
-	WELCOME: 'game-welcome',
-	EPISODESTART: 'episode-start'
-};
-
 export default class Room {
 	get isFull() {
-		return this.players.length === MAX_PLAYERS;
+		return this.players.length === Room.MAX_PLAYERS;
 	}
 
 	get isInProgress() {
@@ -20,6 +13,10 @@ export default class Room {
 
 	get isStateWelcome() {
 		return this.state === Room.ROOM_STATE.WELCOME;
+	}
+
+	static get MAX_PLAYERS() {
+		return 10;
 	}
 
 	static get ROOM_STATE() {
