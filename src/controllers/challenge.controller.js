@@ -3,6 +3,7 @@ import challengeData from '../models/challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
 import PlatterChallengeControllerCreator from '../controllers/challenge-controllers/platter-challenge.controller';
 import PathChallengeControllerCreator from './challenge-controllers/path-challenge.controller';
+import Challenge from '../models/challenges/challenge.model';
 
 class ChallengeController {
 	constructor() {
@@ -10,14 +11,14 @@ class ChallengeController {
 	}
 
 	raiseHand({ roomcode, player, role }) {
-		let event = 'raise-hand-for-player';
+		let event = Challenge.CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER;
 		let obj = { player, role };
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
 		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'raise-hand', room);
 	}
 
 	agreeToRoles({ roomcode, player }) {
-		let event = 'add-agreed-player';
+		let event = Challenge.CHALLENGE_EVENTS.ADD_AGREED_PLAYER;
 		let obj = { player };
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
 
@@ -29,14 +30,14 @@ class ChallengeController {
 	}
 
 	addPlayerVote({ roomcode, player }) {
-		let event = 'set-voted-player';
+		let event = Challenge.CHALLENGE_EVENTS.SET_VOTED_PLAYER;
 		let obj = { player };
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
 		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'voted-player', room);
 	}
 
 	removePlayerVote({ roomcode, player }) {
-		let event = 'remove-voted-player';
+		let event = Challenge.CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER;
 		let obj = { player };
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
 		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'remove-voted-player', room);

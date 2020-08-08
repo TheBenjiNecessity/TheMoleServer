@@ -1,6 +1,15 @@
 import RaisedHand from '../raisedHand.model';
 
 export default class Challenge {
+	static get CHALLENGE_EVENTS() {
+		return {
+			ADD_AGREED_PLAYER: 'add-agreed-player',
+			RAISE_HAND_FOR_PLAYER: 'raise-hand-for-player',
+			SET_VOTED_PLAYER: 'set-voted-player',
+			REMOVE_VOTED_PLAYER: 'remove-voted-player'
+		};
+	}
+
 	constructor(title, type, description, maxPlayers, minPlayers, questions, state = 'roles') {
 		this.title = title;
 		this.type = type;
@@ -52,16 +61,16 @@ export default class Challenge {
 
 	performEvent(event, { player, role }) {
 		switch (event) {
-			case 'add-agreed-player':
+			case Challenge.CHALLENGE_EVENTS.ADD_AGREED_PLAYER:
 				this.addAgreedPlayer(player);
 				break;
-			case 'raise-hand-for-player':
+			case Challenge.CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER:
 				this.raiseHandForPlayer(player, role);
 				break;
-			case 'set-voted-player':
+			case Challenge.CHALLENGE_EVENTS.SET_VOTED_PLAYER:
 				this.setVotedPlayer(player);
 				break;
-			case 'remove-voted-player':
+			case Challenge.CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER:
 				this.removeVotedPlayer(player);
 				break;
 			default:
