@@ -15,16 +15,24 @@ export default class Room {
 	}
 
 	get isInProgress() {
-		return this.state !== roomstate.LOBBY;
+		return this.state !== Room.ROOM_STATE.LOBBY;
 	}
 
 	get isStateWelcome() {
-		return this.state === roomstate.WELCOME;
+		return this.state === Room.ROOM_STATE.WELCOME;
+	}
+
+	static get ROOM_STATE() {
+		return {
+			LOBBY: 'lobby',
+			WELCOME: 'game-welcome',
+			EPISODESTART: 'episode-start'
+		};
 	}
 
 	constructor(roomcode) {
 		this.roomcode = roomcode;
-		this.state = roomstate.LOBBY;
+		this.state = Room.ROOM_STATE.LOBBY;
 		this.players = [];
 		this.episodes = [];
 		this.currentEpisode = 0; //TODO make sure episodes are zero indexed
@@ -43,11 +51,11 @@ export default class Room {
 
 	moveNext() {
 		switch (this.state) {
-			case roomstate.LOBBY:
-				this.state = roomstate.WELCOME;
+			case Room.ROOM_STATE.LOBBY:
+				this.state = Room.ROOM_STATE.WELCOME;
 				return true;
-			case roomstate.WELCOME:
-				this.state = roomstate.EPISODESTART;
+			case Room.ROOM_STATE.WELCOME:
+				this.state = Room.ROOM_STATE.EPISODESTART;
 				return true;
 			default:
 				return false;
