@@ -67,6 +67,10 @@ export default class Challenge {
 	removeVotedPlayer(player) {
 		if (this.votedPlayers[player.name]) {
 			this.votedPlayers[player.name]--;
+
+			if (this.votedPlayers[player.name] <= 0) {
+				delete this.votedPlayers[player.name];
+			}
 		}
 	}
 
