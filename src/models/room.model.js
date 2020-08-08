@@ -1,5 +1,3 @@
-import PlatterChallenge from './challenges/platter.challenge';
-import PathChallenge from './challenges/path.challenge';
 import Player from '../models/player.model';
 
 export default class Room {
@@ -79,19 +77,6 @@ export default class Room {
 				this.players[i].removeObjects(object, quantity);
 				break;
 			}
-		}
-	}
-
-	initCurrentChallenge(type) {
-		switch (type) {
-			case 'platter':
-				this.currentChallenge = new PlatterChallenge(this.players);
-				break;
-			case 'path':
-				this.currentChallenge = new PathChallenge(this.players);
-				break;
-			default:
-				return null;
 		}
 	}
 
