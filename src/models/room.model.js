@@ -1,4 +1,5 @@
 import Player from '../models/player.model';
+import EpisodeService from '../services/game/episode.service';
 
 export default class Room {
 	get isFull() {
@@ -36,7 +37,11 @@ export default class Room {
 	}
 
 	addPlayer(player) {
-		if (this.isFull) {
+		if (this.isFull || this.isInProgress) {
+			return false;
+		}
+
+		if (this.players.find((p) => p.name === player.name)) {
 			return false;
 		}
 
@@ -86,6 +91,14 @@ export default class Room {
 
 	removePoints(points = 1) {
 		this.points -= points;
+
+		if (this.points < 0) {
+			this.points = 0;
+		}
+	}
+
+	generateEpisodes() {
+		this.episodes = EpisodeService.generateEpisodes(this);
 	}
 
 	static getTestRoomWithTenPlayers() {
