@@ -6,7 +6,7 @@ import PathChallenge from '../../models/challenges/path.challenge';
 test('Checks "chooseChest" method', () => {
 	let roomcode = 'TEST';
 	let room = Room.getTestRoomWithTenPlayers();
-	room.currentChallenge = new PathChallenge(room.players);
+	room.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let pathChallengeController = PathChallengeControllerCreator.getInstance();
@@ -25,7 +25,7 @@ test('Checks "addVoteForChest" method', () => {
 	let roomcode = 'TEST';
 	let room = Room.getTestRoomWithTenPlayers();
 	let player = room.players[0];
-	room.currentChallenge = new PathChallenge(room.players);
+	room.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let pathChallengeController = PathChallengeControllerCreator.getInstance();

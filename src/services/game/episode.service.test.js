@@ -1,4 +1,6 @@
 import EpisodeService from './episode.service';
+import Room from '../../models/room.model';
+import RoomControllerCreator from '../../controllers/room.controller';
 
 test('Checks getNumChallenges', () => {
 	expect(EpisodeService.getNumChallenges(10)).toBe(3);

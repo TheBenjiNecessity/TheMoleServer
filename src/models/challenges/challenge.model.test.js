@@ -1,8 +1,10 @@
 import Challenge from './challenge.model';
 import Player from '../player.model';
+import Room from '../room.model';
 
 test('Checks "canSupportNumPlayers" method', () => {
-	let challenge = new Challenge('Path', 'path', '', 10, 5, [], 'game');
+	let room = Room.getTestRoomWithTenPlayers();
+	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 
 	expect(challenge.canSupportNumPlayers(1)).toBe(false);
 	expect(challenge.canSupportNumPlayers(2)).toBe(false);
@@ -17,7 +19,8 @@ test('Checks "canSupportNumPlayers" method', () => {
 });
 
 test('Checks "addAgreedPlayer" method', () => {
-	let challenge = new Challenge('Path', 'path', '', 10, 5, [], 'game');
+	let room = Room.getTestRoomWithTenPlayers();
+	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 	let player = new Player('test');
 	challenge.addAgreedPlayer(player);
 
@@ -31,7 +34,8 @@ test('Checks "addAgreedPlayer" method', () => {
 });
 
 test('Checks "raiseHandForPlayer" method', () => {
-	let challenge = new Challenge('Path', 'path', '', 10, 5, [], 'game');
+	let room = Room.getTestRoomWithTenPlayers();
+	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 	challenge.raiseHandForPlayer(new Player('test'), 'test');
 
 	expect(challenge.raisedHands.length).toBe(1);
@@ -58,7 +62,8 @@ test('Checks "raiseHandForPlayer" method', () => {
 });
 
 test('Checks "setVotedPlayer" method', () => {
-	let challenge = new Challenge('Path', 'path', '', 10, 5, [], 'game');
+	let room = Room.getTestRoomWithTenPlayers();
+	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 
 	challenge.setVotedPlayer(new Player('test'));
 	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
@@ -74,7 +79,8 @@ test('Checks "setVotedPlayer" method', () => {
 });
 
 test('Checks "removeVotedPlayer" method', () => {
-	let challenge = new Challenge('Path', 'path', '', 10, 5, [], 'game');
+	let room = Room.getTestRoomWithTenPlayers();
+	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 
 	challenge.setVotedPlayer(new Player('test'));
 	challenge.setVotedPlayer(new Player('test'));
@@ -92,7 +98,8 @@ test('Checks "removeVotedPlayer" method', () => {
 });
 
 test('Checks "performEvent addAgreedPlayer" method', () => {
-	let challenge = new Challenge('Path', 'path', '', 10, 5, [], 'game');
+	let room = Room.getTestRoomWithTenPlayers();
+	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 	let player = new Player('test');
 	challenge.performEvent(Challenge.CHALLENGE_EVENTS.ADD_AGREED_PLAYER, { player, role: 'test' });
 
@@ -106,7 +113,8 @@ test('Checks "performEvent addAgreedPlayer" method', () => {
 });
 
 test('Checks "performEvent raiseHandForPlayer" method', () => {
-	let challenge = new Challenge('Path', 'path', '', 10, 5, [], 'game');
+	let room = Room.getTestRoomWithTenPlayers();
+	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 	let player = new Player('test');
 	let player2 = new Player('test2');
 	challenge.performEvent(Challenge.CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, { player, role: 'test' });
@@ -135,7 +143,8 @@ test('Checks "performEvent raiseHandForPlayer" method', () => {
 });
 
 test('Checks "performEvent setVotedPlayer" method', () => {
-	let challenge = new Challenge('Path', 'path', '', 10, 5, [], 'game');
+	let room = Room.getTestRoomWithTenPlayers();
+	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 	let player = new Player('test');
 	let player1 = new Player('test1');
 
@@ -153,7 +162,8 @@ test('Checks "performEvent setVotedPlayer" method', () => {
 });
 
 test('Checks "performEvent removeVotedPlayer" method', () => {
-	let challenge = new Challenge('Path', 'path', '', 10, 5, [], 'game');
+	let room = Room.getTestRoomWithTenPlayers();
+	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 	let player = new Player('test');
 	let player1 = new Player('test1');
 

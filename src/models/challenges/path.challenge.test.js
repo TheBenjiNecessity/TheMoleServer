@@ -1,10 +1,11 @@
-import PathChallenge from './path.challenge.model';
+import PathChallenge from './path.challenge';
+import Room from '../room.model';
 
 test('Checks getters/setters', () => {
 	let room = Room.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room);
 
-	expect(pathChallenge.contentsOfChosenChest).toBe(null);
+	expect(typeof pathChallenge.contentsOfChosenChest).toBe('undefined');
 	expect(pathChallenge.walkerIsDone).toBe(false);
 	expect(pathChallenge.majorityVote).toBe(null);
 
@@ -30,7 +31,7 @@ test('Checks getters/setters', () => {
 	pathChallenge.votes.left.push(room.players[2]);
 	pathChallenge.votes.left.push(room.players[3]);
 
-	athChallenge.votes.right = [];
+	pathChallenge.votes.right = [];
 	pathChallenge.votes.right.push(room.players[4]);
 	pathChallenge.votes.right.push(room.players[5]);
 	pathChallenge.votes.right.push(room.players[6]);

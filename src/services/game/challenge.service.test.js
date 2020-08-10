@@ -3,21 +3,21 @@ import challengeData from '../../models/challenges/challenge.data';
 
 test('Checks getNumPlayersRestrictedChallenges method', () => {
 	let challenges6 = ChallengeService.getNumPlayersRestrictedChallenges(6);
-	expect(typeof challenges6).toBe('array');
+	expect(Array.isArray(challenges6)).toBe(true);
 
 	for (let challenge of challenges6) {
 		expect(ChallengeService.canSupportNumPlayers(challenge, 6)).toBe(true);
 	}
 
 	let challenges5 = ChallengeService.getNumPlayersRestrictedChallenges(5);
-	expect(typeof challenges5).toBe('array');
+	expect(Array.isArray(challenges5)).toBe(true);
 
 	for (let challenge of challenges5) {
 		expect(ChallengeService.canSupportNumPlayers(challenge, 5)).toBe(true);
 	}
 
 	let challenges1 = ChallengeService.getNumPlayersRestrictedChallenges(1);
-	expect(typeof challenges1).toBe('array');
+	expect(Array.isArray(challenges1)).toBe(true);
 	expect(challenges1.length).toBe(0);
 });
 
