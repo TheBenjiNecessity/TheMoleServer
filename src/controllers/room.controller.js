@@ -1,46 +1,45 @@
 import Room from '../models/room.model';
-import EpisodeService from '../services/game/episode.service';
 import ChallengeControllerCreator from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 
-const MAX_LETTERS = 4;
-const CHARACTERS = [
-	'A',
-	'B',
-	'C',
-	'D',
-	'E',
-	'F',
-	'G',
-	'H',
-	'I',
-	'J',
-	'K',
-	'L',
-	'M',
-	'N',
-	'O',
-	'P',
-	'Q',
-	'R',
-	'S',
-	'T',
-	'U',
-	'V',
-	'W',
-	'X',
-	'Y',
-	'Z'
-];
-const BAD_WORDS = [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT', 'JIZZ', 'TITS', 'CUMS' ];
+export class RoomController {
+	static get MAX_LETTERS() {
+		return 4;
+	}
 
-class RoomController {
+	static get CHARACTERS() {
+		return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	}
+
+	static get BAD_WORDS() {
+		return [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT', 'JIZZ', 'TITS', 'CUMS' ];
+	}
+
+	static generateRandomRoomcode() {
+		let code = '';
+
+		for (let i = 0; i < RoomController.MAX_LETTERS; i++) {
+			let number = Math.floor(Math.random() * RoomController.CHARACTERS.length);
+			code += RoomController.CHARACTERS.charAt(number);
+		}
+
+		return code;
+	}
+
+	static roomCodeIsABadWord(code) {
+		return RoomController.BAD_WORDS.indexOf(code) >= 0;
+	}
+
 	constructor() {
 		this.rooms = {};
 	}
 
+	roomCodeAlreadyExists(code) {
+		return typeof this.rooms[code] !== 'undefined';
+	}
+
 	addRoom() {
-		var roomcode = this.getRandomRoomCode();
+		var roomcode = this.generateRandomRoomCodeNotUsed();
 		this.rooms[roomcode] = new Room(roomcode);
 		return this.rooms[roomcode];
 	}
@@ -64,9 +63,11 @@ class RoomController {
 	}
 
 	giveObjectsToPlayer(roomcode, playerName, obj, quantity) {
-		// various object could be:
-		// exemption, joker, black exemption
 		this.rooms[roomcode].giveObjectsToPlayer(playerName, obj, quantity);
+	}
+
+	removeObjectsFromPlayer(roomcode, playerName, obj, quantity) {
+		this.rooms[roomcode].removeObjectsFromPlayer(playerName, obj, quantity);
 	}
 
 	addPoints(roomcode, points = 1) {
@@ -77,23 +78,11 @@ class RoomController {
 		this.rooms[roomcode].removePoints(points);
 	}
 
-	getRandomRoomCode() {
-		let found = false;
+	generateRandomRoomCodeNotUsed() {
+		let code = null;
 
-		while (!found) {
-			let code = '';
-
-			for (let i = 0; i < MAX_LETTERS; i++) {
-				let number = Math.floor(Math.random() * CHARACTERS.length);
-				code += CHARACTERS[number];
-			}
-
-			found = typeof this.rooms[code] === 'undefined';
-
-			// Avoid code being a bad word
-			if (BAD_WORDS.indexOf(code) >= 0) {
-				found = false;
-			}
+		while (!code || this.roomCodeAlreadyExists(code) || RoomController.roomCodeIsABadWord(code)) {
+			code = RoomController.generateRandomRoomcode();
 		}
 
 		return code;
@@ -104,8 +93,7 @@ class RoomController {
 			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
 
 			if (this.rooms[roomcode].isStateWelcome) {
-				let numPlayers = this.rooms[roomcode].players.length;
-				this.rooms[roomcode].episodes = EpisodeService.getEpisodes(numPlayers);
+				this.rooms[roomcode].generateEpisodes();
 				WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'game-loaded', this.rooms[roomcode]);
 			}
 		}

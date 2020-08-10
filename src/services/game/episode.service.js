@@ -4,9 +4,10 @@ import ChallengeService from './challenge.service';
 export default class EpisodeService {
 	constructor() {}
 
-	static getEpisodes(numPlayers) {
+	static generateEpisodes(room) {
 		let episodes = [];
 		let challenges = [];
+		let numPlayers = room.players.length;
 		for (let i = numPlayers; i >= 2; i--) {
 			let episode = this.getEpisode(numPlayers, i, challenges);
 			challenges = challenges.concat(episode.challenges);
@@ -17,19 +18,13 @@ export default class EpisodeService {
 	}
 
 	static getEpisode(numAllPlayers, numPlayers, currentChallenges) {
-		if (numPlayers === 2) {
-			return new Episode(
-				numPlayers,
-				ChallengeService.getRandomChallengeForPlayers(numPlayers, currentChallenges)
-			);
-		} else {
-			let challenges = [];
-			let numChallengesPerEpisode = this.getNumChallenges(numAllPlayers);
-			for (let i = 0; i < numChallengesPerEpisode; i++) {
-				challenges.push(ChallengeService.getRandomChallengeForPlayers(numPlayers, currentChallenges));
-			}
-			return new Episode(numPlayers, challenges);
+		let challenges = [];
+		for (let i = 0; i < EpisodeService.getNumChallenges(numAllPlayers); i++) {
+			let challenge = ChallengeService.getRandomChallengeForPlayers(numPlayers, currentChallenges);
+			challenges.push(challenge);
+			currentChallenges = currentChallenges.concat(challenge);
 		}
+		return new Episode(numPlayers, challenges);
 	}
 
 	static getNumChallenges(numPlayers) {
