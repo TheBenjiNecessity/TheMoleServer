@@ -34,12 +34,12 @@ export default class PathChallenge extends Challenge {
 		}
 	}
 
-	constructor(players) {
+	constructor(room) {
 		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData[type];
-		super(title, type, description, maxPlayers, minPlayers, questions, initialState);
+		super(room, title, type, description, maxPlayers, minPlayers, questions, initialState);
 
-		this.players = players;
-		this.walkers = players;
+		this.players = room.players;
+		this.walkers = this.players;
 
 		this.setNewWalker();
 	}
@@ -79,7 +79,6 @@ export default class PathChallenge extends Challenge {
 
 	setNewWalker() {
 		this.votes = { left: [], right: [] };
-		this.rightVotes = [];
 		this.chests = [];
 		this.currentWalker = ArrayUtilsService.getRandomElement(this.walkers);
 		this.walkers = ArrayUtilsService.removeElementByValue(this.walkers, this.currentWalker);

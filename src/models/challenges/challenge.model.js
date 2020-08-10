@@ -11,7 +11,7 @@ export default class Challenge {
 		};
 	}
 
-	constructor(title, type, description, maxPlayers, minPlayers, questions, state = 'roles') {
+	constructor(room, title, type, description, maxPlayers, minPlayers, questions, state = 'roles') {
 		if (
 			maxPlayers > Room.MAX_PLAYERS ||
 			minPlayers > Room.MAX_PLAYERS ||
@@ -22,6 +22,7 @@ export default class Challenge {
 			throw 'Min/Max players out of acceptable range';
 		}
 
+		this.room = room;
 		this.title = title;
 		this.type = type;
 		this.description = description;
