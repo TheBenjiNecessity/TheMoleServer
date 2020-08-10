@@ -13,7 +13,7 @@ export default class ChallengeService {
 		let numRestrictedChallenges = [];
 		for (let challengeKey of Object.keys(challengeData)) {
 			let challenge = challengeData[challengeKey];
-			if (canSupportNumPlayers(challenge, numPlayers)) {
+			if (ChallengeService.canSupportNumPlayers(challenge, numPlayers)) {
 				numRestrictedChallenges.push(challenge);
 			}
 		}
@@ -26,7 +26,7 @@ export default class ChallengeService {
 	 * @param {[object]} challengesToExclude the challenges already loaded into the game
 	 */
 	static getRandomChallengeForPlayers(numPlayers, challengesToExclude) {
-		let numRestrictedChallenges = getNumPlayersRestrictedChallenges(numPlayers);
+		let numRestrictedChallenges = ChallengeService.getNumPlayersRestrictedChallenges(numPlayers);
 
 		if (numRestrictedChallenges.length > 0) {
 			return ArrayUtilsService.getRandomElementNotInOtherArray(numRestrictedChallenges, challengesToExclude);
