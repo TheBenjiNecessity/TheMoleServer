@@ -2,30 +2,9 @@ import RoomControllerCreator, { RoomController } from './room.controller';
 import PathChallenge from '../models/challenges/path.challenge';
 import Room, { ROOM_STATE } from '../models/room.model';
 import Player from '../models/player.model';
+import RoomService from '../services/room/roomcode.service';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
-
-test('Checks static getters', () => {
-	expect(RoomController.MAX_LETTERS).toBe(4);
-	expect(RoomController.CHARACTERS).toBe('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-	expect(JSON.stringify(RoomController.BAD_WORDS)).toBe(
-		JSON.stringify([ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT', 'JIZZ', 'TITS', 'CUMS' ])
-	);
-});
-
-test('Checks "generateRandomRoomcode" method', () => {
-	let roomcode = RoomController.generateRandomRoomcode();
-
-	expect(roomcode.length).toBe(RoomController.MAX_LETTERS);
-	expect(ROOMCODE_REGEX.test(roomcode)).toBe(true);
-});
-
-test('Checks "roomCodeIsABadWord" method', () => {
-	expect(RoomController.roomCodeIsABadWord('TEST')).toBe(false);
-	for (let word of RoomController.BAD_WORDS) {
-		expect(RoomController.roomCodeIsABadWord(word)).toBe(true);
-	}
-});
 
 test('Checks "roomCodeAlreadyExists" method', () => {
 	let room = Room.getTestRoomWithTenPlayers();
@@ -45,7 +24,7 @@ test('Checks "generateRandomRoomCodeNotUsed" method', () => {
 	let roomcode = RoomControllerCreator.getInstance().generateRandomRoomCodeNotUsed();
 
 	expect(ROOMCODE_REGEX.test(roomcode)).toBe(true);
-	expect(RoomController.roomCodeIsABadWord(roomcode)).toBe(false);
+	expect(RoomService.roomCodeIsABadWord(roomcode)).toBe(false);
 	expect(roomcode !== 'TEST').toBe(true);
 	expect(typeof RoomControllerCreator.getInstance().getRoom(roomcode)).toBe('undefined');
 });

@@ -1,23 +1,9 @@
 import Room from '../models/room.model';
 import ChallengeControllerCreator from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
+import RoomService from '../services/room/roomcode.service';
 
 export class RoomController {
-	static generateRandomRoomcode() {
-		let code = '';
-
-		for (let i = 0; i < RoomController.MAX_LETTERS; i++) {
-			let number = Math.floor(Math.random() * RoomController.CHARACTERS.length);
-			code += RoomController.CHARACTERS.charAt(number);
-		}
-
-		return code;
-	}
-
-	static roomCodeIsABadWord(code) {
-		return RoomController.BAD_WORDS.indexOf(code) >= 0;
-	}
-
 	constructor() {
 		this.rooms = {};
 	}
@@ -69,8 +55,8 @@ export class RoomController {
 	generateRandomRoomCodeNotUsed() {
 		let code = null;
 
-		while (!code || this.roomCodeAlreadyExists(code) || RoomController.roomCodeIsABadWord(code)) {
-			code = RoomController.generateRandomRoomcode();
+		while (!code || this.roomCodeAlreadyExists(code) || RoomService.roomCodeIsABadWord(code)) {
+			code = RoomService.generateRandomRoomcode();
 		}
 
 		return code;
