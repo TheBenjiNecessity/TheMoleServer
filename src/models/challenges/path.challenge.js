@@ -24,6 +24,10 @@ export default class PathChallenge extends Challenge {
 	}
 
 	get majorityVote() {
+		if (this.votes.left.length === this.votes.right.length) {
+			return null;
+		}
+
 		let majorityCount = (this.players.length - 1) / 2;
 		if (this.votes.left.length > majorityCount) {
 			return 'left';
