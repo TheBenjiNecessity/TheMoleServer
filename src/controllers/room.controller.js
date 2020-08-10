@@ -3,7 +3,7 @@ import ChallengeControllerCreator from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 import RoomService from '../services/room/roomcode.service';
 
-export class RoomController {
+class RoomController {
 	constructor() {
 		this.rooms = {};
 	}
