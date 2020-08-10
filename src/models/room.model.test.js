@@ -70,6 +70,14 @@ test('Tests adding player to full room', () => {
 	expect(room.players.length).toBe(10);
 });
 
+test('Tests adding player to room in progress', () => {
+	let room = Room.getTestRoomWithFivePlayers();
+	let newTestPlayer = new Player('test11');
+	room.state = 'game-welcome';
+	expect(room.addPlayer(newTestPlayer)).toBe(false);
+	expect(room.players.length).toBe(5);
+});
+
 test('Tests "hasPlayer" method', () => {
 	let room = Room.getTestRoomWithNoPlayers();
 	let newTestPlayer = new Player('test11');
