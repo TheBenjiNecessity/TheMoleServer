@@ -3,18 +3,6 @@ import ChallengeControllerCreator from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 
 export class RoomController {
-	static get MAX_LETTERS() {
-		return 4;
-	}
-
-	static get CHARACTERS() {
-		return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	}
-
-	static get BAD_WORDS() {
-		return [ 'SHIT', 'FUCK', 'COCK', 'CUNT', 'SLUT', 'TWAT', 'JIZZ', 'TITS', 'CUMS' ];
-	}
-
 	static generateRandomRoomcode() {
 		let code = '';
 
