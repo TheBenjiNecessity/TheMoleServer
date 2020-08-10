@@ -1,4 +1,4 @@
-import Challenge from './challenge.model';
+import Challenge, { CHALLENGE_EVENTS } from './challenge.model';
 import Player from '../player.model';
 import Room from '../room.model';
 
@@ -101,12 +101,12 @@ test('Checks "performEvent addAgreedPlayer" method', () => {
 	let room = Room.getTestRoomWithTenPlayers();
 	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 	let player = new Player('test');
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.ADD_AGREED_PLAYER, { player, role: 'test' });
+	challenge.performEvent(CHALLENGE_EVENTS.ADD_AGREED_PLAYER, { player, role: 'test' });
 
 	expect(challenge.agreedPlayers.length).toBe(1);
 	expect(challenge.agreedPlayers[0].name).toBe('test');
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.ADD_AGREED_PLAYER, { player, role: 'test' });
+	challenge.performEvent(CHALLENGE_EVENTS.ADD_AGREED_PLAYER, { player, role: 'test' });
 
 	expect(challenge.agreedPlayers.length).toBe(1);
 	expect(challenge.agreedPlayers[0].name).toBe('test');
@@ -117,25 +117,25 @@ test('Checks "performEvent raiseHandForPlayer" method', () => {
 	let challenge = new Challenge(room, 'Path', 'path', '', 10, 5, [], 'game');
 	let player = new Player('test');
 	let player2 = new Player('test2');
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, { player, role: 'test' });
+	challenge.performEvent(CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, { player, role: 'test' });
 
 	expect(challenge.raisedHands.length).toBe(1);
 	expect(challenge.raisedHands[0].role).toBe('test');
 	expect(challenge.raisedHands[0].player.name).toBe('test');
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, { player, role: 'test' });
+	challenge.performEvent(CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, { player, role: 'test' });
 
 	expect(challenge.raisedHands.length).toBe(1);
 	expect(challenge.raisedHands[0].role).toBe('test');
 	expect(challenge.raisedHands[0].player.name).toBe('test');
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, { player: player2, role: 'test2' });
+	challenge.performEvent(CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, { player: player2, role: 'test2' });
 
 	expect(challenge.raisedHands.length).toBe(2);
 	expect(challenge.raisedHands[1].role).toBe('test2');
 	expect(challenge.raisedHands[1].player.name).toBe('test2');
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, { player, role: 'test3' });
+	challenge.performEvent(CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, { player, role: 'test3' });
 
 	expect(challenge.raisedHands.length).toBe(2);
 	expect(challenge.raisedHands[0].role).toBe('test3');
@@ -148,15 +148,15 @@ test('Checks "performEvent setVotedPlayer" method', () => {
 	let player = new Player('test');
 	let player1 = new Player('test1');
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player, role: 'test' });
+	challenge.performEvent(CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player, role: 'test' });
 	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
 	expect(challenge.votedPlayers['test']).toBe(1);
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player, role: 'test' });
+	challenge.performEvent(CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player, role: 'test' });
 	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
 	expect(challenge.votedPlayers['test']).toBe(2);
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player: player1, role: 'test1' });
+	challenge.performEvent(CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player: player1, role: 'test1' });
 	expect(Object.keys(challenge.votedPlayers).length).toBe(2);
 	expect(challenge.votedPlayers['test1']).toBe(1);
 });
@@ -167,16 +167,16 @@ test('Checks "performEvent removeVotedPlayer" method', () => {
 	let player = new Player('test');
 	let player1 = new Player('test1');
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player, role: 'test' });
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player, role: 'test' });
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player: player1, role: 'test1' });
+	challenge.performEvent(CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player, role: 'test' });
+	challenge.performEvent(CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player, role: 'test' });
+	challenge.performEvent(CHALLENGE_EVENTS.SET_VOTED_PLAYER, { player: player1, role: 'test1' });
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER, { player, role: 'test' });
+	challenge.performEvent(CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER, { player, role: 'test' });
 
 	expect(Object.keys(challenge.votedPlayers).length).toBe(2);
 	expect(challenge.votedPlayers['test']).toBe(1);
 
-	challenge.performEvent(Challenge.CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER, { player: player1, role: 'test1' });
+	challenge.performEvent(CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER, { player: player1, role: 'test1' });
 
 	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
 	expect(typeof challenge.votedPlayers['test1']).toBe('undefined');

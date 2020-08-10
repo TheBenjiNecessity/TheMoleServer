@@ -1,16 +1,14 @@
 import RaisedHand from '../raisedHand.model';
 import Room from '../room.model';
 
-export default class Challenge {
-	static get CHALLENGE_EVENTS() {
-		return {
-			ADD_AGREED_PLAYER: 'add-agreed-player',
-			RAISE_HAND_FOR_PLAYER: 'raise-hand-for-player',
-			SET_VOTED_PLAYER: 'set-voted-player',
-			REMOVE_VOTED_PLAYER: 'remove-voted-player'
-		};
-	}
+export const CHALLENGE_EVENTS = {
+	ADD_AGREED_PLAYER: 'add-agreed-player',
+	RAISE_HAND_FOR_PLAYER: 'raise-hand-for-player',
+	SET_VOTED_PLAYER: 'set-voted-player',
+	REMOVE_VOTED_PLAYER: 'remove-voted-player'
+};
 
+export default class Challenge {
 	constructor(room, title, type, description, maxPlayers, minPlayers, questions, state = 'roles') {
 		if (
 			maxPlayers > Room.MAX_PLAYERS ||
@@ -77,16 +75,16 @@ export default class Challenge {
 
 	performEvent(event, { player, role }) {
 		switch (event) {
-			case Challenge.CHALLENGE_EVENTS.ADD_AGREED_PLAYER:
+			case CHALLENGE_EVENTS.ADD_AGREED_PLAYER:
 				this.addAgreedPlayer(player);
 				break;
-			case Challenge.CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER:
+			case CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER:
 				this.raiseHandForPlayer(player, role);
 				break;
-			case Challenge.CHALLENGE_EVENTS.SET_VOTED_PLAYER:
+			case CHALLENGE_EVENTS.SET_VOTED_PLAYER:
 				this.setVotedPlayer(player);
 				break;
-			case Challenge.CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER:
+			case CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER:
 				this.removeVotedPlayer(player);
 				break;
 			default:
