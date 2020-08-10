@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "babel src -d lib && node ./lib/server.js",
-		"test": "babel src -d lib && jest",
+		"test": "jest",
 		"customTests": "babel src -d lib && node ./lib/tests.js",
 		"build": "babel src -d lib"
 	},
