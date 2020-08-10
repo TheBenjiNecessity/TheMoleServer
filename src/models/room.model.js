@@ -1,34 +1,30 @@
 import Player from '../models/player.model';
 import EpisodeService from '../services/game/episode.service';
 
+export const ROOM_STATE = {
+	LOBBY: 'lobby',
+	WELCOME: 'game-welcome',
+	EPISODESTART: 'episode-start'
+};
+
+export const ROOM_MAX_PLAYERS = 10;
+
 export default class Room {
 	get isFull() {
-		return this.players.length === Room.MAX_PLAYERS;
+		return this.players.length === ROOM_MAX_PLAYERS;
 	}
 
 	get isInProgress() {
-		return this.state !== Room.ROOM_STATE.LOBBY;
+		return this.state !== ROOM_STATE.LOBBY;
 	}
 
 	get isStateWelcome() {
-		return this.state === Room.ROOM_STATE.WELCOME;
-	}
-
-	static get MAX_PLAYERS() {
-		return 10;
-	}
-
-	static get ROOM_STATE() {
-		return {
-			LOBBY: 'lobby',
-			WELCOME: 'game-welcome',
-			EPISODESTART: 'episode-start'
-		};
+		return this.state === ROOM_STATE.WELCOME;
 	}
 
 	constructor(roomcode) {
 		this.roomcode = roomcode;
-		this.state = Room.ROOM_STATE.LOBBY;
+		this.state = ROOM_STATE.LOBBY;
 		this.players = [];
 		this.episodes = [];
 		this.currentEpisode = 0; //TODO make sure episodes are zero indexed
@@ -51,11 +47,11 @@ export default class Room {
 
 	moveNext() {
 		switch (this.state) {
-			case Room.ROOM_STATE.LOBBY:
-				this.state = Room.ROOM_STATE.WELCOME;
+			case ROOM_STATE.LOBBY:
+				this.state = ROOM_STATE.WELCOME;
 				return true;
-			case Room.ROOM_STATE.WELCOME:
-				this.state = Room.ROOM_STATE.EPISODESTART;
+			case ROOM_STATE.WELCOME:
+				this.state = ROOM_STATE.EPISODESTART;
 				return true;
 			default:
 				return false;

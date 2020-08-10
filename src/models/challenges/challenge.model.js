@@ -1,5 +1,5 @@
 import RaisedHand from '../raisedHand.model';
-import Room from '../room.model';
+import Room, { ROOM_MAX_PLAYERS } from '../room.model';
 
 export const CHALLENGE_EVENTS = {
 	ADD_AGREED_PLAYER: 'add-agreed-player',
@@ -11,8 +11,8 @@ export const CHALLENGE_EVENTS = {
 export default class Challenge {
 	constructor(room, title, type, description, maxPlayers, minPlayers, questions, state = 'roles') {
 		if (
-			maxPlayers > Room.MAX_PLAYERS ||
-			minPlayers > Room.MAX_PLAYERS ||
+			maxPlayers > ROOM_MAX_PLAYERS ||
+			minPlayers > ROOM_MAX_PLAYERS ||
 			maxPlayers < 1 ||
 			minPlayers < 1 ||
 			maxPlayers < minPlayers

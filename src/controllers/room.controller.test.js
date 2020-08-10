@@ -1,6 +1,6 @@
 import RoomControllerCreator, { RoomController } from './room.controller';
 import PathChallenge from '../models/challenges/path.challenge';
-import Room from '../models/room.model';
+import Room, { ROOM_STATE } from '../models/room.model';
 import Player from '../models/player.model';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
@@ -170,9 +170,9 @@ test('Checks "moveNext" method', () => {
 	let { roomcode } = room;
 	RoomControllerCreator.getInstance().setRoom(room);
 
-	expect(RoomControllerCreator.getInstance().getRoom(roomcode).state).toBe(Room.ROOM_STATE.LOBBY);
+	expect(RoomControllerCreator.getInstance().getRoom(roomcode).state).toBe(ROOM_STATE.LOBBY);
 
 	RoomControllerCreator.getInstance().moveNext(roomcode);
 
-	expect(RoomControllerCreator.getInstance().getRoom(roomcode).state).toBe(Room.ROOM_STATE.WELCOME);
+	expect(RoomControllerCreator.getInstance().getRoom(roomcode).state).toBe(ROOM_STATE.WELCOME);
 });
