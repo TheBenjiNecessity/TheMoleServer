@@ -1,5 +1,5 @@
 import RaisedHand from '../raisedHand.model';
-import Room, { ROOM_MAX_PLAYERS } from '../room.model';
+import { ROOM_MAX_PLAYERS } from '../room.model';
 
 export const CHALLENGE_EVENTS = {
 	ADD_AGREED_PLAYER: 'add-agreed-player',
