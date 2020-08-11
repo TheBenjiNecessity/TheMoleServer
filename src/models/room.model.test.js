@@ -1,5 +1,6 @@
 import Room from './room.model';
 import Player from '../models/player.model';
+import RoomService from '../services/room/roomcode.service';
 
 test('Tests room init', () => {
 	let room = new Room('TEST');
@@ -11,14 +12,14 @@ test('Tests room init', () => {
 });
 
 test('Tests empty room', () => {
-	let room = Room.getTestRoomWithNoPlayers();
+	let room = RoomService.getTestRoomWithNoPlayers();
 	expect(room.players.length).toBe(0);
 	expect(room.isFull).toBe(false);
 	expect(room.isInProgress).toBe(false);
 });
 
 test('Tests partially full room', () => {
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 	expect(room.players.length).toBe(5);
 	expect(room.players[0].name).toBe('test1');
 	expect(room.players[1].name).toBe('test2');
@@ -30,7 +31,7 @@ test('Tests partially full room', () => {
 });
 
 test('Tests full room', () => {
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	expect(room.players.length).toBe(10);
 	expect(room.players[0].name).toBe('test1');
 	expect(room.players[1].name).toBe('test2');
@@ -47,7 +48,7 @@ test('Tests full room', () => {
 });
 
 test('Tests adding player to empty room', () => {
-	let room = Room.getTestRoomWithNoPlayers();
+	let room = RoomService.getTestRoomWithNoPlayers();
 	let newTestPlayer = new Player('test11');
 
 	expect(room.addPlayer(newTestPlayer)).toBe(true);
@@ -56,7 +57,7 @@ test('Tests adding player to empty room', () => {
 });
 
 test('Tests adding player to partially full room', () => {
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 	let newTestPlayer = new Player('test11');
 	expect(room.addPlayer(newTestPlayer)).toBe(true);
 	expect(room.players.length).toBe(6);
@@ -64,14 +65,14 @@ test('Tests adding player to partially full room', () => {
 });
 
 test('Tests adding player to full room', () => {
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	let newTestPlayer = new Player('test11');
 	expect(room.addPlayer(newTestPlayer)).toBe(false);
 	expect(room.players.length).toBe(10);
 });
 
 test('Tests adding player to room in progress', () => {
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 	let newTestPlayer = new Player('test11');
 	room.state = 'game-welcome';
 	expect(room.addPlayer(newTestPlayer)).toBe(false);
@@ -79,19 +80,19 @@ test('Tests adding player to room in progress', () => {
 });
 
 test('Tests "hasPlayer" method', () => {
-	let room = Room.getTestRoomWithNoPlayers();
+	let room = RoomService.getTestRoomWithNoPlayers();
 	let newTestPlayer = new Player('test11');
 
-	expect(room.hasPlayer(newTestPlayer)).toBe(false);
+	expect(room.hasPlayer(newTestPlayer.name)).toBe(false);
 
 	room.addPlayer(newTestPlayer);
 
-	expect(room.hasPlayer(newTestPlayer)).toBe(true);
+	expect(room.hasPlayer(newTestPlayer.name)).toBe(true);
 });
 
 test('Tests giveObjectsToPlayer (exemption)', () => {
 	let objectName = 'exemption';
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 
 	room.giveObjectsToPlayer(room.players[0].name, objectName);
 	room.giveObjectsToPlayer(room.players[1].name, objectName, 1);
@@ -104,7 +105,7 @@ test('Tests giveObjectsToPlayer (exemption)', () => {
 
 test('Tests giveObjectsToPlayer (joker)', () => {
 	let objectName = 'joker';
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 
 	room.giveObjectsToPlayer(room.players[0].name, objectName);
 	room.giveObjectsToPlayer(room.players[1].name, objectName, 1);
@@ -117,7 +118,7 @@ test('Tests giveObjectsToPlayer (joker)', () => {
 
 test('Tests giveObjectsToPlayer (black exemption)', () => {
 	let objectName = 'black-exemption';
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 
 	room.giveObjectsToPlayer(room.players[0].name, objectName);
 	room.giveObjectsToPlayer(room.players[1].name, objectName, 1);
@@ -130,7 +131,7 @@ test('Tests giveObjectsToPlayer (black exemption)', () => {
 
 test('Tests removeObjectsFromPlayer (exemption)', () => {
 	let objectName = 'exemption';
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 
 	room.giveObjectsToPlayer(room.players[0].name, objectName);
 	room.giveObjectsToPlayer(room.players[1].name, objectName, 1);
@@ -147,7 +148,7 @@ test('Tests removeObjectsFromPlayer (exemption)', () => {
 
 test('Tests removeObjectsFromPlayer (joker)', () => {
 	let objectName = 'joker';
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 
 	room.giveObjectsToPlayer(room.players[0].name, objectName);
 	room.giveObjectsToPlayer(room.players[1].name, objectName, 1);
@@ -164,7 +165,7 @@ test('Tests removeObjectsFromPlayer (joker)', () => {
 
 test('Tests removeObjectsFromPlayer (black-exemption)', () => {
 	let objectName = 'black-exemption';
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 
 	room.giveObjectsToPlayer(room.players[0].name, objectName);
 	room.giveObjectsToPlayer(room.players[1].name, objectName, 1);
@@ -180,7 +181,7 @@ test('Tests removeObjectsFromPlayer (black-exemption)', () => {
 });
 
 test('Tests moveNext', () => {
-	let room = Room.getTestRoomWithFivePlayers();
+	let room = RoomService.getTestRoomWithFivePlayers();
 	expect(room.state).toBe('lobby');
 	expect(room.moveNext()).toBe(true);
 	expect(room.state).toBe('game-welcome');

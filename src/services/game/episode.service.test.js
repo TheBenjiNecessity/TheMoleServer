@@ -1,6 +1,6 @@
 import EpisodeService from './episode.service';
-import Room from '../../models/room.model';
 import RoomControllerCreator from '../../controllers/room.controller';
+import RoomService from '../room/roomcode.service';
 
 test('Checks getNumChallenges', () => {
 	expect(EpisodeService.getNumChallenges(10)).toBe(3);
@@ -21,11 +21,12 @@ test('Checks getEpisode method', () => {
 	let numAllPlayers = 10;
 	let numPlayers = 10;
 	let currentChallenges = [];
-	let episode = EpisodeService.getEpisode(numAllPlayers, numPlayers, currentChallenges);
+	let room = RoomService.getTestRoomWithTenPlayers();
+	let episode = EpisodeService.getEpisode(room, numAllPlayers, numPlayers, currentChallenges);
 });
 
 test('Checks generateEpisodes method', () => {
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	RoomControllerCreator.getInstance().setRoom(room);
 	let episodes = EpisodeService.generateEpisodes(room);
 });

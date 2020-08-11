@@ -1,8 +1,8 @@
 import PathChallenge from './path.challenge';
-import Room from '../room.model';
+import RoomService from '../../services/room/roomcode.service';
 
 test('Checks getters/setters', () => {
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room);
 
 	expect(typeof pathChallenge.contentsOfChosenChest).toBe('undefined');
@@ -117,7 +117,7 @@ test('Checks getters/setters', () => {
 });
 
 test('Checks walker choices', () => {
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room);
 
 	expect(pathChallenge.currentChoice).toBe(null);
@@ -132,7 +132,7 @@ test('Checks walker choices', () => {
 });
 
 test('Checks walker choices', () => {
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room);
 
 	expect(pathChallenge.currentChestIndex).toBe(0);
@@ -149,7 +149,7 @@ test('Checks walker choices', () => {
 });
 
 test('Checks addLeftVote/addRightVote', () => {
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room);
 
 	expect(pathChallenge.votes.left.length).toBe(0);
@@ -172,7 +172,7 @@ test('Checks addLeftVote/addRightVote', () => {
 });
 
 test('Checks setNewWalker', () => {
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room);
 
 	pathChallenge.currentChestIndex = 1;

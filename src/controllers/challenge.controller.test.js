@@ -1,11 +1,11 @@
 import ChallengeControllerCreator from './challenge.controller';
-import Room from '../models/room.model';
 import RoomControllerCreator from './room.controller';
 import PathChallenge from '../models/challenges/path.challenge';
+import RoomService from '../services/room/roomcode.service';
 
 test('Checks "raiseHand" method', () => {
 	let roomcode = 'TEST';
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	room.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
@@ -29,7 +29,7 @@ test('Checks "raiseHand" method', () => {
 
 test('Checks "agreeToRoles" method', () => {
 	let roomcode = 'TEST';
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	room.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
@@ -52,7 +52,7 @@ test('Checks "agreeToRoles" method', () => {
 test('Checks "addPlayerVote" method', () => {
 	//TODO
 	let roomcode = 'TEST';
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	room.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
@@ -67,7 +67,7 @@ test('Checks "addPlayerVote" method', () => {
 
 test('Checks "removePlayerVote" method', () => {
 	//TODO
-	let room = Room.getTestRoomWithTenPlayers();
+	let room = RoomService.getTestRoomWithTenPlayers();
 	let { roomcode } = room;
 	let player = room.players[0];
 	room.currentChallenge = new PathChallenge(room);
