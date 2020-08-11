@@ -39,7 +39,9 @@ export default class PathChallenge extends Challenge {
 	}
 
 	constructor(room) {
-		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData[type];
+		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData.find(
+			(c) => c.type === type
+		);
 		super(room, title, type, description, maxPlayers, minPlayers, questions, initialState);
 
 		this.players = room.players;

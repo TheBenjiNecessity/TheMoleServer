@@ -6,7 +6,9 @@ const type = 'platter';
 
 export default class PlatterChallenge extends Challenge {
 	constructor(players) {
-		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData[type];
+		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData.find(
+			(c) => c.type === type
+		);
 		super(title, type, description, maxPlayers, minPlayers, questions, initialState);
 
 		this.exemptionWasTaken = false;
