@@ -1,4 +1,5 @@
 import Player from '../../models/player.model';
+import Room from '../../models/room.model';
 
 export const MAX_LETTERS = 4;
 export const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
