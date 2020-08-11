@@ -1,5 +1,7 @@
 import ArrayUtilsService from '../utils/array-utils.service';
 import challengeData from '../../models/challenges/challenge.data';
+import PathChallenge from '../../models/challenges/path.challenge';
+import PlatterChallenge from '../../models/challenges/platter.challenge';
 
 export default class ChallengeService {
 	constructor() {}
@@ -9,15 +11,8 @@ export default class ChallengeService {
 	 * @param {int} numPlayers the desired number of players to play the challenge
 	 * @returns {[object]} the list of challenges
 	 */
-	static getNumPlayersRestrictedChallenges(numPlayers) {
-		let numRestrictedChallenges = [];
-		for (let challengeKey of Object.keys(challengeData)) {
-			let challenge = challengeData[challengeKey];
-			if (ChallengeService.canSupportNumPlayers(challenge, numPlayers)) {
-				numRestrictedChallenges.push(challenge);
-			}
-		}
-		return numRestrictedChallenges;
+	static getNumPlayersRestrictedChallengeData(numPlayers) {
+		return challengeData.filter((c) => ChallengeService.canSupportNumPlayers(c, numPlayers));
 	}
 
 	/**
@@ -25,11 +20,16 @@ export default class ChallengeService {
 	 * @param {int} numPlayers the number of players playing in that challenge
 	 * @param {[object]} challengesToExclude the challenges already loaded into the game
 	 */
-	static getRandomChallengeForPlayers(numPlayers, challengesToExclude) {
-		let numRestrictedChallenges = ChallengeService.getNumPlayersRestrictedChallenges(numPlayers);
+	static getRandomChallengeForPlayers(room, numPlayers, challengesToExclude) {
+		let numRestrictedChallengeData = ChallengeService.getNumPlayersRestrictedChallengeData(numPlayers);
+		if (numRestrictedChallengeData.length > 0) {
+			let numRestrictedChallengeTypes = numRestrictedChallengeData.map((c) => c.type);
 
-		if (numRestrictedChallenges.length > 0) {
-			return ArrayUtilsService.getRandomElementNotInOtherArray(numRestrictedChallenges, challengesToExclude);
+			let challengeTypesNotUsed = numRestrictedChallengeTypes.filter(
+				(type) => !challengesToExclude.map((e) => e.type).includes(type)
+			);
+			let randomTypeNotUsed = ArrayUtilsService.getRandomElement(challengeTypesNotUsed);
+			return ChallengeService.getChallengeForType(room, randomTypeNotUsed);
 		}
 
 		return null;
@@ -43,5 +43,14 @@ export default class ChallengeService {
 	 */
 	static canSupportNumPlayers(challenge, numPlayers) {
 		return challenge.maxPlayers >= numPlayers && challenge.minPlayers <= numPlayers;
+	}
+
+	static getChallengeForType(type, room) {
+		switch (type) {
+			case 'path':
+				return new PathChallenge(room);
+			case 'platter':
+				return new PlatterChallenge(room);
+		}
 	}
 }
