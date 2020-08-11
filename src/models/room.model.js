@@ -1,5 +1,3 @@
-import EpisodeService from '../services/game/episode.service';
-
 export const ROOM_STATE = {
 	LOBBY: 'lobby',
 	WELCOME: 'game-welcome',
@@ -90,9 +88,5 @@ export default class Room {
 		if (this.points < 0) {
 			this.points = 0;
 		}
-	}
-
-	generateEpisodes() {
-		this.episodes = EpisodeService.generateEpisodes(this);
 	}
 }

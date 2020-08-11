@@ -2,6 +2,7 @@ import Room from '../models/room.model';
 import ChallengeControllerCreator from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 import RoomService from '../services/room/roomcode.service';
+import EpisodeService from '../services/game/episode.service';
 
 class RoomController {
 	constructor() {
@@ -66,7 +67,7 @@ class RoomController {
 			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
 
 			if (this.rooms[roomcode].isStateWelcome) {
-				this.rooms[roomcode].generateEpisodes();
+				this.rooms[roomcode].episodes = EpisodeService.generateEpisodes(this.rooms[roomcode]);
 				WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'game-loaded', this.rooms[roomcode]);
 			}
 		}
