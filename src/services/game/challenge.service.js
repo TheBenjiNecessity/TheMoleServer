@@ -26,7 +26,7 @@ export default class ChallengeService {
 			let numRestrictedChallengeTypes = numRestrictedChallengeData.map((c) => c.type);
 
 			let challengeTypesNotUsed = numRestrictedChallengeTypes.filter(
-				(type) => !challengesToExclude.map((e) => e.type).includes(type)
+				(type) => !challengesToExclude.map((e) => (e ? e.type : '')).includes(type)
 			);
 			let randomTypeNotUsed = ArrayUtilsService.getRandomElement(challengeTypesNotUsed);
 			return ChallengeService.getChallengeForType(room, randomTypeNotUsed);
@@ -51,6 +51,8 @@ export default class ChallengeService {
 				return new PathChallenge(room);
 			case 'platter':
 				return new PlatterChallenge(room);
+			default:
+				return null;
 		}
 	}
 }
