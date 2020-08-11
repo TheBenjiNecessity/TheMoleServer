@@ -32,8 +32,7 @@ class RoomController {
 
 	addPlayerToRoom(roomcode, player) {
 		this.rooms[roomcode].addPlayer(player);
-		let obj = { room: this.rooms[roomcode] };
-		WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'add-player', obj);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'add-player', this.rooms[roomcode]);
 	}
 
 	giveObjectsToPlayer(roomcode, playerName, obj, quantity) {
