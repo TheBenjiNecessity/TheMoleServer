@@ -112,7 +112,7 @@ class RequestService {
 			return;
 		}
 
-		if (room.hasPlayer(newPlayer)) {
+		if (room.hasPlayer(newPlayer.name)) {
 			res.status(403);
 			res.send({
 				success: false,

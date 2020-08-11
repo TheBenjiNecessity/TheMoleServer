@@ -57,8 +57,8 @@ export default class Room {
 		}
 	}
 
-	hasPlayer(player) {
-		let roomPlayer = this.players.find((p) => p.name === player.name);
+	hasPlayer(playerName) {
+		let roomPlayer = this.players.find((p) => p.name === playerName);
 		return typeof roomPlayer !== 'undefined';
 	}
 
