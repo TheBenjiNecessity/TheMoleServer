@@ -1,5 +1,6 @@
-export default {
-	platter: {
+export default [
+	{
+		type: 'platter',
 		title: 'The Platter',
 		description: '',
 		maxPlayers: 6,
@@ -18,7 +19,8 @@ export default {
 			}
 		]
 	},
-	'out-and-safe': {
+	{
+		type: 'out-and-safe',
 		title: 'Out/Safe',
 		description: '',
 		maxPlayers: 10,
@@ -32,7 +34,8 @@ export default {
 			}
 		]
 	},
-	'mole-talk': {
+	{
+		type: 'mole-talk',
 		title: 'Mole Talk',
 		description: '',
 		maxPlayers: 5,
@@ -46,7 +49,8 @@ export default {
 			}
 		]
 	},
-	path: {
+	{
+		type: 'path',
 		title: 'The Path',
 		description: '',
 		maxPlayers: 5,
@@ -70,7 +74,8 @@ export default {
 			}
 		]
 	},
-	'push-your-luck': {
+	{
+		type: 'push-your-luck',
 		title: 'Push Your Luck',
 		description: '',
 		maxPlayers: 5,
@@ -89,7 +94,8 @@ export default {
 			}
 		]
 	},
-	stacks: {
+	{
+		type: 'stacks',
 		title: 'Stacks',
 		description: '',
 		maxPlayers: 6,
@@ -103,7 +109,8 @@ export default {
 			}
 		]
 	},
-	traders: {
+	{
+		type: 'traders',
 		title: 'Traders',
 		description: '',
 		maxPlayers: 6,
@@ -122,7 +129,8 @@ export default {
 			}
 		]
 	},
-	button: {
+	{
+		type: 'button',
 		title: 'The Button',
 		description: '',
 		maxPlayers: 4,
@@ -135,4 +143,4 @@ export default {
 			}
 		]
 	}
-};
+];
