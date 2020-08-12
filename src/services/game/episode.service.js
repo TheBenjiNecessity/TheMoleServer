@@ -17,9 +17,9 @@ export default class EpisodeService {
 		return episodes;
 	}
 
-	static getEpisode(room, numChallengesPerEpisode, numPlayersInEpisode, currentChallenges) {
+	static getEpisode(room, numPlayersInEpisode, currentChallenges) {
 		let challenges = [];
-		for (let i = 0; i < numChallengesPerEpisode; i++) {
+		for (let i = 0; i < EpisodeService.getNumChallenges(room.players.length); i++) {
 			let challenge = ChallengeService.getRandomChallengeForPlayers(room, numPlayersInEpisode, currentChallenges);
 			challenges.push(challenge);
 			currentChallenges = currentChallenges.concat(challenge);
