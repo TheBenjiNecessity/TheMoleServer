@@ -18,6 +18,10 @@ export default class ArrayUtilsService {
 		return array[r];
 	}
 
+	static getRandomIndex(array) {
+		return Math.floor(Math.random() * array.length);
+	}
+
 	static removeElementAt(array, index) {
 		return array.filter((element) => array.indexOf(element) !== index);
 	}
@@ -29,5 +33,9 @@ export default class ArrayUtilsService {
 	static getRandomElementNotInOtherArray(fullArray, otherArray) {
 		let intersection = fullArray.filter((value) => !otherArray.includes(value));
 		return this.getRandomElement(intersection);
+	}
+
+	static array2dTo1d(array2d) {
+		return [].concat(...array2d);
 	}
 }
