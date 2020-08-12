@@ -26,7 +26,7 @@ export default class Challenge {
 		this.description = description;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
-		this.questions = questions;
+		this.questions = questions.map((qd) => new Question(qd.text, qd.type, qd.choices));
 		this.state = state;
 		this.agreedPlayers = [];
 		this.raisedHands = [];
