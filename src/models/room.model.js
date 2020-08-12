@@ -1,6 +1,7 @@
 import questionData from '../models/quiz/question.data';
 import ArrayUtilsService from '../services/utils/array-utils.service';
 import Question from '../models/quiz/question.model';
+import challengeData from './challenges/challenge.data';
 
 export const MAX_CHALLENGE_QUESTIONS = 5;
 
@@ -17,25 +18,18 @@ export default class Room {
 		return this.players.length === ROOM_MAX_PLAYERS;
 	}
 
-	get isInProgress() {
-		return this.state !== ROOM_STATE.LOBBY;
-	}
-
 	get isStateWelcome() {
 		return this.state === ROOM_STATE.WELCOME;
-	}
-
-	get currentEpisode() {
-		return this.episodes[this.currentEpisodeIndex];
 	}
 
 	constructor(roomcode) {
 		this.roomcode = roomcode;
 		this.state = ROOM_STATE.LOBBY;
 		this.players = [];
-		this.episodes = [];
-		this.currentEpisodeIndex = 0;
-		this.currentChallenge = {};
+		this.currentEpisode = null;
+		this.unusedChallenges = challengeData;
+		this.currentChallenge = null;
+		this.isInProgress = false;
 		this.points = 0;
 		this.unaskedQuestions = questionData.map((qd) => new Question(qd.text, qd.type, qd.choices));
 	}
@@ -60,6 +54,7 @@ export default class Room {
 				return true;
 			case ROOM_STATE.WELCOME:
 				this.state = ROOM_STATE.EPISODESTART;
+				this.currentChallenge = this.currentEpisode.currentChallenge;
 				return true;
 			default:
 				return false;
@@ -99,6 +94,16 @@ export default class Room {
 		if (this.points < 0) {
 			this.points = 0;
 		}
+	}
+
+	getRandomUnusedChallenge(numPlayers) {
+		let numRestrictedChallenges = this.unusedChallenges.filter(
+			(c) => c.maxPlayers >= numPlayers && c.minPlayers <= numPlayers
+		);
+		let randomIndex = ArrayUtilsService.getRandomIndex(numRestrictedChallenges);
+		let randomChallenge = numRestrictedChallenges[randomIndex];
+		this.unusedChallenges = this.unusedChallenges.filter((c) => c.type === randomChallenge.type);
+		return randomChallenge;
 	}
 
 	getRandomUnaskedQuestion() {
