@@ -64,8 +64,8 @@ export default [
 			},
 			{
 				text: 'In "The Path" challenge, did the mole make it to the end?',
-				type: 'boolean',
-				choices: []
+				type: 'choices',
+				choices: [ 'Yes', 'No' ]
 			},
 			{
 				text: 'In "The Path" challenge, what reward or punishment did the mole take?',
@@ -83,12 +83,12 @@ export default [
 		initialState: 'game',
 		questions: [
 			{
-				text: 'how many points did the mole make?',
+				text: 'How many points did the mole make?',
 				type: 'choices',
 				choices: [ '0 - 3', '4 - 6', '7 - 10', '10+' ]
 			},
 			{
-				text: 'what position did the mole take their turn?',
+				text: 'What position did the mole take their turn?',
 				type: 'rank',
 				choices: []
 			}
@@ -103,7 +103,7 @@ export default [
 		initialState: 'game',
 		questions: [
 			{
-				text: "what was the amount of points on the mole's stack?",
+				text: "What was the amount of points on the mole's stack?",
 				type: 'choices',
 				choices: [ '-5', '-3', '-1', '1', '3', '5' ]
 			}
@@ -118,12 +118,12 @@ export default [
 		initialState: 'game',
 		questions: [
 			{
-				text: 'what reward did the mole end up with?',
+				text: 'What reward did the mole end up with?',
 				type: 'choices',
 				choices: [ 'An exemption', 'A joker', 'Two jokers', 'Three jokers', 'Money', 'Nothing' ]
 			},
 			{
-				text: 'what reward did the mole start with?',
+				text: 'What reward did the mole start with?',
 				type: 'choices',
 				choices: [ 'An exemption', 'A joker', 'Two jokers', 'Three jokers', 'Money', 'Nothing' ]
 			}
@@ -138,8 +138,9 @@ export default [
 		initialState: 'game',
 		questions: [
 			{
-				text: 'did the mole take the exemption?',
-				type: 'boolean'
+				text: 'Did the mole take the exemption?',
+				type: 'choices',
+				choices: [ 'Yes', 'No' ]
 			}
 		]
 	}
