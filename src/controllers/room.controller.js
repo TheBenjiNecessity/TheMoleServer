@@ -55,9 +55,9 @@ class RoomController {
 	generateRandomRoomCodeNotUsed() {
 		let code = null;
 
-		while (!code || this.roomCodeAlreadyExists(code) || RoomService.roomCodeIsABadWord(code)) {
+		do {
 			code = RoomService.generateRandomRoomcode();
-		}
+		} while (this.roomCodeAlreadyExists(code) || RoomService.roomCodeIsABadWord(code));
 
 		return code;
 	}
