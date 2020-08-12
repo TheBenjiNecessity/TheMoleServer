@@ -1,6 +1,7 @@
 export default class Player {
 	constructor(name) {
 		this.name = name;
+		this.eliminated = false;
 		this.objects = {
 			exemption: 0,
 			joker: 0,
