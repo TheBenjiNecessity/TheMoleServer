@@ -1,3 +1,9 @@
+import questionData from '../models/quiz/question.data';
+import ArrayUtilsService from '../services/utils/array-utils.service';
+import Question from '../models/quiz/question.model';
+
+export const MAX_CHALLENGE_QUESTIONS = 5;
+
 export const ROOM_STATE = {
 	LOBBY: 'lobby',
 	WELCOME: 'game-welcome',
@@ -19,14 +25,19 @@ export default class Room {
 		return this.state === ROOM_STATE.WELCOME;
 	}
 
+	get currentEpisode() {
+		return this.episodes[this.currentEpisodeIndex];
+	}
+
 	constructor(roomcode) {
 		this.roomcode = roomcode;
 		this.state = ROOM_STATE.LOBBY;
 		this.players = [];
 		this.episodes = [];
-		this.currentEpisode = 0; //TODO make sure episodes are zero indexed
+		this.currentEpisodeIndex = 0;
 		this.currentChallenge = {};
 		this.points = 0;
+		this.unaskedQuestions = questionData.map((qd) => new Question(qd.text, qd.type, qd.choices));
 	}
 
 	addPlayer(player) {
@@ -88,5 +99,33 @@ export default class Room {
 		if (this.points < 0) {
 			this.points = 0;
 		}
+	}
+
+	getRandomUnaskedQuestion() {
+		let randomIndex = ArrayUtilsService.getRandomIndex(this.unaskedQuestions);
+		let randomQuestion = this.unaskedQuestions[randomIndex];
+		this.unaskedQuestions = ArrayUtilsService.removeElementAt(this.unaskedQuestions, randomIndex);
+		return randomQuestion;
+	}
+
+	getQuiz() {
+		if (this.episodes.length === 0) {
+			return null;
+		}
+
+		let questions = [];
+		let episodeQuestions = currentEpisode.getQuestions();
+		episodeQuestions = ArrayUtilsService.shuffleArray(episodeQuestions);
+		episodeQuestions = episodeQuestions.slice(0, MAX_CHALLENGE_QUESTIONS);
+		for (let eq of episodeQuestions) {
+			questions.push(eq);
+		}
+
+		for (let i = 0; i < NUM_QUESTIONS - questions.length - 1; i++) {
+			questions.push(room.getRandomUnaskedQuestion());
+		}
+
+		questions = ArrayUtilsService.shuffleArray(questions);
+		questions.push(QuizService.getFinalQuizQuestion(room));
 	}
 }
