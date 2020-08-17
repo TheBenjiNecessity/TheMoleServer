@@ -14,20 +14,34 @@ export default class QuizService {
 	 * Creates a question for the final question of a quiz
 	 * @param {*} room 
 	 */
-	static getFinalQuizQuestion(room) {
-		return QuizService.createQuestion(room, 'Who is the mole?', 'player', []);
+	static getFinalQuizQuestion(playersStillPlaying) {
+		return QuizService.createQuestion(playersStillPlaying, 'Who is the mole?', 'player', []);
 	}
 
-	static createQuestion(room, text, type, choices) {
+	static createQuestion(playersStillPlaying, text, type, choices) {
 		switch (type) {
 			case 'player':
-				return new Question(text, type, room.players.filter((p) => p.eliminated).map((p) => p.name));
+				return new Question(text, type, playersStillPlaying.map((p) => p.name));
 			case 'rank':
-				let nonEliminatedPlayers = room.players.filter((p) => p.eliminated);
-				let numPlayers = nonEliminatedPlayers.length;
+				let numPlayers = playersStillPlaying.length;
 				return new Question(text, type, ranks.splice(numPlayers, ranks.length - numPlayers));
 			default:
 				return new Question(text, type, choices);
 		}
+	}
+
+	static generateQuiz(playersStillPlaying, challengeQuestions, unusedGeneralQuestions) {
+		let questions = [];
+		challengeQuestions = ArrayUtilsService.shuffleArray(challengeQuestions);
+		unusedGeneralQuestions = ArrayUtilsService.shuffleArray(unusedGeneralQuestions);
+
+		challengeQuestions = challengeQuestions.slice(0, MAX_CHALLENGE_QUESTIONS);
+		questions = challengeQuestions;
+		unusedGeneralQuestions = unusedGeneralQuestions.slice(0, NUM_QUESTIONS - questions.length - 1);
+		questions = questions.concat(unusedGeneralQuestions);
+		questions = ArrayUtilsService.shuffleArray(questions);
+		questions.push(QuizService.getFinalQuizQuestion(playersStillPlaying));
+
+		return questions;
 	}
 }
