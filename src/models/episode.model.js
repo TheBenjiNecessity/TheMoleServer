@@ -1,6 +1,22 @@
 import ArrayUtilsService from '../services/utils/array-utils.service';
+import QuizService from '../services/game/quiz.service';
 
-export class Episode {
+/**
+ * Stores things to do with an episode
+ * @property {array<Object>} challenges the list of challenges in this episode
+ * @property {int} currentChallengeIndex the index of the challenge currently being played
+ * @property {array<Object>} players the players playing in this episode
+ */
+export default class Episode {
+	constructor(playersStillPlaying, challenges, unusedGeneralQuizQuestions) {
+		this.currentChallengeIndex = 0;
+		this.challenges = challenges;
+		this.players = playersStillPlaying;
+
+		let questionsArray = ArrayUtilsService.array2dTo1d(this.challenges.map((c) => c.questions));
+		this.quiz = QuizService.generateQuiz(this.players, questionsArray, unusedGeneralQuizQuestions);
+	}
+
 	get currentChallenge() {
 		if (this.episodeIsOver) {
 			return null;
@@ -13,18 +29,7 @@ export class Episode {
 		return this.currentChallengeIndex >= this.challenges.length;
 	}
 
-	constructor(numPlayers, challenges) {
-		this.currentChallengeIndex = 0;
-		this.challenges = challenges;
-		this.numPlayers = numPlayers;
-	}
-
-	getQuestions() {
-		let questionsArray = this.challenges.map((c) => c.questions);
-		return ArrayUtilsService.array2dTo1d(questionsArray);
-	}
-
-	increaseChallengeIndex() {
+	goToNextChallenge() {
 		this.currentChallengeIndex++;
 	}
 }
