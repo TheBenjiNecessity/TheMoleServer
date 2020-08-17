@@ -1,31 +1,5 @@
-import { Episode } from '../../models/episode.model';
-import ChallengeService from './challenge.service';
-
 export default class EpisodeService {
 	constructor() {}
-
-	static generateEpisodes(room) {
-		let episodes = [];
-		let challenges = [];
-		let numChallengesPerEpisode = EpisodeService.getNumChallenges(room.players.length);
-		for (let numPlayers = numChallengesPerEpisode; numPlayers >= 2; numPlayers--) {
-			let episode = this.getEpisode(room, numChallengesPerEpisode, numPlayers, challenges);
-			challenges = challenges.concat(episode.challenges);
-			episodes.push(episode);
-		}
-
-		return episodes;
-	}
-
-	static getEpisode(room, numPlayersInEpisode, currentChallenges) {
-		let challenges = [];
-		for (let i = 0; i < EpisodeService.getNumChallenges(room.players.length); i++) {
-			let challenge = ChallengeService.getRandomChallengeForPlayers(room, numPlayersInEpisode, currentChallenges);
-			challenges.push(challenge);
-			currentChallenges = currentChallenges.concat(challenge);
-		}
-		return new Episode(numPlayersInEpisode, challenges);
-	}
 
 	static getNumChallenges(numPlayers) {
 		switch (numPlayers) {
@@ -42,6 +16,4 @@ export default class EpisodeService {
 				return 0;
 		}
 	}
-
-	getQuiz() {}
 }
