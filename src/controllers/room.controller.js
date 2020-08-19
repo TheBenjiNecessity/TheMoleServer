@@ -2,8 +2,6 @@ import Room, { ROOM_STATE } from '../models/room.model';
 import ChallengeControllerCreator from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 import RoomService from '../services/room/roomcode.service';
-import EpisodeService from '../services/game/episode.service';
-import ArrayUtilsService from '../services/utils/array-utils.service';
 
 class RoomController {
 	constructor() {
@@ -68,47 +66,24 @@ class RoomController {
 		return code;
 	}
 
-	moveNext(roomcode) {
+	moveNext({ roomcode }) {
 		if (this.rooms[roomcode].moveNext()) {
 			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
-
-			switch (this.rooms[roomcode].state) {
-				case ROOM_STATE.WELCOME:
-					this.rooms[roomcode].isInProgress = true;
-					//WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'game-loaded', this.rooms[roomcode]);
-					break;
-				case ROOM_STATE.EPISODE_START:
-					this.rooms[roomcode].currentEpisode = EpisodeService.getEpisode(this.rooms[roomcode]);
-					WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'episode-loaded', this.rooms[roomcode]);
-					break;
-				case ROOM_STATE.IN_CHALLENGE:
-					break;
-				case ROOM_STATE.BEFORE_CHALLENGE:
-				case ROOM_STATE.BEFORE_QUIZ:
-				case ROOM_STATE.IN_QUIZ:
-			}
-
-			if (this.rooms[roomcode].isStateWelcome) {
-			}
 		}
 	}
 
-	popRandomChallengeForRoom(roomcode, numPlayers) {
-		let room = this.getRoom(roomcode);
-		//let numRestrictedChallenges = room.ava
-
-		//ArrayUtilsService.
-	}
+	quizDone({ roomcode, player }) {}
 
 	performEventOnChallenge(roomcode, event, obj) {
 		let room = this.rooms[roomcode];
-		room.currentChallenge.performEvent(event, obj);
+		room.currentEpisode.currentChallenge.performEvent(event, obj);
 		this.setRoom(room);
 		return room;
 	}
 
 	setupSocket(socket) {
-		socket.on('page-next', this.moveNext);
+		socket.on('move-next', this.moveNext);
+		socket.on('quiz-done', this.quizDone);
 
 		ChallengeControllerCreator.getInstance().setupSocket(socket);
 	}
