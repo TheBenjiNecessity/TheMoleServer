@@ -10,10 +10,18 @@ export default class Player {
 	}
 
 	setObjects(object, quantity = 1) {
+		if (quantity < 0) {
+			return;
+		}
+
 		this.objects[object] += quantity;
 	}
 
 	removeObjects(object, quantity = 1) {
+		if (quantity < 0) {
+			return;
+		}
+
 		this.objects[object] -= quantity;
 
 		if (this.objects[object] < 0) {
