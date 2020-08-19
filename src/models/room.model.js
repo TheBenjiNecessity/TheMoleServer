@@ -63,6 +63,10 @@ export default class Room {
 		return this.unusedChallenges.filter((c) => c.maxPlayers >= numPlayers && c.minPlayers <= numPlayers);
 	}
 
+	get molePlayer() {
+		return this.players.find((p) => p.isMole);
+	}
+
 	addPlayer(player) {
 		if (this.isFull || this.isInProgress) {
 			return false;
