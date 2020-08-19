@@ -144,4 +144,12 @@ export default class Room {
 
 		return new Episode(this.playersStillPlaying.length, challenges, this.unaskedQuestions);
 	}
+
+	chooseMole() {
+		let randomIndex = ArrayUtilsService.getRandomIndex(this.players);
+		for (let i = 0; i < this.players.length; i++) {
+			this.players[i].isMole = false;
+		}
+		this.players[randomIndex].isMole = true;
+	}
 }
