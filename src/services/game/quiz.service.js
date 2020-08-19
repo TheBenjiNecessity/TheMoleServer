@@ -1,7 +1,6 @@
-import questionData from '../../models/quiz/question.data';
 import Question from '../../models/quiz/question.model';
-import RoomControllerCreator from '../../controllers/room.controller';
 import ArrayUtilsService from '../utils/array-utils.service';
+import Quiz from '../../models/quiz/quiz.model';
 
 export const NUM_QUESTIONS = 10;
 export const MAX_CHALLENGE_QUESTIONS = 5;
@@ -42,6 +41,6 @@ export default class QuizService {
 		questions = ArrayUtilsService.shuffleArray(questions);
 		questions.push(QuizService.getFinalQuizQuestion(playersStillPlaying));
 
-		return questions;
+		return new Quiz(questions);
 	}
 }
