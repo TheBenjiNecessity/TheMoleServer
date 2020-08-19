@@ -22,7 +22,7 @@ class ChallengeController {
 		let obj = { player };
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
 
-		if (room.currentChallenge.agreedPlayers.length > room.players.length / 2) {
+		if (room.currentEpisode.currentChallenge.agreedPlayers.length > room.players.length / 2) {
 			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', room);
 		} else {
 			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'agree-to-roles', room);

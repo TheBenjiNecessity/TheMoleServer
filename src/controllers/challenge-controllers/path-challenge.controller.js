@@ -19,7 +19,7 @@ class PathChallengeController {
 		let room = instance.performEventOnChallenge(roomcode, event, obj);
 		let wsMessage = 'path-vote-chest';
 
-		let pathChallenge = room.currentChallenge;
+		let pathChallenge = room.currentEpisode.currentChallenge;
 		if (pathChallenge.majorityVote) {
 			let { contentsOfChosenChest } = pathChallenge;
 
