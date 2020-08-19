@@ -37,6 +37,11 @@ class RoomController {
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'add-player', this.rooms[roomcode]);
 	}
 
+	removePlayerFromRoom(roomcode, player) {
+		this.rooms[roomcode].removePlayer(player.name);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'remove-player', this.rooms[roomcode]);
+	}
+
 	giveObjectsToPlayer(roomcode, playerName, obj, quantity) {
 		this.rooms[roomcode].giveObjectsToPlayer(playerName, obj, quantity);
 	}
