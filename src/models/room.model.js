@@ -131,6 +131,65 @@ export default class Room {
 		this.unusedChallenges = this.unusedChallenges.filter((c) => c.type !== type);
 	}
 
+	moveNext() {
+		switch (this.state) {
+			case ROOM_STATE.LOBBY:
+				// If going from lobby to welcome then set in progress and choose mole
+				this.state = ROOM_STATE.WELCOME;
+				this.isInProgress = true;
+				this.chooseMole();
+				break;
+			case ROOM_STATE.WELCOME:
+				// If going from welcome to episode start then generate the current episode
+				this.currentEpisode = this.generateCurrentEpisode();
+				this.state = ROOM_STATE.EPISODE_START;
+				break;
+			case ROOM_STATE.EPISODE_START:
+				this.state = ROOM_STATE.IN_CHALLENGE;
+				break;
+			case ROOM_STATE.IN_CHALLENGE:
+				this.state = ROOM_STATE.CHALLENGE_INTERMISSION;
+				this.currentEpisode.goToNextChallenge();
+				break;
+			case ROOM_STATE.CHALLENGE_INTERMISSION:
+				if (this.currentEpisode.episodeIsOver) {
+					this.state = ROOM_STATE.PRE_QUIZ_INTERMISSION;
+				} else {
+					this.state = ROOM_STATE.IN_CHALLENGE;
+				}
+				break;
+			case ROOM_STATE.PRE_QUIZ_INTERMISSION:
+				this.state = ROOM_STATE.IN_QUIZ;
+				break;
+			case ROOM_STATE.IN_QUIZ:
+				this.state = ROOM_STATE.POST_QUIZ_INTERMISSION;
+				break;
+			case ROOM_STATE.POST_QUIZ_INTERMISSION:
+				this.state = ROOM_STATE.EXECUTION;
+				let executedPlayer = this.getExecutedPlayer();
+
+				for (let i = 0; i < this.players.length; i++) {
+					if (executedPlayer.name === this.players[i].name) {
+						this.players[i].eliminated = true;
+						break;
+					}
+				}
+
+				this.currentEpisode.eliminatedPlayer = executedPlayer;
+
+				break;
+			case ROOM_STATE.EXECUTION:
+				this.state = ROOM_STATE.EXECUTION_WRAPUP;
+				break;
+			case ROOM_STATE.EXECUTION_WRAPUP:
+				this.state = ROOM_STATE.EPISODE_START;
+				this.currentEpisode = this.generateCurrentEpisode();
+				break;
+			default:
+				return false;
+		}
+	}
+
 	generateCurrentEpisode() {
 		let challenges = [];
 		for (let i = 0; i < this.numChallengesPerEpisode; i++) {
