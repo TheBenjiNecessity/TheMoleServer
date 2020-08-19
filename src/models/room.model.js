@@ -26,7 +26,6 @@ export default class Room {
 		this.players = [];
 		this._currentEpisode = null;
 		this.unusedChallenges = challengeData;
-		this.currentChallenge = null;
 		this.isInProgress = false;
 		this.points = 0;
 		this.unaskedQuestions = questionData;
