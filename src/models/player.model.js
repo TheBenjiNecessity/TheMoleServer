@@ -2,6 +2,8 @@ export default class Player {
 	constructor(name) {
 		this.name = name;
 		this.eliminated = false;
+		this.isMole = false;
+		this.quizAnswers = null;
 		this.objects = {
 			exemption: 0,
 			joker: 0,
