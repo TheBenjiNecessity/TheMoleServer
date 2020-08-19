@@ -1,3 +1,5 @@
 export default class Quiz {
-	constructor() {}
+	constructor(questions) {
+		this.questions = questions;
+	}
 }
