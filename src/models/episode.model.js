@@ -6,6 +6,7 @@ import QuizService from '../services/game/quiz.service';
  * @property {array<Object>} challenges the list of challenges in this episode
  * @property {int} currentChallengeIndex the index of the challenge currently being played
  * @property {array<Object>} players the players playing in this episode
+ * @property {Object} quiz the quiz at the end of this episode
  */
 export default class Episode {
 	constructor(playersStillPlaying, challenges, unusedGeneralQuizQuestions) {
@@ -72,6 +73,20 @@ export default class Episode {
 		}
 
 		return eliminatedPlayer;
+	}
+
+	get allPlayersFinishedQuiz() {
+		let playersWhoFinished = this.players.filter((p) => p.quizAnswers.answers.length > 0 && p.quizAnswers.time > 0);
+		return playersWhoFinished.length === this.players.length;
+	}
+
+	setQuizResultsForPlayer(player) {
+		for (let i = 0; i < this.players.length; i++) {
+			if (this.players[i].name === player.name) {
+				this.players[i].quizAnswers = player.quizAnswers;
+				break;
+			}
+		}
 	}
 
 	goToNextChallenge() {
