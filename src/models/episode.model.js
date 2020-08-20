@@ -29,6 +29,51 @@ export default class Episode {
 		return this.currentChallengeIndex >= this.challenges.length;
 	}
 
+	get eliminatedPlayer() {
+		let eliminatedPlayer = null;
+		let totalCorrectAll = 1000;
+		let timeAll = 0;
+		let correctAnswers = this.molePlayer.quizAnswers.answers;
+		let playersConsidered = this.players.filter((p) => !p.isMole);
+		let blackExemptionPlayed = false;
+		for (let player of this.players) {
+			if (player.quizAnswers.usedBlackExemption) {
+				blackExemptionPlayed = true;
+				break;
+			}
+		}
+
+		if (!blackExemptionPlayed) {
+			playersConsidered = playersConsidered.filter((p) => !p.quizAnswers.usedExemption);
+		}
+
+		for (let player of playersConsidered) {
+			let { quizAnswers } = player;
+			let numCorrect = 0;
+
+			for (let i = 0; i < correctAnswers.length; i++) {
+				let correctAnswer = correctAnswers[i];
+				let chosenAnswer = quizAnswers.answers[i];
+				if (correctAnswer === chosenAnswer) {
+					numCorrect++;
+				}
+			}
+
+			numCorrect += player.quizAnswers.numJokersUsed;
+
+			if (!eliminatedPlayer || numCorrect < totalCorrectAll) {
+				eliminatedPlayer = player;
+				totalCorrectAll = numCorrect;
+				timeAll = quizAnswers.time;
+			} else if (numCorrect === totalCorrectAll && quizAnswers.time > timeAll) {
+				eliminatedPlayer = player;
+				timeAll = quizAnswers.time;
+			}
+		}
+
+		return eliminatedPlayer;
+	}
+
 	goToNextChallenge() {
 		this.currentChallengeIndex++;
 	}
