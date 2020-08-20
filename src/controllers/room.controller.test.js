@@ -8,7 +8,7 @@ const ROOMCODE_REGEX = /[A-Z]{4}/;
 
 test('Checks "roomCodeAlreadyExists" method', () => {
 	let room = RoomService.getTestRoomWithTenPlayers();
-	room.currentChallenge = new PathChallenge(room);
+	room.currentEpisode.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	expect(RoomControllerCreator.getInstance().roomCodeAlreadyExists(room.roomcode)).toBe(true);
@@ -18,7 +18,7 @@ test('Checks "roomCodeAlreadyExists" method', () => {
 test('Checks "generateRandomRoomCodeNotUsed" method', () => {
 	// TODO: generate all possible room codes in list and remove one for testing?
 	let room = RoomService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
-	room.currentChallenge = new PathChallenge(room);
+	room.currentEpisode.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let roomcode = RoomControllerCreator.getInstance().generateRandomRoomCodeNotUsed();
@@ -40,7 +40,7 @@ test('Checks "addRoom" method', () => {
 test('Checks getRoom/setRoom methods', () => {
 	let room = RoomService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
 	let { roomcode } = room;
-	room.currentChallenge = new PathChallenge(room);
+	room.currentEpisode.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	expect(typeof RoomControllerCreator.getInstance().rooms[roomcode]).toBe('object');
@@ -51,7 +51,7 @@ test('Checks getRoom/setRoom methods', () => {
 
 test('Checks "addPlayerToRoom" method', () => {
 	let room = RoomService.getTestRoomWithNoPlayers(); // Gets room with roomcode 'TEST'
-	room.currentChallenge = new PathChallenge(room);
+	room.currentEpisode.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	RoomControllerCreator.getInstance().addPlayerToRoom('TEST', new Player('test11'));
@@ -76,7 +76,7 @@ test('Checks "giveObjectsToPlayer/removeObjectsFromPlayer" methods', () => {
 	let exemption = 'exemption';
 	let joker = 'joker';
 	let blackExemption = 'black-exemption';
-	room.currentChallenge = new PathChallenge(room);
+	room.currentEpisode.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let player = room.players[0];

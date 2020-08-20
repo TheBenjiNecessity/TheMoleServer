@@ -189,6 +189,4 @@ test('Tests moveNext', () => {
 	expect(room.state).toBe('episode-start');
 });
 
-test('Tests getRandomUnaskedQuestion', () => {});
-
 test('Tests getQuiz', () => {});

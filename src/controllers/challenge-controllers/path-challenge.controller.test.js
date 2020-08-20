@@ -6,7 +6,7 @@ import RoomService from '../../services/room/roomcode.service';
 test('Checks "chooseChest" method', () => {
 	let roomcode = 'TEST';
 	let room = RoomService.getTestRoomWithTenPlayers();
-	room.currentChallenge = new PathChallenge(room);
+	room.currentEpisode.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let pathChallengeController = PathChallengeControllerCreator.getInstance();
@@ -25,13 +25,13 @@ test('Checks "addVoteForChest" method', () => {
 	let roomcode = 'TEST';
 	let room = RoomService.getTestRoomWithTenPlayers();
 	let player = room.players[0];
-	room.currentChallenge = new PathChallenge(room);
+	room.currentEpisode.currentChallenge = new PathChallenge(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let pathChallengeController = PathChallengeControllerCreator.getInstance();
 	let result = pathChallengeController.addVoteForChest({ roomcode, player, choice: 'left' });
 	room = RoomControllerCreator.getInstance().getRoom(roomcode);
-	let pathChallenge = room.currentChallenge;
+	let pathChallenge = room.currentEpisode.currentChallenge;
 	expect(pathChallenge.votes.left.length).toBe(1);
 	expect(pathChallenge.votes.right.length).toBe(0);
 	expect(result.action).toBe('path-vote-chest');
