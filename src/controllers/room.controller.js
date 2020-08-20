@@ -82,7 +82,7 @@ class RoomController {
 		}
 	}
 
-	performEventOnChallenge(roomcode, event, obj) {
+	performEventOnChallenge(roomcode, event, obj = {}) {
 		let room = this.rooms[roomcode];
 		room.currentEpisode.currentChallenge.performEvent(event, obj);
 		this.setRoom(room);
