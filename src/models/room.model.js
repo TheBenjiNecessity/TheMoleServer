@@ -166,7 +166,7 @@ export default class Room {
 				break;
 			case ROOM_STATE.POST_QUIZ_INTERMISSION:
 				this.state = ROOM_STATE.EXECUTION;
-				let executedPlayer = this.getExecutedPlayer();
+				let executedPlayer = this.currentEpisode.getExecutedPlayer();
 
 				for (let i = 0; i < this.players.length; i++) {
 					if (executedPlayer.name === this.players[i].name) {
@@ -174,8 +174,6 @@ export default class Room {
 						break;
 					}
 				}
-
-				this.currentEpisode.eliminatedPlayer = executedPlayer;
 
 				break;
 			case ROOM_STATE.EXECUTION:
