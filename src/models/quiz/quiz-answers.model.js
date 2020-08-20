@@ -5,6 +5,12 @@
  * @property {int} objectsUsed the objects like exemptions or jokers used during the quiz
  */
 export default class QuizAnswers {
+	constructor(answers = [], time = -1, objectsUsed = { exemption: 0, joker: 0, 'black-exemption': 0 }) {
+		this.answers = answers;
+		this.time = time;
+		this.objectsUsed = objectsUsed;
+	}
+
 	get usedExemption() {
 		return this.objectsUsed['exemption'] >= 1;
 	}
@@ -15,11 +21,5 @@ export default class QuizAnswers {
 
 	get numJokersUsed() {
 		return this.objectsUsed['joker'];
-	}
-
-	constructor(answers, time, objectsUsed) {
-		this.answers = answers;
-		this.time = time;
-		this.objectsUsed = objectsUsed;
 	}
 }
