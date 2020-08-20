@@ -38,6 +38,10 @@ export default class PathChallenge extends Challenge {
 		}
 	}
 
+	get challengeIsDone() {
+		return !this.walkers.length && !this.currentWalker;
+	}
+
 	constructor(room) {
 		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData.find(
 			(c) => c.type === type
@@ -123,6 +127,9 @@ export default class PathChallenge extends Challenge {
 				break;
 			case 'move-to-new-row':
 				this.moveToNewRow();
+				break;
+			case 'set-new-walker':
+				this.setNewWalker();
 				break;
 			default:
 				super.performEvent(event, { player, role });
