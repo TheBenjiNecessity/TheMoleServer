@@ -66,13 +66,21 @@ class RoomController {
 		return code;
 	}
 
+	/* ===================================== Socket Events ===================================== */
 	moveNext({ roomcode }) {
 		if (this.rooms[roomcode].moveNext()) {
 			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
 		}
 	}
 
-	quizDone({ roomcode, player }) {}
+	quizDone({ roomcode, player }) {
+		// a player has finished answering questions in the quiz
+		this.rooms[roomcode].setQuizResultsForPlayer(player);
+
+		if (this.rooms[roomcode].currentEpisode.allPlayersFinishedQuiz && this.rooms[roomcode].moveNext()) {
+			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
+		}
+	}
 
 	performEventOnChallenge(roomcode, event, obj) {
 		let room = this.rooms[roomcode];

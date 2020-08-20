@@ -190,6 +190,10 @@ export default class Room {
 		}
 	}
 
+	setQuizResultsForPlayer(player) {
+		this.currentEpisode.setQuizResultsForPlayer(player);
+	}
+
 	generateCurrentEpisode() {
 		let challenges = [];
 		for (let i = 0; i < this.numChallengesPerEpisode; i++) {
