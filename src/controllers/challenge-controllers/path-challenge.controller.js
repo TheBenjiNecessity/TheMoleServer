@@ -25,12 +25,13 @@ class PathChallengeController {
 
 			if (contentsOfChosenChest === 'continue') {
 				instance.performEventOnChallenge(roomcode, 'move-to-new-row', obj);
+				wsMessage = 'walker-continued';
 
 				if (pathChallenge.walkerIsDone) {
 					instance.addPoints(roomcode, POINTS_FOR_CONTINUING);
+					instance.performEventOnChallenge(roomcode, 'set-new-walker');
+					wsMessage = 'walker-done';
 				}
-
-				wsMessage = 'walker-continued';
 			} else {
 				switch (contentsOfChosenChest) {
 					case 'exemption':
@@ -60,11 +61,17 @@ class PathChallengeController {
 					default:
 						break;
 				}
+
+				instance.performEventOnChallenge(roomcode, 'set-new-walker');
 			}
 		}
 
-		room = instance.getRoom(roomcode);
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, wsMessage, room);
+		if (pathChallenge.challengeIsDone) {
+			instance.moveNext({ roomcode });
+		} else {
+			room = instance.getRoom(roomcode);
+			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, wsMessage, room);
+		}
 	}
 
 	setupSocket(socket) {
