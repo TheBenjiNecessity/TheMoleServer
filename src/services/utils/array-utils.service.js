@@ -14,6 +14,9 @@ export default class ArrayUtilsService {
 	}
 
 	static getRandomElement(array) {
+		if (array.length === 0) {
+			return null;
+		}
 		let r = Math.floor(Math.random() * array.length);
 		return array[r];
 	}
