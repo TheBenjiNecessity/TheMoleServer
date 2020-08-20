@@ -1,7 +1,7 @@
 import RoomControllerCreator from '../room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
 
-export default class PlatterChallengeController {
+class PlatterChallengeControllerInstance {
 	constructor() {}
 
 	chooseExemption({ roomcode, player }) {
@@ -20,5 +20,17 @@ export default class PlatterChallengeController {
 	setupSocket(socket) {
 		socket.on('platter-choose-exemption', this.chooseExemption);
 		socket.on('platter-choose-money', this.chooseMoney);
+	}
+}
+
+export default class PlatterChallengeController {
+	constructor() {}
+
+	static getInstance() {
+		if (!PlatterChallengeController.instance) {
+			PlatterChallengeController.instance = new PlatterChallengeControllerInstance();
+		}
+
+		return PlatterChallengeController.instance;
 	}
 }

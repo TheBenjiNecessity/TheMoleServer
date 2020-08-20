@@ -1,8 +1,8 @@
 import RoomControllerCreator from './room.controller';
 import challengeData from '../models/challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
-import PlatterChallengeControllerCreator from '../controllers/challenge-controllers/platter-challenge.controller';
-import PathChallengeControllerCreator from './challenge-controllers/path-challenge.controller';
+import PlatterChallengeController from '../controllers/challenge-controllers/platter-challenge.controller';
+import PathChallengeController from './challenge-controllers/path-challenge.controller';
 import Challenge, { CHALLENGE_EVENTS } from '../models/challenges/challenge.model';
 
 class ChallengeController {
@@ -75,9 +75,9 @@ export default class ChallengeControllerCreator {
 	static getChildInstance(type) {
 		switch (type) {
 			case 'platter':
-				return PlatterChallengeControllerCreator.getInstance();
+				return PlatterChallengeController.getInstance();
 			case 'path':
-				return PathChallengeControllerCreator.getInstance();
+				return PathChallengeController.getInstance();
 			default:
 				return null;
 		}

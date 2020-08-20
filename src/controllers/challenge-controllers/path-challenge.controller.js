@@ -3,7 +3,7 @@ import WebSocketServiceCreator from '../../services/websocket.service';
 
 const POINTS_FOR_CONTINUING = 7;
 
-class PathChallengeController {
+class PathChallengeControllerInstance {
 	constructor() {}
 
 	chooseChest({ roomcode, choice }) {
@@ -80,14 +80,14 @@ class PathChallengeController {
 	}
 }
 
-export default class PathChallengeControllerCreator {
+export default class PathChallengeController {
 	constructor() {}
 
 	static getInstance() {
-		if (!PathChallengeControllerCreator.instance) {
-			PathChallengeControllerCreator.instance = new PathChallengeController();
+		if (!PathChallengeController.instance) {
+			PathChallengeController.instance = new PathChallengeControllerInstance();
 		}
 
-		return PathChallengeControllerCreator.instance;
+		return PathChallengeController.instance;
 	}
 }
