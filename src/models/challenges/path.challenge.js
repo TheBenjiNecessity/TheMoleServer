@@ -3,6 +3,15 @@ import Challenge from './challenge.model';
 import challengeData from './challenge.data'; // Lang?
 import ArrayUtilsService from '../../services/utils/array-utils.service';
 
+export const PATH_CHALLENGE_EVENTS = {
+	CHOOSE_LEFT: 'chooseLeft',
+	CHOOSE_RIGHT: 'chooseRight',
+	ADD_LEFT_VOTE: 'addLeftVote',
+	ADD_RIGHT_VOTE: 'addRightVote',
+	MOVE_TO_NEW_ROW: 'moveToNewRow',
+	SET_NEW_WALKER: 'setNewWalker'
+};
+
 const type = 'path';
 const possibleValues = [
 	'exemption',
