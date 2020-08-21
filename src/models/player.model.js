@@ -5,6 +5,7 @@ export default class Player {
 		this.name = name;
 		this.eliminated = false;
 		this.isMole = false;
+		this.currentRole = null;
 		this.quizAnswers = new QuizAnswers();
 		this.objects = {
 			exemption: 0,
