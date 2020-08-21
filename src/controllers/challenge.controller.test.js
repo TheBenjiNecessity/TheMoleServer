@@ -1,4 +1,4 @@
-import ChallengeControllerCreator from './challenge.controller';
+import ChallengeController from './challenge.controller';
 import RoomControllerCreator from './room.controller';
 import PathChallenge from '../models/challenges/path.challenge';
 import RoomService from '../services/room/roomcode.service';
@@ -11,7 +11,7 @@ test('Checks "raiseHand" method', () => {
 
 	let player = room.players[0];
 
-	let challengeController = ChallengeControllerCreator.getInstance();
+	let challengeController = ChallengeController.getInstance();
 	challengeController.raiseHand({ roomcode, player, role: 'test' });
 	let pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentChallenge;
 
@@ -35,7 +35,7 @@ test('Checks "agreeToRoles" method', () => {
 
 	let player = room.players[0];
 
-	let challengeController = ChallengeControllerCreator.getInstance();
+	let challengeController = ChallengeController.getInstance();
 	challengeController.agreeToRoles({ roomcode, player });
 	let pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentChallenge;
 
@@ -58,7 +58,7 @@ test('Checks "addPlayerVote" method', () => {
 
 	let player = room.players[0];
 
-	let challengeController = ChallengeControllerCreator.getInstance();
+	let challengeController = ChallengeController.getInstance();
 	challengeController.addPlayerVote({ roomcode, player });
 	let pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentChallenge;
 
@@ -76,13 +76,13 @@ test('Checks "removePlayerVote" method', () => {
 
 	expect(typeof pathChallenge.votedPlayers[player.name]).toBe('undefined');
 
-	ChallengeControllerCreator.getInstance().removePlayerVote({ roomcode, player });
+	ChallengeController.getInstance().removePlayerVote({ roomcode, player });
 	pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentChallenge;
 
 	expect(typeof pathChallenge.votedPlayers[player.name]).toBe('undefined');
 
-	ChallengeControllerCreator.getInstance().addPlayerVote({ roomcode, player });
-	ChallengeControllerCreator.getInstance().removePlayerVote({ roomcode, player });
+	ChallengeController.getInstance().addPlayerVote({ roomcode, player });
+	ChallengeController.getInstance().removePlayerVote({ roomcode, player });
 	pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentChallenge;
 
 	expect(typeof pathChallenge.votedPlayers[player.name]).toBe('undefined');
