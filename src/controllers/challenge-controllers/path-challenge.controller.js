@@ -1,5 +1,6 @@
 import RoomControllerCreator from '../room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
+import { PATH_CHALLENGE_EVENTS } from '../../models/challenges/path.challenge';
 
 const POINTS_FOR_CONTINUING = 7;
 
@@ -7,13 +8,13 @@ class PathChallengeControllerInstance {
 	constructor() {}
 
 	chooseChest({ roomcode, choice }) {
-		let event = 'choose-' + choice;
+		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.CHOOSE_LEFT : PATH_CHALLENGE_EVENTS.CHOOSE_RIGHT;
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'path-choose-chest', room);
 	}
 
 	addVoteForChest({ roomcode, player, choice }) {
-		let event = 'add-' + choice + '-vote';
+		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.ADD_LEFT_VOTE : PATH_CHALLENGE_EVENTS.ADD_RIGHT_VOTE;
 		let obj = { player };
 		let instance = RoomControllerCreator.getInstance();
 		let room = instance.performEventOnChallenge(roomcode, event, obj);
@@ -24,12 +25,12 @@ class PathChallengeControllerInstance {
 			let { contentsOfChosenChest } = pathChallenge;
 
 			if (contentsOfChosenChest === 'continue') {
-				instance.performEventOnChallenge(roomcode, 'move-to-new-row', obj);
+				instance.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.MOVE_TO_NEW_ROW, obj);
 				wsMessage = 'walker-continued';
 
 				if (pathChallenge.walkerIsDone) {
 					instance.addPoints(roomcode, POINTS_FOR_CONTINUING);
-					instance.performEventOnChallenge(roomcode, 'set-new-walker');
+					instance.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.SET_NEW_WALKER);
 					wsMessage = 'walker-done';
 				}
 			} else {
@@ -62,7 +63,7 @@ class PathChallengeControllerInstance {
 						break;
 				}
 
-				instance.performEventOnChallenge(roomcode, 'set-new-walker');
+				instance.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.SET_NEW_WALKER);
 			}
 		}
 
