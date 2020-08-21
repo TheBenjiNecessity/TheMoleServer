@@ -1,5 +1,5 @@
 import Room, { ROOM_STATE } from '../models/room.model';
-import ChallengeControllerCreator from '../controllers/challenge.controller';
+import ChallengeController from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 import RoomService from '../services/room/roomcode.service';
 
@@ -83,17 +83,15 @@ class RoomController {
 	}
 
 	performEventOnChallenge(roomcode, event, obj = {}) {
-		let room = this.rooms[roomcode];
-		room.currentEpisode.currentChallenge.performEvent(event, obj);
-		this.setRoom(room);
-		return room;
+		this.rooms[roomcode].currentEpisode.currentChallenge[event](obj);
+		return this.rooms[roomcode];
 	}
 
 	setupSocket(socket) {
 		socket.on('move-next', this.moveNext);
 		socket.on('quiz-done', this.quizDone);
 
-		ChallengeControllerCreator.getInstance().setupSocket(socket);
+		ChallengeController.getInstance().setupSocket(socket);
 	}
 }
 

@@ -1,15 +1,25 @@
 import RaisedHand from '../raisedHand.model';
 import { ROOM_MAX_PLAYERS } from '../room.model';
+import challengeData from './challenge.data';
 
 export const CHALLENGE_EVENTS = {
-	ADD_AGREED_PLAYER: 'add-agreed-player',
-	RAISE_HAND_FOR_PLAYER: 'raise-hand-for-player',
-	SET_VOTED_PLAYER: 'set-voted-player',
-	REMOVE_VOTED_PLAYER: 'remove-voted-player'
+	ADD_AGREED_PLAYER: 'addAgreedPlayer',
+	RAISE_HAND_FOR_PLAYER: 'raiseHandForPlayer',
+	SET_VOTED_PLAYER: 'setVotedPlayer',
+	REMOVE_VOTED_PLAYER: 'removeVotedPlayer'
+};
+
+export const CHALLENGE_STATES = {
+	ROLE_SELECTION: 'role-selection',
+	IN_GAME: 'game'
 };
 
 export default class Challenge {
-	constructor(room, title, type, description, maxPlayers, minPlayers, questions, state = 'roles') {
+	constructor(room, type = '') {
+		let { title, description, maxPlayers, minPlayers, questions, initialState, roles } = challengeData.find(
+			(c) => c.type === type
+		);
+
 		if (
 			maxPlayers > ROOM_MAX_PLAYERS ||
 			minPlayers > ROOM_MAX_PLAYERS ||
@@ -26,11 +36,16 @@ export default class Challenge {
 		this.description = description;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
+		this.roles = roles;
 		this.questions = questions.map((qd) => new Question(qd.text, qd.type, qd.choices));
-		this.state = state;
+		this.state = initialState;
 		this.agreedPlayers = [];
 		this.raisedHands = [];
 		this.votedPlayers = {};
+	}
+
+	get hasMajorityVoteForAgreedPlayers() {
+		return this.agreedPlayers.length >= this.room.players.filter((p) => !p.eliminated).length / 2;
 	}
 
 	canSupportNumPlayers(numPlayers) {
@@ -73,19 +88,10 @@ export default class Challenge {
 		}
 	}
 
-	performEvent(event, { player, role }) {
-		switch (event) {
-			case CHALLENGE_EVENTS.ADD_AGREED_PLAYER:
-				this.addAgreedPlayer(player);
-				break;
-			case CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER:
-				this.raiseHandForPlayer(player, role);
-				break;
-			case CHALLENGE_EVENTS.SET_VOTED_PLAYER:
-				this.setVotedPlayer(player);
-				break;
-			case CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER:
-				this.removeVotedPlayer(player);
+	moveNext() {
+		switch (this.state) {
+			case CHALLENGE_STATES.ROLE_SELECTION:
+				this.state = CHALLENGE_STATES.IN_GAME;
 				break;
 			default:
 				break;

@@ -5,25 +5,26 @@ import PlatterChallengeController from '../controllers/challenge-controllers/pla
 import PathChallengeController from './challenge-controllers/path-challenge.controller';
 import Challenge, { CHALLENGE_EVENTS } from '../models/challenges/challenge.model';
 
-class ChallengeController {
+class ChallengeControllerInstance {
 	constructor() {
 		this.challengeClasses = {};
 	}
 
 	raiseHand({ roomcode, player, role }) {
 		let event = CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER;
-		let obj = { player, role };
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player, role });
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'raise-hand', room);
 	}
 
 	agreeToRoles({ roomcode, player }) {
 		let event = CHALLENGE_EVENTS.ADD_AGREED_PLAYER;
-		let obj = { player };
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
 
-		if (room.currentEpisode.currentChallenge.agreedPlayers.length > room.players.length / 2) {
-			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', room);
+		if (room.currentEpisode.currentChallenge.hasMajorityVoteForAgreedPlayers) {
+			room.setRoles(room.currentEpisode.currentChallenge.raiseHands);
+			room.currentEpisode.currentChallenge.moveNext();
+			RoomControllerCreator.getInstance().setRoom(room);
+			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'challenge-move-next', room);
 		} else {
 			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'agree-to-roles', room);
 		}
@@ -31,29 +32,24 @@ class ChallengeController {
 
 	addPlayerVote({ roomcode, player }) {
 		let event = CHALLENGE_EVENTS.SET_VOTED_PLAYER;
-		let obj = { player };
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'voted-player', room);
 	}
 
 	removePlayerVote({ roomcode, player }) {
 		let event = CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER;
-		let obj = { player };
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, obj);
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'remove-voted-player', room);
 	}
 
 	setupSocket(socket) {
 		socket.on('raise-hand', this.raiseHand);
-
 		socket.on('agree-to-roles', this.agreeToRoles);
-
 		socket.on('add-player-vote', this.addPlayerVote);
-
 		socket.on('remove-player-vote', this.removePlayerVote);
 
-		for (let type of Object.keys(challengeData)) {
-			let childInstance = ChallengeControllerCreator.getChildInstance(type);
+		for (let type of challengeData.map((c) => c.type)) {
+			let childInstance = ChallengeController.getChildInstance(type);
 			if (childInstance) {
 				childInstance.setupSocket(socket);
 			}
@@ -61,15 +57,15 @@ class ChallengeController {
 	}
 }
 
-export default class ChallengeControllerCreator {
+export default class ChallengeController {
 	constructor() {}
 
 	static getInstance() {
-		if (!ChallengeControllerCreator.instance) {
-			ChallengeControllerCreator.instance = new ChallengeController();
+		if (!ChallengeController.instance) {
+			ChallengeController.instance = new ChallengeControllerInstance();
 		}
 
-		return ChallengeControllerCreator.instance;
+		return ChallengeController.instance;
 	}
 
 	static getChildInstance(type) {
