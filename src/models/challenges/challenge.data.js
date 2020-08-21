@@ -143,5 +143,21 @@ export default [
 				choices: [ 'Yes', 'No' ]
 			}
 		]
+	},
+	{
+		type: 'see-no-evil',
+		title: 'See No Evil',
+		description: '',
+		maxPlayers: 6,
+		minPlayers: 6,
+		roles: [ 'Speak', 'See', 'Hear' ],
+		initialState: 'role-selection',
+		questions: [
+			{
+				text: 'What was the role of the mole?',
+				type: 'choices',
+				choices: [ 'Speak', 'See', 'Hear' ]
+			}
+		]
 	}
 ];
