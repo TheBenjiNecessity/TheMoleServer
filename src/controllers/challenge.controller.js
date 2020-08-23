@@ -3,7 +3,7 @@ import challengeData from '../models/challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
 import PlatterChallengeController from '../controllers/challenge-controllers/platter-challenge.controller';
 import PathChallengeController from './challenge-controllers/path-challenge.controller';
-import Challenge, { CHALLENGE_EVENTS } from '../models/challenges/challenge.model';
+import Challenge, { CHALLENGE_EVENTS, CHALLENGE_STATES } from '../models/challenges/challenge.model';
 
 class ChallengeControllerInstance {
 	constructor() {
@@ -11,14 +11,24 @@ class ChallengeControllerInstance {
 	}
 
 	raiseHand({ roomcode, player, role }) {
+		let room = RoomControllerCreator.getInstance().getRoom(roomcode);
+		if (room.currentEpisode.currentChallenge.state !== CHALLENGE_STATES.ROLE_SELECTION) {
+			return;
+		}
+
 		let event = CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER;
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player, role });
+		room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player, role });
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'raise-hand', room);
 	}
 
 	agreeToRoles({ roomcode, player }) {
+		let room = RoomControllerCreator.getInstance().getRoom(roomcode);
+		if (room.currentEpisode.currentChallenge.state !== CHALLENGE_STATES.ROLE_SELECTION) {
+			return;
+		}
+
 		let event = CHALLENGE_EVENTS.ADD_AGREED_PLAYER;
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
+		room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
 
 		if (room.currentEpisode.currentChallenge.hasMajorityVoteForAgreedPlayers) {
 			room.setRoles(room.currentEpisode.currentChallenge.raiseHands);
