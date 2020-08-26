@@ -32,20 +32,13 @@ export default class PathChallenge extends Challenge {
 		return this.currentChestIndex >= this.chests.length;
 	}
 
-	get majorityVote() {
-		if (this.votes.left.length === this.votes.right.length) {
-			return null;
-		}
-
+	get hasMajorityVote() {
 		let majorityCount = (this.players.length - 1) / 2;
-		if (this.votes.left.length > majorityCount) {
-			return 'left';
-		} else if (this.votes.right.length > majorityCount) {
-			return 'right';
-		} else {
-			return null;
+		return (
+			this.votes.left.length !== this.votes.right.length &&
+			(this.votes.left.length > majorityCount || this.votes.right.length > majorityCount)
+		);
 		}
-	}
 
 	get challengeIsDone() {
 		return !this.walkers.length && !this.currentWalker;
