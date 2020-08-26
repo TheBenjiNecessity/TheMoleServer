@@ -69,8 +69,10 @@ class RoomController {
 	/* ===================================== Socket Events ===================================== */
 	moveNext({ roomcode }) {
 		if (this.rooms[roomcode].moveNext()) {
-			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
+			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
 		}
+
+		return null;
 	}
 
 	quizDone({ roomcode, player }) {
