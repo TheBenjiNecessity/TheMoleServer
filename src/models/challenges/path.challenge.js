@@ -12,6 +12,11 @@ export const PATH_CHALLENGE_EVENTS = {
 	SET_NEW_WALKER: 'setNewWalker'
 };
 
+export const PATH_CHALLENGE_STATES = {
+	WALKER_CHOOSING: 'walkerChoosing',
+	NON_WALKERS_VOTING: 'nonWalkersChoosing'
+};
+
 const type = 'path';
 const possibleValues = [
 	'exemption',
@@ -38,7 +43,7 @@ export default class PathChallenge extends Challenge {
 			this.votes.left.length !== this.votes.right.length &&
 			(this.votes.left.length > majorityCount || this.votes.right.length > majorityCount)
 		);
-		}
+	}
 
 	get challengeIsDone() {
 		return !this.walkers.length && !this.currentWalker;
@@ -96,6 +101,7 @@ export default class PathChallenge extends Challenge {
 		this.walkers = ArrayUtilsService.removeElementByValue(this.walkers, this.currentWalker);
 		this.currentChoice = null;
 		this.currentChestIndex = 0;
+		this.state = PATH_CHALLENGE_STATES.WALKER_CHOOSING;
 
 		let tempValues = ArrayUtilsService.shuffleArray(possibleValues);
 		for (let i = 0; i < 5; i++) {
@@ -113,28 +119,16 @@ export default class PathChallenge extends Challenge {
 		}
 	}
 
-	performEvent(event, { player, role }) {
-		switch (event) {
-			case 'choose-left':
-				this.chooseLeft();
+	moveNext() {
+		switch (this.state) {
+			case PATH_CHALLENGE_STATES.WALKER_CHOOSING:
+				this.state = PATH_CHALLENGE_STATES.NON_WALKERS_VOTING;
 				break;
-			case 'choose-right':
-				this.chooseRight();
-				break;
-			case 'add-left-vote':
-				this.addLeftVote();
-				break;
-			case 'add-right-vote':
-				this.addRightVote();
-				break;
-			case 'move-to-new-row':
-				this.moveToNewRow();
-				break;
-			case 'set-new-walker':
-				this.setNewWalker();
+			case PATH_CHALLENGE_STATES.NON_WALKERS_VOTING:
+				this.state = PATH_CHALLENGE_STATES.WALKER_CHOOSING;
 				break;
 			default:
-				super.performEvent(event, { player, role });
+				super.moveNext();
 				break;
 		}
 	}
