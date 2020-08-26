@@ -68,7 +68,7 @@ class PathChallengeControllerInstance {
 		}
 
 		if (pathChallenge.challengeIsDone) {
-			instance.moveNext({ roomcode });
+			return instance.moveNext({ roomcode });
 		} else {
 			room = instance.getRoom(roomcode);
 			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, wsMessage, room);
