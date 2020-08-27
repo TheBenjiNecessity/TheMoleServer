@@ -82,6 +82,10 @@ export default class PathChallenge extends Challenge {
 	}
 
 	addVote(player, direction) {
+		if (!this.currentWalker || player.name === this.currentWalker.name) {
+			return;
+		}
+
 		let foundPlayerVote = this.votes[direction].find((p) => p.name === player.name);
 		if (!foundPlayerVote) {
 			this.removeVotesForPlayer(player);
