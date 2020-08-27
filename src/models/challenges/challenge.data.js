@@ -150,7 +150,7 @@ export default [
 		description: '',
 		maxPlayers: 6,
 		minPlayers: 6,
-		roles: [ 'Speak', 'See', 'Hear' ],
+		roles: [ { name: 'Speak', numPlayers: 2 }, { name: 'See', numPlayers: 2 }, { name: 'Hear', numPlayers: 2 } ],
 		initialState: 'role-selection',
 		questions: [
 			{
