@@ -1,4 +1,5 @@
 import RaisedHand from '../raisedHand.model';
+import Role from '../role.model';
 import { ROOM_MAX_PLAYERS } from '../room.model';
 import challengeData from './challenge.data';
 
@@ -36,7 +37,7 @@ export default class Challenge {
 		this.description = description;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
-		this.roles = roles;
+		this.roles = roles.map((r) => new Role(r.name, r.numPlayers));
 		this.questions = questions.map((qd) => new Question(qd.text, qd.type, qd.choices));
 		this.state = initialState;
 		this.agreedPlayers = [];
@@ -46,6 +47,16 @@ export default class Challenge {
 
 	get hasMajorityVoteForAgreedPlayers() {
 		return this.agreedPlayers.length >= this.room.players.filter((p) => !p.eliminated).length / 2;
+	}
+
+	get raisedHandsAreValid() {
+		for (let role of this.roles) {
+			let raisedHandsOfRole = this.raisedHands.filter((rh) => rh.role === role.name);
+			if (raisedHandsOfRole.length !== role.numPlayers) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	canSupportNumPlayers(numPlayers) {
