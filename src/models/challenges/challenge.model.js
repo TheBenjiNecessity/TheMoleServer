@@ -68,6 +68,8 @@ export default class Challenge {
 		} else {
 			this.raisedHands.push(new RaisedHand(player, role));
 		}
+
+		this.agreedPlayers = [];
 	}
 
 	setVotedPlayer(player) {
