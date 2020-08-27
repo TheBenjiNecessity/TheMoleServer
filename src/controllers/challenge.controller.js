@@ -5,6 +5,14 @@ import PlatterChallengeController from '../controllers/challenge-controllers/pla
 import PathChallengeController from './challenge-controllers/path-challenge.controller';
 import Challenge, { CHALLENGE_EVENTS, CHALLENGE_STATES } from '../models/challenges/challenge.model';
 
+export const CHALLENGE_SOCKET_EVENTS = {
+	RAISE_HAND: 'raise-hand',
+	MOVE_NEXT: 'challenge-move-next',
+	AGREE_TO_ROLES: 'agree-to-roles',
+	VOTED_PLAYER: 'voted-player',
+	REMOVE_VOTED_PLAYER: 'remove-voted-player'
+};
+
 class ChallengeControllerInstance {
 	constructor() {
 		this.challengeClasses = {};
@@ -18,12 +26,19 @@ class ChallengeControllerInstance {
 
 		let event = CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER;
 		room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player, role });
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'raise-hand', room);
+
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.RAISE_HAND, room);
 	}
 
+	/**
+	 * Received when a player clicks on the "agree to roles" button on the roles page. Does not accept
+	 * input if the role selection is invalid.
+	 * @param {*} obj
+	 */
 	agreeToRoles({ roomcode, player }) {
 		let room = RoomControllerCreator.getInstance().getRoom(roomcode);
-		if (room.currentEpisode.currentChallenge.state !== CHALLENGE_STATES.ROLE_SELECTION) {
+		let { currentChallenge } = room.currentEpisode;
+		if (currentChallenge.state !== CHALLENGE_STATES.ROLE_SELECTION || !currentChallenge.raisedHandsAreValid) {
 			return;
 		}
 
@@ -34,22 +49,30 @@ class ChallengeControllerInstance {
 			room.setRoles(room.currentEpisode.currentChallenge.raisedHands);
 			room.currentEpisode.currentChallenge.moveNext();
 			RoomControllerCreator.getInstance().setRoom(room);
-			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'challenge-move-next', room);
+			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.MOVE_NEXT, room);
 		} else {
-			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'agree-to-roles', room);
+			return WebSocketServiceCreator.getInstance().sendToRoom(
+				roomcode,
+				CHALLENGE_SOCKET_EVENTS.AGREE_TO_ROLES,
+				room
+			);
 		}
 	}
 
 	addPlayerVote({ roomcode, player }) {
 		let event = CHALLENGE_EVENTS.SET_VOTED_PLAYER;
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'voted-player', room);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.VOTED_PLAYER, room);
 	}
 
 	removePlayerVote({ roomcode, player }) {
 		let event = CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER;
 		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'remove-voted-player', room);
+		return WebSocketServiceCreator.getInstance().sendToRoom(
+			roomcode,
+			CHALLENGE_SOCKET_EVENTS.REMOVE_VOTED_PLAYER,
+			room
+		);
 	}
 
 	setupSocket(socket) {
