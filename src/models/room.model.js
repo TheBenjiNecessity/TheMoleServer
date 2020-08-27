@@ -215,6 +215,10 @@ export default class Room {
 	}
 
 	setRoles(raiseHands) {
+		if (!this.currentEpisode.currentChallenge.raisedHandsAreValid) {
+			return;
+		}
+
 		for (let i = 0; i < this.players.length; i++) {
 			this.players[i].currentRole = null;
 			let raisedHand = raiseHands.find((rh) => rh.player.name === this.players[i].name);
