@@ -141,7 +141,7 @@ export default class Room {
 				break;
 			case ROOM_STATE.WELCOME:
 				// If going from welcome to episode start then generate the current episode
-				this.currentEpisode = this.generateCurrentEpisode();
+				this.generateCurrentEpisode();
 				this.state = ROOM_STATE.EPISODE_START;
 				break;
 			case ROOM_STATE.EPISODE_START:
@@ -181,7 +181,7 @@ export default class Room {
 				break;
 			case ROOM_STATE.EXECUTION_WRAPUP:
 				this.state = ROOM_STATE.EPISODE_START;
-				this.currentEpisode = this.generateCurrentEpisode();
+				this.generateCurrentEpisode();
 				break;
 			default:
 				return false;
@@ -203,7 +203,7 @@ export default class Room {
 			challenges.push(ChallengeService.getChallengeForType(numRestrictedChallenges[0].type, this));
 		}
 
-		return new Episode(this.playersStillPlaying.length, challenges, this.unaskedQuestions);
+		this.currentEpisode = new Episode(this.playersStillPlaying.length, challenges, this.unaskedQuestions);
 	}
 
 	chooseMole() {
