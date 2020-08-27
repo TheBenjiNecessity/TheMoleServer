@@ -1,17 +1,15 @@
-import ArrayUtilsService from '../utils/array-utils.service';
-import challengeData from '../../models/challenges/challenge.data';
 import PathChallenge from '../../models/challenges/path.challenge';
 import PlatterChallenge from '../../models/challenges/platter.challenge';
 
 export default class ChallengeService {
 	constructor() {}
 
-	static getChallengeForType(type, room) {
+	static getChallengeForType(type, episode) {
 		switch (type) {
 			case 'path':
-				return new PathChallenge(room);
+				return new PathChallenge(episode);
 			case 'platter':
-				return new PlatterChallenge(room);
+				return new PlatterChallenge(episode);
 			default:
 				return null;
 		}

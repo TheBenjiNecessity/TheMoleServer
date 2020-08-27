@@ -49,13 +49,10 @@ export default class PathChallenge extends Challenge {
 		return !this.walkers.length && !this.currentWalker;
 	}
 
-	constructor(room) {
-		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData.find(
-			(c) => c.type === type
-		);
-		super(room, title, type, description, maxPlayers, minPlayers, questions, initialState);
+	constructor(episode) {
+		super(episode, type);
 
-		this.players = room.players;
+		this.players = episode.players;
 		this.walkers = this.players;
 
 		this.setNewWalker();
