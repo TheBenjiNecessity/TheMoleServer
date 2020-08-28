@@ -46,7 +46,6 @@ class ChallengeControllerInstance {
 		room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
 
 		if (room.currentEpisode.currentChallenge.hasMajorityVoteForAgreedPlayers) {
-			room.setRoles(room.currentEpisode.currentChallenge.raisedHands);
 			room.currentEpisode.currentChallenge.moveNext();
 			RoomControllerCreator.getInstance().setRoom(room);
 			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.MOVE_NEXT, room);

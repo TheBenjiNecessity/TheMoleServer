@@ -101,9 +101,24 @@ export default class Challenge {
 		}
 	}
 
+	setRoles() {
+		if (!this.raisedHandsAreValid) {
+			return;
+		}
+
+		for (let i = 0; i < this.players.length; i++) {
+			this.players[i].currentRole = null;
+			let raisedHand = this.raiseHands.find((rh) => rh.player.name === this.players[i].name);
+			if (raisedHand) {
+				this.players[i].currentRole = raisedHand.role;
+			}
+		}
+	}
+
 	moveNext() {
 		switch (this.state) {
 			case CHALLENGE_STATES.ROLE_SELECTION:
+				this.setRoles();
 				this.state = CHALLENGE_STATES.IN_GAME;
 				break;
 			default:
