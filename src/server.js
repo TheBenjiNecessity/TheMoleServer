@@ -7,6 +7,9 @@ var cors = require('cors');
 import { RequestServiceCreator } from './services/request.service';
 import WebSocketServiceCreator from './services/websocket.service';
 import RoomControllerCreator from './controllers/room.controller';
+import initExtensions from './extensions/main';
+
+initExtensions();
 
 const app = require('express')();
 const server = http.createServer(app);
