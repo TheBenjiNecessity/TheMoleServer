@@ -200,10 +200,12 @@ export default class Room {
 				(c) => !challenges.map((used) => used.type).includes(c.type)
 			);
 			numRestrictedChallenges = ArrayUtilsService.shuffleArray(numRestrictedChallenges);
-			challenges.push(ChallengeService.getChallengeForType(numRestrictedChallenges[0].type, this));
+			challenges.push(
+				ChallengeService.getChallengeForType(numRestrictedChallenges[0].type, this.playersStillPlaying)
+			);
 		}
 
-		this.currentEpisode = new Episode(this.playersStillPlaying.length, challenges, this.unaskedQuestions);
+		this.currentEpisode = new Episode(this.playersStillPlaying, challenges, this.unaskedQuestions);
 	}
 
 	chooseMole() {

@@ -1,6 +1,4 @@
 import Challenge from './challenge.model';
-
-import challengeData from './challenge.data'; // Lang?
 import ArrayUtilsService from '../../services/utils/array-utils.service';
 
 export const PATH_CHALLENGE_EVENTS = {
@@ -29,6 +27,15 @@ const possibleValues = [
 ];
 
 export default class PathChallenge extends Challenge {
+	constructor(players) {
+		super(players, type);
+
+		this.players = players;
+		this.walkers = JSON.parse(JSON.stringify(this.players));
+
+		this.setNewWalker();
+	}
+
 	get contentsOfChosenChest() {
 		return this.chests[this.currentChestIndex][this.currentChoice];
 	}
@@ -47,15 +54,6 @@ export default class PathChallenge extends Challenge {
 
 	get challengeIsDone() {
 		return !this.walkers.length && !this.currentWalker;
-	}
-
-	constructor(episode) {
-		super(episode, type);
-
-		this.players = episode.players;
-		this.walkers = this.players;
-
-		this.setNewWalker();
 	}
 
 	chooseLeft() {
@@ -79,7 +77,7 @@ export default class PathChallenge extends Challenge {
 	}
 
 	addVote(player, direction) {
-		if (!this.currentWalker || player.name === this.currentWalker.name) {
+		if (!this.currentWalker || player.name === this.currentWalker.name || this.currentChoice === null) {
 			return;
 		}
 

@@ -11,12 +11,13 @@ export const CHALLENGE_EVENTS = {
 };
 
 export const CHALLENGE_STATES = {
+	CHALLENGE_EXPLANATION: 'challenge-explanation',
 	ROLE_SELECTION: 'role-selection',
 	IN_GAME: 'game'
 };
 
 export default class Challenge {
-	constructor(episode, type = '') {
+	constructor(players, type = '') {
 		let { title, description, maxPlayers, minPlayers, questions, initialState, roles } = challengeData.find(
 			(c) => c.type === type
 		);
@@ -31,7 +32,7 @@ export default class Challenge {
 			throw 'Min/Max players out of acceptable range';
 		}
 
-		this.currentEpisode = episode;
+		this.players = players;
 		this.title = title;
 		this.type = type;
 		this.description = description;
@@ -46,7 +47,7 @@ export default class Challenge {
 	}
 
 	get hasMajorityVoteForAgreedPlayers() {
-		return this.agreedPlayers.length >= this.currentEpisode.players.length / 2;
+		return this.agreedPlayers.length >= this.players.length / 2;
 	}
 
 	get raisedHandsAreValid() {
