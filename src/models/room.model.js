@@ -3,21 +3,7 @@ import ArrayUtilsService from '../services/utils/array-utils.service';
 import EpisodeService from '../services/game/episode.service';
 import ChallengeService from '../services/game/challenge.service';
 import challengeData from './challenges/challenge.data';
-
-export const MAX_CHALLENGE_QUESTIONS = 5;
-export const ROOM_MAX_PLAYERS = 10;
-export const ROOM_STATE = {
-	LOBBY: 'lobby',
-	WELCOME: 'game-welcome',
-	EPISODE_START: 'episode-start',
-	CHALLENGE_INTERMISSION: 'challenge-intermission',
-	IN_CHALLENGE: 'in-episode',
-	PRE_QUIZ_INTERMISSION: 'pre-quiz-intermission',
-	IN_QUIZ: 'in-episode',
-	POST_QUIZ_INTERMISSION: 'post-quiz-intermission',
-	EXECUTION: 'execution',
-	EXECUTION_WRAPUP: 'execution-wrapup'
-};
+import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
 
 export default class Room {
 	constructor(roomcode) {

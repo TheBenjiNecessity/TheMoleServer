@@ -1,9 +1,9 @@
 import Question from '../../models/quiz/question.model';
 import ArrayUtilsService from '../utils/array-utils.service';
 import Quiz from '../../models/quiz/quiz.model';
+import { MAX_CHALLENGE_QUESTIONS } from '../../contants/room.constants';
 
 export const NUM_QUESTIONS = 10;
-export const MAX_CHALLENGE_QUESTIONS = 5;
 export const ranks = [ 'first', 'second', 'third', 'forth', 'fifth', 'sixth', 'seventh', 'eigth', 'nineth', 'tenth' ];
 
 export default class QuizService {

@@ -1,7 +1,7 @@
 import RaisedHand from '../raisedHand.model';
 import Role from '../role.model';
-import { ROOM_MAX_PLAYERS } from '../room.model';
 import challengeData from './challenge.data';
+import { ROOM_MAX_PLAYERS } from '../../contants/room.constants';
 
 export const CHALLENGE_EVENTS = {
 	ADD_AGREED_PLAYER: 'addAgreedPlayer',
