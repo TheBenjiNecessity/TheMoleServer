@@ -1,5 +1,5 @@
-import ChallengeController from './challenge.controller';
-import RoomControllerCreator from './room.controller';
+import ChallengeController from '../controllers/challenge.controller';
+import RoomControllerCreator from '../controllers/room.controller';
 import PathChallenge from '../models/challenges/path.challenge';
 import RoomService from '../services/room/roomcode.service';
 import Episode from '../models/episode.model';

@@ -1,10 +1,10 @@
-import PathChallengeController from './path-challenge.controller';
-import RoomControllerCreator from '../room.controller';
-import PathChallenge from '../../models/challenges/path.challenge';
-import RoomService from '../../services/room/roomcode.service';
-import Episode from '../../models/episode.model';
-import questionData from '../../models/quiz/question.data';
-import Question from '../../models/quiz/question.model';
+import PathChallengeController from '../controllers/challenge-controllers/path-challenge.controller';
+import RoomControllerCreator from '../controllers/room.controller';
+import PathChallenge from '../models/challenges/path.challenge';
+import RoomService from '../services/room/roomcode.service';
+import Episode from '../models/episode.model';
+import questionData from '../models/quiz/question.data';
+import Question from '../models/quiz/question.model';
 
 test('Checks "chooseChest" method', () => {
 	let roomcode = 'TEST';

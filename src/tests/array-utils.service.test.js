@@ -1,4 +1,4 @@
-import ArrayUtilsService from './array-utils.service';
+import ArrayUtilsService from '../services/utils/array-utils.service';
 
 test('Checks shuffleArray method', () => {
 	let unshuffledArray = [ 1, 2, 3, 4, 5, 6 ];

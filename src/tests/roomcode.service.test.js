@@ -1,4 +1,4 @@
-import RoomService, { MAX_LETTERS, BAD_WORDS } from './roomcode.service';
+import RoomService, { MAX_LETTERS, BAD_WORDS } from '../services/room/roomcode.service';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
 

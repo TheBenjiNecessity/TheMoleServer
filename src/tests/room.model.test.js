@@ -1,4 +1,4 @@
-import Room from './room.model';
+import Room from '../models/room.model';
 import Player from '../models/player.model';
 import RoomService from '../services/room/roomcode.service';
 
