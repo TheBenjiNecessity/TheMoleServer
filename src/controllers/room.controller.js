@@ -1,7 +1,7 @@
-import Room, { ROOM_STATE } from '../models/room.model';
+import Room from '../models/room.model';
 import ChallengeController from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
-import RoomService from '../services/room/roomcode.service';
+import RoomService from '../services/room/room.service';
 
 class RoomController {
 	constructor() {
