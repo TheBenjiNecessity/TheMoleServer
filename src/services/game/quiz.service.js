@@ -2,9 +2,7 @@ import Question from '../../models/quiz/question.model';
 import ArrayUtilsService from '../utils/array-utils.service';
 import Quiz from '../../models/quiz/quiz.model';
 import { MAX_CHALLENGE_QUESTIONS } from '../../contants/room.constants';
-
-export const NUM_QUESTIONS = 10;
-export const ranks = [ 'first', 'second', 'third', 'forth', 'fifth', 'sixth', 'seventh', 'eigth', 'nineth', 'tenth' ];
+import { MAX_NUM_QUESTIONS, RANKS } from '../../contants/quiz.constants';
 
 export default class QuizService {
 	constructor() {}
@@ -23,7 +21,7 @@ export default class QuizService {
 				return new Question(text, type, playersStillPlaying.map((p) => p.name));
 			case 'rank':
 				let numPlayers = playersStillPlaying.length;
-				return new Question(text, type, ranks.splice(numPlayers, ranks.length - numPlayers));
+				return new Question(text, type, RANKS.slice(0, numPlayers));
 			default:
 				return new Question(text, type, choices);
 		}
@@ -36,7 +34,7 @@ export default class QuizService {
 
 		challengeQuestions = challengeQuestions.slice(0, MAX_CHALLENGE_QUESTIONS);
 		questions = challengeQuestions;
-		unusedGeneralQuestions = unusedGeneralQuestions.slice(0, NUM_QUESTIONS - questions.length - 1);
+		unusedGeneralQuestions = unusedGeneralQuestions.slice(0, MAX_NUM_QUESTIONS - questions.length - 1);
 		questions = questions.concat(unusedGeneralQuestions);
 		questions = ArrayUtilsService.shuffleArray(questions);
 		questions.push(QuizService.getFinalQuizQuestion(playersStillPlaying));
