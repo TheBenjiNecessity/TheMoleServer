@@ -1,4 +1,4 @@
-import EpisodeService from './episode.service';
+import EpisodeService from '../services/game/episode.service';
 
 test('Checks getNumChallenges', () => {
 	const MAX = 100;

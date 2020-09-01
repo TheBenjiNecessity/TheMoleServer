@@ -1,6 +1,6 @@
-import Challenge from './challenge.model';
-import Player from '../player.model';
-import RoomService from '../../services/room/roomcode.service';
+import Challenge from '../models/challenges/challenge.model';
+import Player from '../models/player.model';
+import RoomService from '../services/room/roomcode.service';
 
 test('Checks "canSupportNumPlayers" method', () => {
 	let room = RoomService.getTestRoomWithTenPlayers();

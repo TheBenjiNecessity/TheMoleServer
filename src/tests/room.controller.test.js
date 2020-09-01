@@ -1,4 +1,4 @@
-import RoomControllerCreator from './room.controller';
+import RoomControllerCreator from '../controllers/room.controller';
 import Room from '../models/room.model';
 import Player from '../models/player.model';
 import RoomService from '../services/room/roomcode.service';
