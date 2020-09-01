@@ -4,6 +4,7 @@ import EpisodeService from '../services/game/episode.service';
 import ChallengeService from '../services/game/challenge.service';
 import challengeData from './challenges/challenge.data';
 import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
+import Episode from '../models/episode.model';
 
 export default class Room {
 	constructor(roomcode) {
@@ -183,12 +184,23 @@ export default class Room {
 		for (let i = 0; i < this.numChallengesPerEpisode; i++) {
 			let numRestrictedChallenges = this.numRestrictedChallenges;
 			numRestrictedChallenges = numRestrictedChallenges.filter(
-				(c) => !challenges.map((used) => used.type).includes(c.type)
+				(c) => (challenges.length ? !challenges.map((used) => used.type).includes(c.type) : true)
 			);
+
+			if (numRestrictedChallenges.length <= 0) {
+				continue;
+			}
+
 			numRestrictedChallenges = ArrayUtilsService.shuffleArray(numRestrictedChallenges);
-			challenges.push(
-				ChallengeService.getChallengeForType(numRestrictedChallenges[0].type, this.playersStillPlaying)
+
+			let challenge = ChallengeService.getChallengeForType(
+				numRestrictedChallenges[0].type,
+				this.playersStillPlaying
 			);
+
+			if (challenge) {
+				challenges.push(challenge);
+			}
 		}
 
 		this.currentEpisode = new Episode(this.playersStillPlaying, challenges, this.unaskedQuestions);
