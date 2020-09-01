@@ -74,7 +74,7 @@ test('Tests adding player to full room', () => {
 test('Tests adding player to room in progress', () => {
 	let room = RoomService.getTestRoomWithFivePlayers();
 	let newTestPlayer = new Player('test11');
-	room.state = 'game-welcome';
+	room.isInProgress = true;
 	expect(room.addPlayer(newTestPlayer)).toBe(false);
 	expect(room.players.length).toBe(5);
 });
@@ -183,10 +183,8 @@ test('Tests removeObjectsFromPlayer (black-exemption)', () => {
 test('Tests moveNext', () => {
 	let room = RoomService.getTestRoomWithFivePlayers();
 	expect(room.state).toBe('lobby');
-	expect(room.moveNext()).toBe(true);
+	room.moveNext();
 	expect(room.state).toBe('game-welcome');
-	expect(room.moveNext()).toBe(true);
+	room.moveNext();
 	expect(room.state).toBe('episode-start');
 });
-
-test('Tests getQuiz', () => {});

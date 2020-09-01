@@ -1,17 +1,53 @@
-import PathChallenge from './path.challenge';
+import PathChallenge, { PATH_CHALLENGE_STATES } from './path.challenge';
 import RoomService from '../../services/room/roomcode.service';
 
-test('Checks getters/setters', () => {
+test('Checks initializing challenge model', () => {
 	let room = RoomService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room);
-
-	expect(typeof pathChallenge.contentsOfChosenChest).toBe('undefined');
-	expect(pathChallenge.walkerIsDone).toBe(false);
-	expect(pathChallenge.majorityVote).toBe(null);
+	let pathChallenge = new PathChallenge(room.playersStillPlaying);
+	expect(Array.isArray(pathChallenge.chests)).toBe(true);
+	expect(pathChallenge.chests.length).toBe(5);
 
 	for (let chest of pathChallenge.chests) {
 		expect(chest.left === 'continue' || chest.right === 'continue').toBe(true);
 	}
+
+	expect(Array.isArray(pathChallenge.votes.left)).toBe(true);
+	expect(Array.isArray(pathChallenge.votes.right)).toBe(true);
+	expect(pathChallenge.votes.left.length).toBe(0);
+	expect(pathChallenge.votes.right.length).toBe(0);
+
+	expect(Array.isArray(pathChallenge.players)).toBe(true);
+	expect(pathChallenge.players.length).toBe(10);
+
+	expect(Array.isArray(pathChallenge.walkers)).toBe(true);
+	expect(pathChallenge.walkers.length).toBe(9);
+
+	let { playersStillPlaying } = room;
+	let playerNamesFromRoom = playersStillPlaying.map((p) => p.name);
+	expect(playersStillPlaying.length).toBe(pathChallenge.players.length);
+	for (let i = 0; i < pathChallenge.players.length; i++) {
+		let player = pathChallenge.players[i];
+		expect(playerNamesFromRoom.indexOf(player.name) >= 0).toBe(true);
+	}
+
+	for (let i = 0; i < playersStillPlaying.length - 1; i++) {
+		let walker = pathChallenge.walkers[i];
+		expect(playerNamesFromRoom.indexOf(walker.name) >= 0).toBe(true);
+	}
+
+	expect(pathChallenge.players.map((p) => p.name).indexOf(pathChallenge.currentWalker.name) >= 0).toBe(true);
+	expect(pathChallenge.currentChoice).toBe(null);
+	expect(pathChallenge.currentChestIndex).toBe(0);
+	expect(pathChallenge.state).toBe(PATH_CHALLENGE_STATES.WALKER_CHOOSING);
+});
+
+test('Checks getters/setters', () => {
+	let room = RoomService.getTestRoomWithTenPlayers();
+	let pathChallenge = new PathChallenge(room.playersStillPlaying);
+
+	expect(typeof pathChallenge.contentsOfChosenChest).toBe('undefined');
+	expect(pathChallenge.walkerIsDone).toBe(false);
+	expect(pathChallenge.hasMajorityVote).toBe(false);
 
 	pathChallenge.currentChestIndex = 0;
 	pathChallenge.currentChoice = 'left';
@@ -22,8 +58,6 @@ test('Checks getters/setters', () => {
 		{ left: 'two jokers', right: 'continue' },
 		{ left: 'three jokers', right: 'continue' }
 	];
-
-	expect(pathChallenge.majorityVote).toBe(null);
 
 	pathChallenge.votes.left = [];
 	pathChallenge.votes.left.push(room.players[0]);
@@ -39,7 +73,7 @@ test('Checks getters/setters', () => {
 	pathChallenge.votes.right.push(room.players[8]);
 	pathChallenge.votes.right.push(room.players[9]);
 
-	expect(pathChallenge.majorityVote).toBe('right');
+	expect(pathChallenge.hasMajorityVote).toBe(true);
 
 	pathChallenge.votes.left = [];
 	pathChallenge.votes.left.push(room.players[0]);
@@ -55,7 +89,7 @@ test('Checks getters/setters', () => {
 	pathChallenge.votes.right.push(room.players[8]);
 	pathChallenge.votes.right.push(room.players[9]);
 
-	expect(pathChallenge.majorityVote).toBe('left');
+	expect(pathChallenge.hasMajorityVote).toBe(true);
 
 	pathChallenge.votes.left = [];
 	pathChallenge.votes.left.push(room.players[0]);
@@ -71,7 +105,7 @@ test('Checks getters/setters', () => {
 	pathChallenge.votes.right.push(room.players[8]);
 	pathChallenge.votes.right.push(room.players[9]);
 
-	expect(pathChallenge.majorityVote).toBe(null);
+	expect(pathChallenge.hasMajorityVote).toBe(false);
 
 	expect(pathChallenge.contentsOfChosenChest).toBe('continue');
 
@@ -118,7 +152,7 @@ test('Checks getters/setters', () => {
 
 test('Checks walker choices', () => {
 	let room = RoomService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room);
+	let pathChallenge = new PathChallenge(room.playersStillPlaying);
 
 	expect(pathChallenge.currentChoice).toBe(null);
 
@@ -133,7 +167,7 @@ test('Checks walker choices', () => {
 
 test('Checks walker choices', () => {
 	let room = RoomService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room);
+	let pathChallenge = new PathChallenge(room.playersStillPlaying);
 
 	expect(pathChallenge.currentChestIndex).toBe(0);
 	pathChallenge.moveToNewRow();
@@ -150,30 +184,48 @@ test('Checks walker choices', () => {
 
 test('Checks addLeftVote/addRightVote', () => {
 	let room = RoomService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room);
+	let pathChallenge = new PathChallenge(room.playersStillPlaying);
+
+	pathChallenge.currentWalker = room.players[0];
+	pathChallenge.walkers = room.players.slice(1, room.players.length - 1);
 
 	expect(pathChallenge.votes.left.length).toBe(0);
 	expect(pathChallenge.votes.right.length).toBe(0);
 
-	pathChallenge.addLeftVote(room.players[0]);
-	pathChallenge.addRightVote(room.players[1]);
-
-	expect(pathChallenge.votes.left.length).toBe(1);
-	expect(pathChallenge.votes.right.length).toBe(1);
-	expect(pathChallenge.votes.left[0].name).toBe(room.players[0].name);
-	expect(pathChallenge.votes.right[0].name).toBe(room.players[1].name);
-
-	pathChallenge.addRightVote(room.players[0]);
-
+	//current choice hasn't been set yet
+	pathChallenge.addLeftVote(room.players[1]);
 	expect(pathChallenge.votes.left.length).toBe(0);
-	expect(pathChallenge.votes.right.length).toBe(2);
-	expect(pathChallenge.votes.right[0].name).toBe(room.players[1].name);
-	expect(pathChallenge.votes.right[1].name).toBe(room.players[0].name);
+
+	pathChallenge.addRightVote(room.players[1]);
+	expect(pathChallenge.votes.right.length).toBe(0);
+
+	pathChallenge.currentChoice = 'left';
+
+	// player[0] is the walker and so cannot be voting
+	pathChallenge.addLeftVote(room.players[0]);
+	expect(pathChallenge.votes.left.length).toBe(0);
+	pathChallenge.addRightVote(room.players[0]);
+	expect(pathChallenge.votes.right.length).toBe(0);
+
+	// good vote
+	pathChallenge.addLeftVote(room.players[1]);
+	expect(pathChallenge.votes.left.length).toBe(1);
+	pathChallenge.addRightVote(room.players[2]);
+	expect(pathChallenge.votes.right.length).toBe(1);
+
+	// votes should swap when same player swaps their vote
+	pathChallenge.votes = { left: [], right: [] };
+	pathChallenge.addLeftVote(room.players[1]);
+	expect(pathChallenge.votes.left.length).toBe(1);
+	expect(pathChallenge.votes.right.length).toBe(0);
+	pathChallenge.addRightVote(room.players[1]);
+	expect(pathChallenge.votes.left.length).toBe(0);
+	expect(pathChallenge.votes.right.length).toBe(1);
 });
 
 test('Checks setNewWalker', () => {
 	let room = RoomService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room);
+	let pathChallenge = new PathChallenge(room.playersStillPlaying);
 
 	pathChallenge.currentChestIndex = 1;
 	pathChallenge.currentChoice = 'left';
@@ -196,3 +248,101 @@ test('Checks setNewWalker', () => {
 	expect(pathChallenge.currentChestIndex).toBe(0);
 	expect(pathChallenge.currentChoice).toBe(null);
 });
+
+/*
+get contentsOfChosenChest() {
+	return this.chests[this.currentChestIndex][this.currentChoice];
+}
+
+get walkerIsDone() {
+	return this.currentChestIndex >= this.chests.length;
+}
+
+get hasMajorityVote() {
+	let majorityCount = (this.players.length - 1) / 2;
+	return (
+		this.votes.left.length !== this.votes.right.length &&
+		(this.votes.left.length > majorityCount || this.votes.right.length > majorityCount)
+	);
+}
+
+get challengeIsDone() {
+	return !this.walkers.length && !this.currentWalker;
+}
+
+chooseLeft() {
+	this.currentChoice = 'left';
+}
+
+chooseRight() {
+	this.currentChoice = 'right';
+}
+
+moveToNewRow() {
+	return this.currentChestIndex++;
+}
+
+addLeftVote(player) {
+	this.addVote(player, 'left');
+}
+
+addRightVote(player) {
+	this.addVote(player, 'right');
+}
+
+addVote(player, direction) {
+	if (!this.currentWalker || player.name === this.currentWalker.name || this.currentChoice === null) {
+		return;
+	}
+
+	let foundPlayerVote = this.votes[direction].find((p) => p.name === player.name);
+	if (!foundPlayerVote) {
+		this.removeVotesForPlayer(player);
+		this.votes[direction].push(player);
+	}
+}
+
+removeVotesForPlayer(player) {
+	this.votes.left = this.votes.left.filter((p) => p.name !== player.name);
+	this.votes.right = this.votes.right.filter((p) => p.name !== player.name);
+}
+
+setNewWalker() {
+	this.votes = { left: [], right: [] };
+	this.chests = [];
+	this.currentWalker = ArrayUtilsService.getRandomElement(this.walkers);
+	this.walkers = ArrayUtilsService.removeElementByValue(this.walkers, this.currentWalker);
+	this.currentChoice = null;
+	this.currentChestIndex = 0;
+	this.state = PATH_CHALLENGE_STATES.WALKER_CHOOSING;
+
+	let tempValues = ArrayUtilsService.shuffleArray(possibleValues);
+	for (let i = 0; i < 5; i++) {
+		let value = tempValues.pop();
+		let isLeftChest = Math.floor(Math.random() * 2);
+		let chestRow = { left: 'continue', right: 'continue' };
+
+		if (isLeftChest) {
+			chestRow.left = value;
+		} else {
+			chestRow.right = value;
+		}
+
+		this.chests.push(chestRow);
+	}
+}
+
+moveNext() {
+	switch (this.state) {
+		case PATH_CHALLENGE_STATES.WALKER_CHOOSING:
+			this.state = PATH_CHALLENGE_STATES.NON_WALKERS_VOTING;
+			break;
+		case PATH_CHALLENGE_STATES.NON_WALKERS_VOTING:
+			this.state = PATH_CHALLENGE_STATES.WALKER_CHOOSING;
+			break;
+		default:
+			super.moveNext();
+			break;
+	}
+}
+*/
