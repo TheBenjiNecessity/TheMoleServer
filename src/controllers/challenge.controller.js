@@ -60,13 +60,13 @@ class ChallengeControllerInstance {
 
 	addPlayerVote({ roomcode, player }) {
 		let event = CHALLENGE_EVENTS.SET_VOTED_PLAYER;
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, player);
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.VOTED_PLAYER, room);
 	}
 
 	removePlayerVote({ roomcode, player }) {
 		let event = CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER;
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, player);
 		return WebSocketServiceCreator.getInstance().sendToRoom(
 			roomcode,
 			CHALLENGE_SOCKET_EVENTS.REMOVE_VOTED_PLAYER,
