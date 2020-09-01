@@ -1,7 +1,8 @@
 import RaisedHand from '../raisedHand.model';
 import Role from '../role.model';
-import challengeData from './challenge.data';
+
 import { ROOM_MAX_PLAYERS } from '../../contants/room.constants';
+import Question from '../quiz/question.model';
 
 export const CHALLENGE_EVENTS = {
 	ADD_AGREED_PLAYER: 'addAgreedPlayer',
@@ -17,11 +18,7 @@ export const CHALLENGE_STATES = {
 };
 
 export default class Challenge {
-	constructor(players, type = '') {
-		let { title, description, maxPlayers, minPlayers, questions, initialState, roles } = challengeData.find(
-			(c) => c.type === type
-		);
-
+	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState, roles, type) {
 		if (
 			maxPlayers > ROOM_MAX_PLAYERS ||
 			minPlayers > ROOM_MAX_PLAYERS ||
