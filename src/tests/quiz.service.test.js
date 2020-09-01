@@ -1,5 +1,5 @@
 import QuizService from '../services/game/quiz.service';
-import RoomService from '../services/room/roomcode.service';
+import RoomSampleService from '../tests/room.sample';
 import { MAX_NUM_QUESTIONS } from '../contants/quiz.constants';
 import questionData from '../models/quiz/question.data';
 import challengeData from '../models/challenges/challenge.data';
@@ -7,7 +7,7 @@ import Question from '../models/quiz/question.model';
 import ArrayUtilsService from '../services/utils/array-utils.service';
 
 test('Checks generateQuiz method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let challengeQuestions = ArrayUtilsService.array2dTo1d(challengeData.map((c) => c.questions)).map(
 		(q) => new Question(q.text, q.type, q.choices)
 	);
@@ -20,7 +20,7 @@ test('Checks generateQuiz method', () => {
 });
 
 test('Checks getFinalQuizQuestion method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let finalQuestion = QuizService.getFinalQuizQuestion(room.playersStillPlaying);
 	expect(finalQuestion.text).toBe('Who is the mole?');
 	expect(finalQuestion.type).toBe('player');
@@ -39,7 +39,7 @@ test('Checks getFinalQuizQuestion method', () => {
 });
 
 test('Checks createQuestion method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 
 	//'player'
 	let playerQuestion = QuizService.createQuestion(room.playersStillPlaying, 'Test text', 'player', []);

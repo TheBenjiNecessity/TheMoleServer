@@ -1,13 +1,14 @@
 import RoomControllerCreator from '../controllers/room.controller';
 import Room from '../models/room.model';
 import Player from '../models/player.model';
-import RoomService from '../services/room/roomcode.service';
+import RoomSampleService from '../tests/room.sample';
 import { ROOM_STATE } from '../contants/room.constants';
+import RoomService from '../services/room/room.service';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
 
 test('Checks "roomCodeAlreadyExists" method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	expect(RoomControllerCreator.getInstance().roomCodeAlreadyExists(room.roomcode)).toBe(true);
@@ -16,7 +17,7 @@ test('Checks "roomCodeAlreadyExists" method', () => {
 
 test('Checks "generateRandomRoomCodeNotUsed" method', () => {
 	// TODO: generate all possible room codes in list and remove one for testing?
-	let room = RoomService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
+	let room = RoomSampleService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let roomcode = RoomControllerCreator.getInstance().generateRandomRoomCodeNotUsed();
@@ -36,7 +37,7 @@ test('Checks "addRoom" method', () => {
 });
 
 test('Checks getRoom/setRoom methods', () => {
-	let room = RoomService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
+	let room = RoomSampleService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
 	let { roomcode } = room;
 	RoomControllerCreator.getInstance().setRoom(room);
 
@@ -47,7 +48,7 @@ test('Checks getRoom/setRoom methods', () => {
 });
 
 test('Checks "addPlayerToRoom" method', () => {
-	let room = RoomService.getTestRoomWithNoPlayers(); // Gets room with roomcode 'TEST'
+	let room = RoomSampleService.getTestRoomWithNoPlayers(); // Gets room with roomcode 'TEST'
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	RoomControllerCreator.getInstance().addPlayerToRoom('TEST', new Player('test11'));
@@ -67,7 +68,7 @@ test('Checks "addPlayerToRoom" method', () => {
 });
 
 test('Checks "giveObjectsToPlayer/removeObjectsFromPlayer" methods', () => {
-	let room = RoomService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
+	let room = RoomSampleService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
 	let { roomcode } = room;
 	let exemption = 'exemption';
 	let joker = 'joker';
@@ -108,7 +109,7 @@ test('Checks "giveObjectsToPlayer/removeObjectsFromPlayer" methods', () => {
 });
 
 test('Checks "addPoints/removePoints" methods', () => {
-	let room = RoomService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
+	let room = RoomSampleService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
 	let { roomcode } = room;
 	RoomControllerCreator.getInstance().setRoom(room);
 
@@ -140,7 +141,7 @@ test('Checks "addPoints/removePoints" methods', () => {
 });
 
 test('Checks "moveNext" method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
+	let room = RoomSampleService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
 	let { roomcode } = room;
 	RoomControllerCreator.getInstance().setRoom(room);
 

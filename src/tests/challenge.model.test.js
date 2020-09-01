@@ -1,9 +1,9 @@
 import Challenge from '../models/challenges/challenge.model';
 import Player from '../models/player.model';
-import RoomService from '../services/room/roomcode.service';
+import RoomSampleService from '../tests/room.sample';
 
 test('Checks "canSupportNumPlayers" method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
 
 	expect(challenge.canSupportNumPlayers(1)).toBe(false);
@@ -19,7 +19,7 @@ test('Checks "canSupportNumPlayers" method', () => {
 });
 
 test('Checks "addAgreedPlayer" method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
 	let player = new Player('test');
 	challenge.addAgreedPlayer(player);
@@ -34,7 +34,7 @@ test('Checks "addAgreedPlayer" method', () => {
 });
 
 test('Checks "raiseHandForPlayer" method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
 	challenge.raiseHandForPlayer(new Player('test'), 'test');
 
@@ -62,7 +62,7 @@ test('Checks "raiseHandForPlayer" method', () => {
 });
 
 test('Checks "setVotedPlayer" method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
 
 	challenge.setVotedPlayer(new Player('test'));
@@ -79,7 +79,7 @@ test('Checks "setVotedPlayer" method', () => {
 });
 
 test('Checks "removeVotedPlayer" method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
 
 	challenge.setVotedPlayer(new Player('test'));

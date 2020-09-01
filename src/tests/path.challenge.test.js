@@ -1,8 +1,8 @@
 import PathChallenge, { PATH_CHALLENGE_STATES } from '../models/challenges/path.challenge';
-import RoomService from '../services/room/roomcode.service';
+import RoomSampleService from '../tests/room.sample';
 
 test('Checks initializing challenge model', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room.playersStillPlaying);
 	expect(Array.isArray(pathChallenge.chests)).toBe(true);
 	expect(pathChallenge.chests.length).toBe(5);
@@ -42,7 +42,7 @@ test('Checks initializing challenge model', () => {
 });
 
 test('Checks getters/setters', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room.playersStillPlaying);
 
 	expect(typeof pathChallenge.contentsOfChosenChest).toBe('undefined');
@@ -151,7 +151,7 @@ test('Checks getters/setters', () => {
 });
 
 test('Checks walker choices', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room.playersStillPlaying);
 
 	expect(pathChallenge.currentChoice).toBe(null);
@@ -166,7 +166,7 @@ test('Checks walker choices', () => {
 });
 
 test('Checks walker choices', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room.playersStillPlaying);
 
 	expect(pathChallenge.currentChestIndex).toBe(0);
@@ -183,7 +183,7 @@ test('Checks walker choices', () => {
 });
 
 test('Checks addLeftVote/addRightVote', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room.playersStillPlaying);
 
 	pathChallenge.currentWalker = room.players[0];
@@ -224,7 +224,7 @@ test('Checks addLeftVote/addRightVote', () => {
 });
 
 test('Checks setNewWalker', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let pathChallenge = new PathChallenge(room.playersStillPlaying);
 
 	pathChallenge.currentChestIndex = 1;

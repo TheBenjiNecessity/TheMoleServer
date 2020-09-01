@@ -1,21 +1,13 @@
 import ChallengeController from '../controllers/challenge.controller';
 import RoomControllerCreator from '../controllers/room.controller';
-import PathChallenge from '../models/challenges/path.challenge';
-import RoomService from '../services/room/roomcode.service';
-import Episode from '../models/episode.model';
-import questionData from '../models/quiz/question.data';
-import Question from '../models/quiz/question.model';
+import RoomSampleService from '../tests/room.sample';
+import EpisodeSampleService from '../tests/episode.sample';
 
 test.skip('Checks "raiseHand" method', () => {
 	//TODO: need to create role based challenge for this too work
 	let roomcode = 'TEST';
-	let room = RoomService.getTestRoomWithTenPlayers();
-	let episode = new Episode(
-		room.playersStillPlaying,
-		[ new PathChallenge(room.playersStillPlaying) ],
-		questionData.map((q) => new Question(q.text, q.type, q.choices))
-	);
-	room.currentEpisode = episode;
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let player = room.players[0];
@@ -38,13 +30,8 @@ test.skip('Checks "raiseHand" method', () => {
 
 test.skip('Checks "agreeToRoles" method', () => {
 	let roomcode = 'TEST';
-	let room = RoomService.getTestRoomWithTenPlayers();
-	let episode = new Episode(
-		room.playersStillPlaying,
-		[ new PathChallenge(room.playersStillPlaying) ],
-		questionData.map((q) => new Question(q.text, q.type, q.choices))
-	);
-	room.currentEpisode = episode;
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let player = room.players[0];
@@ -65,14 +52,9 @@ test.skip('Checks "agreeToRoles" method', () => {
 
 test('Checks "addPlayerVote" method', () => {
 	//TODO
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let { roomcode } = room;
-	let episode = new Episode(
-		room.playersStillPlaying,
-		[ new PathChallenge(room.playersStillPlaying) ],
-		questionData.map((q) => new Question(q.text, q.type, q.choices))
-	);
-	room.currentEpisode = episode;
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let player = room.players[0];
@@ -86,15 +68,10 @@ test('Checks "addPlayerVote" method', () => {
 
 test('Checks "removePlayerVote" method', () => {
 	//TODO
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let { roomcode } = room;
 	let player = room.players[0];
-	let episode = new Episode(
-		room.playersStillPlaying,
-		[ new PathChallenge(room.playersStillPlaying) ],
-		questionData.map((q) => new Question(q.text, q.type, q.choices))
-	);
-	room.currentEpisode = episode;
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 	let pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
 

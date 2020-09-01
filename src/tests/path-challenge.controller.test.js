@@ -1,14 +1,14 @@
 import PathChallengeController from '../controllers/challenge-controllers/path-challenge.controller';
 import RoomControllerCreator from '../controllers/room.controller';
 import PathChallenge from '../models/challenges/path.challenge';
-import RoomService from '../services/room/roomcode.service';
+import RoomSampleService from '../tests/room.sample';
 import Episode from '../models/episode.model';
 import questionData from '../models/quiz/question.data';
 import Question from '../models/quiz/question.model';
 
 test('Checks "chooseChest" method', () => {
 	let roomcode = 'TEST';
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let episode = new Episode(
 		room.playersStillPlaying,
 		[ new PathChallenge(room.playersStillPlaying) ],
@@ -30,7 +30,7 @@ test('Checks "chooseChest" method', () => {
 });
 
 test('Checks "addVoteForChest" method', () => {
-	let room = RoomService.getTestRoomWithTenPlayers();
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let player = room.players[0];
 	let episode = new Episode(
 		room.playersStillPlaying,
