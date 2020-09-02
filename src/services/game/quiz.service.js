@@ -1,5 +1,4 @@
 import Question from '../../models/quiz/question.model';
-import ArrayUtilsService from '../utils/array-utils.service';
 import Quiz from '../../models/quiz/quiz.model';
 import { MAX_CHALLENGE_QUESTIONS } from '../../contants/room.constants';
 import { MAX_NUM_QUESTIONS, RANKS } from '../../contants/quiz.constants';
@@ -29,14 +28,14 @@ export default class QuizService {
 
 	static generateQuiz(playersStillPlaying, challengeQuestions, unusedGeneralQuestions) {
 		let questions = [];
-		challengeQuestions = ArrayUtilsService.shuffleArray(challengeQuestions);
-		unusedGeneralQuestions = ArrayUtilsService.shuffleArray(unusedGeneralQuestions);
+		challengeQuestions.shuffle();
+		unusedGeneralQuestions.shuffle();
 
 		challengeQuestions = challengeQuestions.slice(0, MAX_CHALLENGE_QUESTIONS);
 		questions = challengeQuestions;
 		unusedGeneralQuestions = unusedGeneralQuestions.slice(0, MAX_NUM_QUESTIONS - questions.length - 1);
 		questions = questions.concat(unusedGeneralQuestions);
-		questions = ArrayUtilsService.shuffleArray(questions);
+		questions.shuffle();
 		questions.push(QuizService.getFinalQuizQuestion(playersStillPlaying));
 
 		return new Quiz(questions);

@@ -1,10 +1,12 @@
 import questionData from '../models/quiz/question.data';
-import ArrayUtilsService from '../services/utils/array-utils.service';
 import EpisodeService from '../services/game/episode.service';
 import ChallengeService from '../services/game/challenge.service';
 import challengeData from './challenges/challenge.data';
 import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
 import Episode from '../models/episode.model';
+import arrayExtensions from '../extensions/array';
+
+arrayExtensions();
 
 export default class Room {
 	constructor(roomcode) {
@@ -191,7 +193,7 @@ export default class Room {
 				continue;
 			}
 
-			numRestrictedChallenges = ArrayUtilsService.shuffleArray(numRestrictedChallenges);
+			numRestrictedChallenges.shuffle();
 
 			let challenge = ChallengeService.getChallengeForType(
 				numRestrictedChallenges[0].type,
@@ -207,10 +209,9 @@ export default class Room {
 	}
 
 	chooseMole() {
-		let randomIndex = ArrayUtilsService.getRandomIndex(this.players);
 		for (let i = 0; i < this.players.length; i++) {
 			this.players[i].isMole = false;
 		}
-		this.players[randomIndex].isMole = true;
+		this.players[this.players.randomIndex()].isMole = true;
 	}
 }

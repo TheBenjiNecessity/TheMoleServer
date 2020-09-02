@@ -1,5 +1,4 @@
 import Challenge from './challenge.model';
-import ArrayUtilsService from '../../services/utils/array-utils.service';
 import challengeData from './challenge.data';
 
 export const MAX_CHESTS = 5;
@@ -102,13 +101,15 @@ export default class PathChallenge extends Challenge {
 	setNewWalker() {
 		this.votes = { left: [], right: [] };
 		this.chests = [];
-		this.currentWalker = ArrayUtilsService.getRandomElement(this.walkers);
-		this.walkers = ArrayUtilsService.removeElementByValue(this.walkers, this.currentWalker);
+		this.currentWalker = this.walkers.getRandomElement();
+		this.walkers.removeElementByValue(this.currentWalker);
 		this.currentChoice = null;
 		this.currentChestIndex = 0;
 		this.state = PATH_CHALLENGE_STATES.WALKER_CHOOSING;
 
-		let tempValues = ArrayUtilsService.shuffleArray(possibleValues);
+		let tempValues = JSON.parse(JSON.stringify(possibleValues));
+		tempValues.shuffle();
+
 		for (let i = 0; i < MAX_CHESTS; i++) {
 			let value = tempValues.pop();
 			let isLeftChest = Math.floor(Math.random() * 2);

@@ -1,4 +1,3 @@
-import ArrayUtilsService from '../services/utils/array-utils.service';
 import QuizService from '../services/game/quiz.service';
 
 /**
@@ -14,7 +13,7 @@ export default class Episode {
 		this.challenges = challenges;
 		this.players = playersStillPlaying;
 
-		let questionsArray = ArrayUtilsService.array2dTo1d(this.challenges.map((c) => c.questions));
+		let questionsArray = this.challenges.map((c) => c.questions).flat();
 		this.quiz = QuizService.generateQuiz(this.players, questionsArray, unusedGeneralQuizQuestions);
 	}
 
