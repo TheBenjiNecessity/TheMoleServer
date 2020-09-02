@@ -4,7 +4,6 @@ import { MAX_NUM_QUESTIONS } from '../contants/quiz.constants';
 import questionData from '../models/quiz/question.data';
 import challengeData from '../models/challenges/challenge.data';
 import Question from '../models/quiz/question.model';
-import ArrayUtilsService from '../services/utils/array-utils.service';
 
 test('Checks generateQuiz method', () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
