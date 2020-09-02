@@ -1,20 +1,12 @@
 import PathChallengeController from '../controllers/challenge-controllers/path-challenge.controller';
 import RoomControllerCreator from '../controllers/room.controller';
-import PathChallenge from '../models/challenges/path.challenge';
 import RoomSampleService from '../tests/room.sample';
-import Episode from '../models/episode.model';
-import questionData from '../models/quiz/question.data';
-import Question from '../models/quiz/question.model';
+import EpisodeSampleService from './episode.sample';
 
 test('Checks "chooseChest" method', () => {
 	let roomcode = 'TEST';
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let episode = new Episode(
-		room.playersStillPlaying,
-		[ new PathChallenge(room.playersStillPlaying) ],
-		questionData.map((q) => new Question(q.text, q.type, q.choices))
-	);
-	room.currentEpisode = episode;
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let pathChallengeController = PathChallengeController.getInstance();
@@ -32,13 +24,7 @@ test('Checks "chooseChest" method', () => {
 test('Checks "addVoteForChest" method', () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let player = room.players[0];
-	let episode = new Episode(
-		room.playersStillPlaying,
-		[ new PathChallenge(room.playersStillPlaying) ],
-		questionData.map((q) => new Question(q.text, q.type, q.choices))
-	);
-
-	room.currentEpisode = episode;
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	let pathChallenge = room.currentEpisode.currentChallenge;
 	pathChallenge.chooseLeft();
 	RoomControllerCreator.getInstance().setRoom(room);
