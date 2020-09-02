@@ -8,9 +8,10 @@ import ArrayUtilsService from '../services/utils/array-utils.service';
 
 test('Checks generateQuiz method', () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let challengeQuestions = ArrayUtilsService.array2dTo1d(challengeData.map((c) => c.questions)).map(
-		(q) => new Question(q.text, q.type, q.choices)
-	);
+	let challengeQuestions = challengeData
+		.map((c) => c.questions)
+		.flat()
+		.map((q) => new Question(q.text, q.type, q.choices));
 	let unusedGeneralQuestions = questionData.map((q) => new Question(q.text, q.type, q.choices));
 	let quiz = QuizService.generateQuiz(room.playersStillPlaying, challengeQuestions, unusedGeneralQuestions);
 	expect(quiz.questions.length).toBe(MAX_NUM_QUESTIONS);

@@ -1,5 +1,8 @@
 import PathChallenge, { PATH_CHALLENGE_STATES } from '../models/challenges/path.challenge';
 import RoomSampleService from '../tests/room.sample';
+import arrayExtensions from '../extensions/array';
+
+arrayExtensions();
 
 test('Checks initializing challenge model', () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
