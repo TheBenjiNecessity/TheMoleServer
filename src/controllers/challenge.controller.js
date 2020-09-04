@@ -3,15 +3,7 @@ import challengeData from '../models/challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
 import PlatterChallengeController from '../controllers/challenge-controllers/platter-challenge.controller';
 import PathChallengeController from './challenge-controllers/path-challenge.controller';
-import Challenge, { CHALLENGE_EVENTS, CHALLENGE_STATES } from '../models/challenges/challenge.model';
-
-export const CHALLENGE_SOCKET_EVENTS = {
-	RAISE_HAND: 'raise-hand',
-	MOVE_NEXT: 'challenge-move-next',
-	AGREE_TO_ROLES: 'agree-to-roles',
-	VOTED_PLAYER: 'voted-player',
-	REMOVE_VOTED_PLAYER: 'remove-voted-player'
-};
+import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';\
 
 class ChallengeControllerInstance {
 	constructor() {

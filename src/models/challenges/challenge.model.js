@@ -1,21 +1,9 @@
 import RaisedHand from '../raisedHand.model';
 import Role from '../role.model';
-
-import { ROOM_MAX_PLAYERS } from '../../contants/room.constants';
 import Question from '../quiz/question.model';
 
-export const CHALLENGE_EVENTS = {
-	ADD_AGREED_PLAYER: 'addAgreedPlayer',
-	RAISE_HAND_FOR_PLAYER: 'raiseHandForPlayer',
-	SET_VOTED_PLAYER: 'setVotedPlayer',
-	REMOVE_VOTED_PLAYER: 'removeVotedPlayer'
-};
-
-export const CHALLENGE_STATES = {
-	CHALLENGE_EXPLANATION: 'challenge-explanation',
-	ROLE_SELECTION: 'role-selection',
-	IN_GAME: 'game'
-};
+import { ROOM_MAX_PLAYERS } from '../../contants/room.constants';
+import { CHALLENGE_STATES } from '../../contants/challenge.constants';
 
 export default class Challenge {
 	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState, roles, type) {
