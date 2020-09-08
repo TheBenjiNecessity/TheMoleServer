@@ -3,7 +3,7 @@ import challengeData from '../models/challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
 import PlatterChallengeController from '../controllers/challenge-controllers/platter-challenge.controller';
 import PathChallengeController from './challenge-controllers/path-challenge.controller';
-import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';\
+import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
 
 class ChallengeControllerInstance {
 	constructor() {
