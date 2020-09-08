@@ -2,7 +2,7 @@ import arrayExtensions from '../extensions/array';
 
 arrayExtensions();
 
-test('Checks shuffleArray method', () => {
+test('Checks shuffle method', () => {
 	let unshuffledArray = [ 1, 2, 3, 4, 5, 6 ];
 	unshuffledArray.shuffle();
 	expect(unshuffledArray.length).toBe(6);
@@ -19,7 +19,7 @@ test('Checks getRandomElement method', () => {
 	expect(randomElement <= 6).toBe(true);
 });
 
-test('Checks removeElementAt method', () => {
+test('Checks removeElementAtIndex method', () => {
 	let array = [ 1, 2, 3, 4, 5, 6 ];
 	array.removeElementAtIndex(0);
 	expect(array[0]).toBe(2);
@@ -44,4 +44,19 @@ test('Checks removeElementByValue method', () => {
 	expect(array2[1]).toBe(2);
 	expect(array2[2]).toBe(7);
 	expect(array2[3]).toBe(5);
+});
+
+test('Checks randomIndex method', () => {
+	let array = [ 4, 3, 2, 7, 5, 4 ];
+	let randomIndex = array.randomIndex();
+	expect(typeof randomIndex).toBe('number');
+	expect(randomIndex >= 0).toBe(true);
+	expect(randomIndex <= 5).toBe(true);
+});
+
+test('Checks removeRandomElement method', () => {
+	let array = [ 4, 4, 4, 4, 4 ];
+	let randomElement = array.removeRandomElement();
+	expect(array.length).toBe(4);
+	expect(randomElement).toBe(4);
 });
