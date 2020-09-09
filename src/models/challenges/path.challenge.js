@@ -1,7 +1,7 @@
 import Challenge from './challenge.model';
 import challengeData from './challenge.data';
 
-export const MAX_CHESTS = 5;
+const MAX_CHESTS = 5;
 
 export const PATH_CHALLENGE_EVENTS = {
 	CHOOSE_LEFT: 'chooseLeft',
@@ -12,7 +12,7 @@ export const PATH_CHALLENGE_EVENTS = {
 	SET_NEW_WALKER: 'setNewWalker'
 };
 
-export const PATH_CHALLENGE_STATES = {
+const PATH_CHALLENGE_STATES = {
 	WALKER_CHOOSING: 'walkerChoosing',
 	NON_WALKERS_VOTING: 'nonWalkersChoosing'
 };
