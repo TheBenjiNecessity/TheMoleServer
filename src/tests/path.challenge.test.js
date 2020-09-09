@@ -1,4 +1,4 @@
-import PathChallenge, { PATH_CHALLENGE_STATES } from '../models/challenges/path.challenge';
+import PathChallenge from '../models/challenges/path.challenge';
 import RoomSampleService from '../tests/room.sample';
 import arrayExtensions from '../extensions/array';
 
@@ -41,7 +41,7 @@ test('Checks initializing challenge model', () => {
 	expect(pathChallenge.players.map((p) => p.name).indexOf(pathChallenge.currentWalker.name) >= 0).toBe(true);
 	expect(pathChallenge.currentChoice).toBe(null);
 	expect(pathChallenge.currentChestIndex).toBe(0);
-	expect(pathChallenge.state).toBe(PATH_CHALLENGE_STATES.WALKER_CHOOSING);
+	expect(pathChallenge.state).toBe('walkerChoosing');
 });
 
 test('Checks getters/setters', () => {
