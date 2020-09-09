@@ -1,7 +1,7 @@
 import questionData from '../models/quiz/question.data';
 import EpisodeService from '../services/game/episode.service';
 import ChallengeService from '../services/game/challenge.service';
-import challengeData from './challenges/challenge.data';
+import challengeData from '../challenges/challenge.data';
 import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
 import Episode from '../models/episode.model';
 import arrayExtensions from '../extensions/array';

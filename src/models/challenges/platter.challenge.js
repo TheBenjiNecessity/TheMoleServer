@@ -1,6 +1,6 @@
 import Challenge from './challenge.model';
 
-import challengeData from './challenge.data'; // Lang?
+import challengeData from '../../challenges/challenge.data'; // Lang?
 
 const type = 'platter';
 

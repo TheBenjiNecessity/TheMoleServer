@@ -1,5 +1,5 @@
 import RoomControllerCreator from './room.controller';
-import challengeData from '../models/challenges/challenge.data';
+import challengeData from '../challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
 import PlatterChallengeController from '../controllers/challenge-controllers/platter-challenge.controller';
 import PathChallengeController from './challenge-controllers/path-challenge.controller';
