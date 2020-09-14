@@ -4,7 +4,7 @@ export default class ChallengeService {
 	constructor() {}
 
 	static async getChallengeDataForType(type) {
-		return await import(`../../challenges/${type}-challenge/data`);
+		return import(`../../challenges/${type}-challenge/data`);
 	}
 
 	static async getChallengeControllerForType(type) {
