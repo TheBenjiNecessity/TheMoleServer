@@ -1,5 +1,5 @@
-import Challenge from './challenge.model';
-import challengeData from '../../challenges/challenge.data';
+import Challenge from '../../models/challenges/challenge.model';
+import challengeData from '../challenge.data';
 
 const MAX_CHESTS = 5;
 
@@ -29,11 +29,8 @@ const possibleValues = [
 ];
 
 export default class PathChallenge extends Challenge {
-	constructor(players) {
-		let { title, description, maxPlayers, minPlayers, questions, initialState, roles } = challengeData.find(
-			(c) => c.type === type
-		);
-		super(players, title, description, maxPlayers, minPlayers, questions, initialState, roles, type);
+	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState) {
+		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
 
 		this.players = players;
 		this.walkers = JSON.parse(JSON.stringify(this.players));

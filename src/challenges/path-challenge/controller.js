@@ -1,6 +1,6 @@
-import RoomControllerCreator from '../room.controller';
+import RoomControllerCreator from '../../controllers/room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
-import { PATH_CHALLENGE_EVENTS } from '../../models/challenges/path.challenge';
+import { PATH_CHALLENGE_EVENTS } from './model';
 
 const POINTS_FOR_CONTINUING = 7;
 

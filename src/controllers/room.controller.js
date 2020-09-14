@@ -2,10 +2,16 @@ import Room from '../models/room.model';
 import ChallengeController from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 import RoomService from '../services/room/room.service';
+import ChallengeService from '../services/game/challenge.service';
 
 class RoomController {
 	constructor() {
 		this.rooms = {};
+		this.challengeData = [];
+	}
+
+	async init() {
+		this.challengeData = await ChallengeService.listChallengeData();
 	}
 
 	roomCodeAlreadyExists(code) {
@@ -15,6 +21,7 @@ class RoomController {
 	addRoom() {
 		var roomcode = this.generateRandomRoomCodeNotUsed();
 		this.rooms[roomcode] = new Room(roomcode);
+		this.rooms[roomcode].addChallengeData(this.challengeData);
 		return this.rooms[roomcode];
 	}
 
@@ -105,9 +112,10 @@ class RoomController {
 export default class RoomControllerCreator {
 	constructor() {}
 
-	static getInstance() {
+	static async getInstance() {
 		if (!RoomControllerCreator.instance) {
 			RoomControllerCreator.instance = new RoomController();
+			await RoomControllerCreator.instance.init();
 		}
 		return RoomControllerCreator.instance;
 	}

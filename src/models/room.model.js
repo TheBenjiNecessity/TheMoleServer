@@ -1,7 +1,6 @@
 import questionData from '../models/quiz/question.data';
 import EpisodeService from '../services/game/episode.service';
 import ChallengeService from '../services/game/challenge.service';
-import challengeData from '../challenges/challenge.data';
 import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
 import Episode from '../models/episode.model';
 import arrayExtensions from '../extensions/array';
@@ -14,7 +13,7 @@ export default class Room {
 		this.state = ROOM_STATE.LOBBY;
 		this.players = [];
 		this._currentEpisode = null;
-		this.unusedChallenges = challengeData;
+		this.unusedChallenges = [];
 		this.isInProgress = false;
 		this.points = 0;
 		this.unaskedQuestions = questionData;
@@ -37,14 +36,6 @@ export default class Room {
 		for (let challenge of episode.challenges) {
 			this.removeUnusedChallenge(challenge.type);
 		}
-	}
-
-	get numChallengesPerEpisode() {
-		if (!this.isInProgress) {
-			return -1;
-		}
-
-		return EpisodeService.getNumChallenges(this.players.length);
 	}
 
 	get numRestrictedChallenges() {
@@ -120,6 +111,10 @@ export default class Room {
 		this.unusedChallenges = this.unusedChallenges.filter((c) => c.type !== type);
 	}
 
+	addChallengeData(challengeData) {
+		this.unusedChallenges = challengeData;
+	}
+
 	moveNext() {
 		switch (this.state) {
 			case ROOM_STATE.LOBBY:
@@ -183,7 +178,8 @@ export default class Room {
 
 	generateCurrentEpisode() {
 		let challenges = [];
-		for (let i = 0; i < this.numChallengesPerEpisode; i++) {
+		let numChallenges = EpisodeService.getNumChallenges(this.players.length);
+		for (let i = 0; i < numChallenges; i++) {
 			let numRestrictedChallenges = this.numRestrictedChallenges;
 			numRestrictedChallenges = numRestrictedChallenges.filter(
 				(c) => (challenges.length ? !challenges.map((used) => used.type).includes(c.type) : true)

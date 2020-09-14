@@ -1,9 +1,8 @@
 import RoomControllerCreator from './room.controller';
 import challengeData from '../challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
-import PlatterChallengeController from '../controllers/challenge-controllers/platter-challenge.controller';
-import PathChallengeController from './challenge-controllers/path-challenge.controller';
 import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
+import ChallengeService from '../services/game/challenge.service';
 
 class ChallengeControllerInstance {
 	constructor() {
@@ -72,8 +71,8 @@ class ChallengeControllerInstance {
 		socket.on('add-player-vote', this.addPlayerVote);
 		socket.on('remove-player-vote', this.removePlayerVote);
 
-		for (let type of challengeData.map((c) => c.type)) {
-			let childInstance = ChallengeController.getChildInstance(type);
+		for (let type of challengeData) {
+			let childInstance = ChallengeService.getChallengeControllerForType(type);
 			if (childInstance) {
 				childInstance.setupSocket(socket);
 			}
@@ -90,16 +89,5 @@ export default class ChallengeController {
 		}
 
 		return ChallengeController.instance;
-	}
-
-	static getChildInstance(type) {
-		switch (type) {
-			case 'platter':
-				return PlatterChallengeController.getInstance();
-			case 'path':
-				return PathChallengeController.getInstance();
-			default:
-				return null;
-		}
 	}
 }
