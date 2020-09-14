@@ -4,6 +4,7 @@ class WebSocketService {
 	init(io, roomHandler) {
 		this.io = io;
 
+		//TODO send user the current room upon connection if possible
 		this.io.on('connection', (socket) => {
 			socket.on('join', (roomcode) => {
 				if (roomcode) {
