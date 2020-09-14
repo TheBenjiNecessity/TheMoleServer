@@ -31,7 +31,7 @@ export default class ChallengeService {
 	static async listChallengeData() {
 		return new Promise((resolve, reject) => {
 			let promises = challengeTypes.map((type) => ChallengeService.getChallengeDataForType(type));
-			Promise.all(promises).then((challenges) => resolve(challenges));
+			Promise.all(promises).then((challenges) => resolve(challenges.map((c) => c.default)));
 		});
 	}
 }
