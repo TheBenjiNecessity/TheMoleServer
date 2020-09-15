@@ -1,6 +1,6 @@
-import PathChallenge from '../challenges/path-challenge/model';
-import RoomSampleService from '../tests/room.sample';
-import arrayExtensions from '../extensions/array';
+import PathChallenge from './model';
+import RoomSampleService from '../../tests/room.sample';
+import arrayExtensions from '../../extensions/array';
 
 arrayExtensions();
 

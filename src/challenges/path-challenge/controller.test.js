@@ -1,7 +1,7 @@
-import PathChallengeController from '../challenges/path-challenge/controller';
-import RoomControllerCreator from '../controllers/room.controller';
-import RoomSampleService from '../tests/room.sample';
-import EpisodeSampleService from './episode.sample';
+import PathChallengeController from './controller';
+import RoomControllerCreator from '../../controllers/room.controller';
+import RoomSampleService from '../../tests/room.sample';
+import EpisodeSampleService from '../../tests/episode.sample';
 
 test('Checks "chooseChest" method', () => {
 	let roomcode = 'TEST';
