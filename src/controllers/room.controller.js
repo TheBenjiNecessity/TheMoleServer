@@ -112,10 +112,9 @@ class RoomController {
 export default class RoomControllerCreator {
 	constructor() {}
 
-	static async getInstance() {
+	static getInstance() {
 		if (!RoomControllerCreator.instance) {
 			RoomControllerCreator.instance = new RoomController();
-			await RoomControllerCreator.instance.init();
 		}
 		return RoomControllerCreator.instance;
 	}

@@ -23,8 +23,15 @@ app.use(cors());
 RequestServiceCreator.createService(app);
 
 let webSocketService = WebSocketServiceCreator.getInstance();
-webSocketService.init(io, RoomControllerCreator.getInstance());
+let instance = RoomControllerCreator.getInstance();
 
-server.listen(process.env.PORT || 8999);
+async function run() {
+	await instance.init();
+	webSocketService.init(io, instance);
 
-console.log('Server started');
+	server.listen(process.env.PORT || 8999);
+
+	console.log('Server started');
+}
+
+run();
