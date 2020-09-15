@@ -1,5 +1,5 @@
 import Episode from '../models/episode.model';
-import PathChallenge from '../challenges/path-challenge/model';
+import PathChallenge from '../challenges/path/model';
 import Question from '../models/quiz/question.model';
 import questionData from '../models/quiz/question.data';
 
