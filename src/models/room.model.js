@@ -10,7 +10,7 @@ arrayExtensions();
 export default class Room {
 	constructor(roomcode) {
 		this.roomcode = roomcode;
-		this.state = ROOM_STATE.LOBBY;
+		this._state = ROOM_STATE.LOBBY;
 		this.players = [];
 		this._currentEpisode = null;
 		this.unusedChallenges = [];
@@ -45,6 +45,41 @@ export default class Room {
 
 	get molePlayer() {
 		return this.players.find((p) => p.isMole);
+	}
+
+	get state() {
+		return this._state;
+	}
+
+	set state(newState) {
+		this._state = newState;
+
+		switch (this.state) {
+			case ROOM_STATE.WELCOME:
+				this.isInProgress = true;
+				this.chooseMole();
+				break;
+			case ROOM_STATE.EPISODE_START:
+				this.generateCurrentEpisode();
+				break;
+			case ROOM_STATE.CHALLENGE_INTERMISSION:
+				this.currentEpisode.goToNextChallenge();
+				break;
+			case ROOM_STATE.EXECUTION:
+				let executedPlayer = this.currentEpisode.getExecutedPlayer();
+
+				for (let i = 0; i < this.players.length; i++) {
+					if (executedPlayer.name === this.players[i].name) {
+						this.players[i].eliminated = true;
+						break;
+					}
+				}
+				break;
+			case ROOM_STATE.EPISODE_START:
+				break;
+			default:
+				break;
+		}
 	}
 
 	addPlayer(player) {
@@ -112,20 +147,15 @@ export default class Room {
 	}
 
 	addChallengeData(challengeData) {
-		this.unusedChallenges = challengeData;
+		this.unusedChallenges = JSON.parse(JSON.stringify(challengeData));
 	}
 
 	moveNext() {
 		switch (this.state) {
 			case ROOM_STATE.LOBBY:
-				// If going from lobby to welcome then set in progress and choose mole
 				this.state = ROOM_STATE.WELCOME;
-				this.isInProgress = true;
-				this.chooseMole();
 				break;
 			case ROOM_STATE.WELCOME:
-				// If going from welcome to episode start then generate the current episode
-				this.generateCurrentEpisode();
 				this.state = ROOM_STATE.EPISODE_START;
 				break;
 			case ROOM_STATE.EPISODE_START:
@@ -133,7 +163,6 @@ export default class Room {
 				break;
 			case ROOM_STATE.IN_CHALLENGE:
 				this.state = ROOM_STATE.CHALLENGE_INTERMISSION;
-				this.currentEpisode.goToNextChallenge();
 				break;
 			case ROOM_STATE.CHALLENGE_INTERMISSION:
 				if (this.currentEpisode.episodeIsOver) {
@@ -150,26 +179,17 @@ export default class Room {
 				break;
 			case ROOM_STATE.POST_QUIZ_INTERMISSION:
 				this.state = ROOM_STATE.EXECUTION;
-				let executedPlayer = this.currentEpisode.getExecutedPlayer();
-
-				for (let i = 0; i < this.players.length; i++) {
-					if (executedPlayer.name === this.players[i].name) {
-						this.players[i].eliminated = true;
-						break;
-					}
-				}
-
 				break;
 			case ROOM_STATE.EXECUTION:
 				this.state = ROOM_STATE.EXECUTION_WRAPUP;
 				break;
 			case ROOM_STATE.EXECUTION_WRAPUP:
 				this.state = ROOM_STATE.EPISODE_START;
-				this.generateCurrentEpisode();
 				break;
 			default:
 				return false;
 		}
+		return true;
 	}
 
 	setQuizResultsForPlayer(player) {
