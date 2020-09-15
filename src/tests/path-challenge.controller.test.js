@@ -1,4 +1,4 @@
-import PathChallengeController from '../controllers/challenge-controllers/path-challenge.controller';
+import PathChallengeController from '../challenges/path-challenge/controller';
 import RoomControllerCreator from '../controllers/room.controller';
 import RoomSampleService from '../tests/room.sample';
 import EpisodeSampleService from './episode.sample';

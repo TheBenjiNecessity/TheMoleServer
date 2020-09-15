@@ -2,13 +2,14 @@ import QuizService from '../services/game/quiz.service';
 import RoomSampleService from '../tests/room.sample';
 import { MAX_NUM_QUESTIONS } from '../contants/quiz.constants';
 import questionData from '../models/quiz/question.data';
-import challengeData from '../models/challenges/challenge.data';
 import Question from '../models/quiz/question.model';
+import ChallengeService from '../services/game/challenge.service';
 
-test('Checks generateQuiz method', () => {
+test('Checks generateQuiz method', async () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
+	let challengeData = await ChallengeService.listChallengeData();
 	let challengeQuestions = challengeData
-		.map((c) => c.questions)
+		.map((c) => c.lang.en.questions)
 		.flat()
 		.map((q) => new Question(q.text, q.type, q.choices));
 	let unusedGeneralQuestions = questionData.map((q) => new Question(q.text, q.type, q.choices));
