@@ -22,4 +22,17 @@ export default class QuizAnswers {
 	get numJokersUsed() {
 		return this.objectsUsed['joker'];
 	}
+
+	getScore(moleQuizAnswers) {
+		let score = 0;
+		for (let i = 0; i < this.answers.length; i++) {
+			let currentAnswer = this.answers[i];
+			let moleAnswer = moleQuizAnswers[i];
+
+			if (currentAnswer.isCorrect(moleAnswer)) {
+				score++;
+			}
+		}
+		return score;
+	}
 }
