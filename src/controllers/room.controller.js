@@ -75,18 +75,18 @@ class RoomController {
 
 	/* ===================================== Socket Events ===================================== */
 	moveNext({ roomcode }) {
-		if (this.rooms[roomcode].moveNext()) {
-			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
-		}
+		this.rooms[roomcode].moveNext();
 
-		return null;
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
 	}
 
-	quizDone({ roomcode, player }) {
+	// A player has finished their quiz and clicked on the last question
+	quizDone({ roomcode, playerName, quizAnswers }) {
 		// a player has finished answering questions in the quiz
-		this.rooms[roomcode].setQuizResultsForPlayer(player);
+		this.rooms[roomcode].currentEpisode.setQuizResultsForPlayer(playerName, quizAnswers);
 
-		if (this.rooms[roomcode].currentEpisode.allPlayersFinishedQuiz && this.rooms[roomcode].moveNext()) {
+		if (this.rooms[roomcode].currentEpisode.allPlayersFinishedQuiz) {
+			this.rooms[roomcode].moveNext();
 			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
 		}
 	}
