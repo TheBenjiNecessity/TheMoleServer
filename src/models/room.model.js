@@ -192,10 +192,6 @@ export default class Room {
 		return true;
 	}
 
-	setQuizResultsForPlayer(player) {
-		this.currentEpisode.setQuizResultsForPlayer(player);
-	}
-
 	generateCurrentEpisode() {
 		let challenges = [];
 		let numChallenges = EpisodeService.getNumChallenges(this.players.length);

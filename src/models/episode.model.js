@@ -79,10 +79,10 @@ export default class Episode {
 		return playersWhoFinished.length === this.players.length;
 	}
 
-	setQuizResultsForPlayer(player) {
+	setQuizResultsForPlayer(playerName, quizAnswers) {
 		for (let i = 0; i < this.players.length; i++) {
-			if (this.players[i].name === player.name) {
-				this.players[i].quizAnswers = player.quizAnswers;
+			if (this.players[i].name === playerName) {
+				this.players[i].quizAnswers = quizAnswers;
 				break;
 			}
 		}
