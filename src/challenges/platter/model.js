@@ -1,15 +1,10 @@
 import Challenge from './challenge.model';
 
-import challengeData from '../../challenges/challenge.data'; // Lang?
-
 const type = 'platter';
 
 export default class PlatterChallenge extends Challenge {
-	constructor(players) {
-		let { title, description, maxPlayers, minPlayers, questions, initialState } = challengeData.find(
-			(c) => c.type === type
-		);
-		super(title, type, description, maxPlayers, minPlayers, questions, initialState);
+	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState) {
+		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
 
 		this.exemptionWasTaken = false;
 		this.numMoneyTokens = players.length;
