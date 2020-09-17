@@ -67,6 +67,8 @@ test('Checks "addPlayerToRoom" method', () => {
 	expect(RoomControllerCreator.getInstance().getRoom('TEST').players[1].name).toBe('test12');
 });
 
+test('Checks "removePlayerToRoom" method', () => {}); //TODO
+
 test('Checks "giveObjectsToPlayer/removeObjectsFromPlayer" methods', () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
 	let { roomcode } = room;
@@ -151,3 +153,5 @@ test('Checks "moveNext" method', () => {
 
 	expect(RoomControllerCreator.getInstance().getRoom(roomcode).state).toBe(ROOM_STATE.WELCOME);
 });
+
+test('Checks "quizDone" method', () => {}); //TODO
