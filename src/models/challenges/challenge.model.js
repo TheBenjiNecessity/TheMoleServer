@@ -26,10 +26,14 @@ export default class Challenge {
 		this.roles = roles && roles.length ? roles.map((r) => new Role(r.name, r.numPlayers)) : [];
 		this.questions =
 			questions && questions.length ? questions.map((qd) => new Question(qd.text, qd.type, qd.choices)) : [];
-		this.state = initialState;
+		this._state = initialState;
 		this.agreedPlayers = [];
 		this.raisedHands = [];
 		this.votedPlayers = {};
+		this.challengeStart = -1;
+		this.challengeEnd = -1;
+		this.isChallengeRunning = false;
+		this.timer = null;
 	}
 
 	get hasMajorityVoteForAgreedPlayers() {
@@ -44,6 +48,31 @@ export default class Challenge {
 			}
 		}
 		return true;
+	}
+
+	get isChallengeRunning() {
+		return this.challengeStart !== -1;
+	}
+
+	get elapsedTimeInMinutes() {
+		let elapsedUnixTime = this.challengeEnd - this.challengeStart;
+		return elapsedUnixTime / (1000 * 60);
+	}
+
+	get state() {
+		return this.state;
+	}
+
+	set state(newState) {
+		this.state = newState;
+
+		switch (this.state) {
+			case CHALLENGE_STATES.IN_GAME:
+				this.setRoles();
+				break;
+			default:
+				break;
+		}
 	}
 
 	canSupportNumPlayers(numPlayers) {
@@ -105,11 +134,33 @@ export default class Challenge {
 	moveNext() {
 		switch (this.state) {
 			case CHALLENGE_STATES.ROLE_SELECTION:
-				this.setRoles();
 				this.state = CHALLENGE_STATES.IN_GAME;
+				break;
+			case CHALLENGE_STATES.IN_GAME:
+				this.state = CHALLENGE_STATES.CHALLENGE_END;
 				break;
 			default:
 				break;
 		}
+	}
+
+	startTimerWithCallback({ roomcode, duringCB, endCB, minutes }) {
+		this.challengeStart = Date.now;
+		this.challengeEnd = Date.minutesFromNow(minutes);
+		this.isChallengeRunning = true;
+		this.timer = setInterval(() => {
+			if (Date.now > this.challengeEnd) {
+				endCB(roomcode);
+				this.endChallenge();
+			} else {
+				duringCB(roomcode);
+			}
+		}, 1000);
+	}
+
+	endChallenge() {
+		clearInterval(this.timer);
+		this.isChallengeRunning = false;
+		this.moveNext();
 	}
 }

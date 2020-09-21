@@ -3,7 +3,9 @@ export const CHALLENGE_SOCKET_EVENTS = {
 	MOVE_NEXT: 'challenge-move-next',
 	AGREE_TO_ROLES: 'agree-to-roles',
 	VOTED_PLAYER: 'voted-player',
-	REMOVE_VOTED_PLAYER: 'remove-voted-player'
+	REMOVE_VOTED_PLAYER: 'remove-voted-player',
+	TIMER_OVER: 'timer-is-over',
+	TIMER_TICK: 'timer-tick'
 };
 
 export const CHALLENGE_EVENTS = {
@@ -16,5 +18,6 @@ export const CHALLENGE_EVENTS = {
 export const CHALLENGE_STATES = {
 	CHALLENGE_EXPLANATION: 'challenge-explanation',
 	ROLE_SELECTION: 'role-selection',
-	IN_GAME: 'game'
+	IN_GAME: 'game',
+	CHALLENGE_END: 'end'
 };

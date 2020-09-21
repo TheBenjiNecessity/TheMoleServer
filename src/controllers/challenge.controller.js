@@ -65,6 +65,27 @@ class ChallengeControllerInstance {
 		);
 	}
 
+	startTimer(roomcode, minutes) {
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, 'startTimerWithCallback', {
+			roomcode,
+			duringCB: this.timerTickCallback,
+			endCB: this.timerDoneCallback,
+			minutes
+		});
+
+		return room;
+	}
+
+	timerTickCallback(roomcode) {
+		let room = RoomControllerCreator.getInstance().getRoom(roomcode);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_TICK, room);
+	}
+
+	timerDoneCallback(roomcode) {
+		let room = RoomControllerCreator.getInstance().getRoom(roomcode);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'challenge-timer-end', room);
+	}
+
 	setupSocket(socket) {
 		socket.on('raise-hand', this.raiseHand);
 		socket.on('agree-to-roles', this.agreeToRoles);
