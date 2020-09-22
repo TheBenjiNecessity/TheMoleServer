@@ -11,4 +11,12 @@ export default class EpisodeSampleService {
 			questionData.map((q) => new Question(q.text, q.type, q.choices))
 		);
 	}
+
+	static getTestEpisodeWithChallenge(room, currentChallenge) {
+		return new Episode(
+			room.playersStillPlaying,
+			[ currentChallenge ],
+			questionData.map((q) => new Question(q.text, q.type, q.choices))
+		);
+	}
 }
