@@ -1,6 +1,5 @@
 import RoomControllerCreator from '../room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
-import SchedulerServiceCreator from '../../services/scheduler.service';
 import ChallengeController from '../../controllers/challenge.controller';
 
 class ButtonChallengeControllerInstance {
