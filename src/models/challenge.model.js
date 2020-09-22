@@ -1,9 +1,9 @@
-import RaisedHand from '../raisedHand.model';
-import Role from '../role.model';
-import Question from '../quiz/question.model';
+import RaisedHand from './raisedHand.model';
+import Role from './role.model';
+import Question from './quiz/question.model';
 
-import { ROOM_MAX_PLAYERS } from '../../contants/room.constants';
-import { CHALLENGE_STATES } from '../../contants/challenge.constants';
+import { ROOM_MAX_PLAYERS } from '../contants/room.constants';
+import { CHALLENGE_STATES } from '../contants/challenge.constants';
 
 export default class Challenge {
 	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState, roles, type) {

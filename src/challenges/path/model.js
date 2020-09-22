@@ -1,5 +1,4 @@
-import Challenge from '../../models/challenges/challenge.model';
-import challengeData from '../challenge.data';
+import Challenge from '../../models/challenge.model';
 
 const MAX_CHESTS = 5;
 

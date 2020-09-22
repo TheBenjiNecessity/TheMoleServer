@@ -1,4 +1,4 @@
-import Challenge from '../challenge.model';
+import Challenge from '../../models/challenge.model';
 import * as riddles from './riddles.data';
 
 const type = 'button';

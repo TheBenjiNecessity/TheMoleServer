@@ -1,4 +1,4 @@
-import Challenge from '../challenge.model';
+import Challenge from '../../models/challenge.model';
 
 const type = 'outandsafe';
 

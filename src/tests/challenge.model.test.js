@@ -1,4 +1,4 @@
-import Challenge from '../models/challenges/challenge.model';
+import Challenge from '../models/challenge.model';
 import Player from '../models/player.model';
 import RoomSampleService from '../tests/room.sample';
 
