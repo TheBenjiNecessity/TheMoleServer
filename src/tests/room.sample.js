@@ -31,6 +31,17 @@ export default class RoomSampleService {
 		return room;
 	}
 
+	static getTestRoomWithFourPlayers() {
+		let room = new Room('TEST');
+
+		room.addPlayer(new Player('test1'));
+		room.addPlayer(new Player('test2'));
+		room.addPlayer(new Player('test3'));
+		room.addPlayer(new Player('test4'));
+
+		return room;
+	}
+
 	static getTestRoomWithNoPlayers() {
 		return new Room('TEST');
 	}
