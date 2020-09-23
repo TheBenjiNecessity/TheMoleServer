@@ -25,11 +25,11 @@ export default {
 	getModel: function(players, lang) {
 		return new StacksChallenge(
 			players,
-			this[lang].title,
-			this[lang].description,
+			this.lang[lang].title,
+			this.lang[lang].description,
 			this.maxPlayers,
 			this.minPlayers,
-			this[lang].questions,
+			this.lang[lang].questions,
 			this.initialState
 		);
 	}
