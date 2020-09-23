@@ -1,4 +1,4 @@
-import RoomControllerCreator from '../room.controller';
+import RoomControllerCreator from '../../controllers/room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
 
@@ -8,7 +8,8 @@ class ButtonChallengeControllerInstance {
 	releasedButton({ roomcode, playerName }) {
 		let event = 'setPlayerReleasedButton';
 		let wsEvent = 'button-player-released';
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { playerName });
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, playerName);
+		let buttonChallenge = room.currentEpisode.currentChallenge;
 
 		// If all buttons are released then the game is over
 		if (buttonChallenge.allButtonsReleased) {
@@ -22,7 +23,7 @@ class ButtonChallengeControllerInstance {
 	touchedButton({ roomcode, playerName }) {
 		let event = 'setPlayerPressedButton';
 		let wsEvent = 'button-player-pressed';
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { playerName });
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, playerName);
 		let buttonChallenge = room.currentEpisode.currentChallenge;
 
 		// If it is the start of the game and everyone touches their button then the game begins

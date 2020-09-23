@@ -1,5 +1,5 @@
 import Challenge from '../../models/challenge.model';
-import * as riddles from './riddles.data';
+import riddles from './riddles.data';
 
 const type = 'button';
 
@@ -7,22 +7,37 @@ export default class ButtonChallenge extends Challenge {
 	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState) {
 		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
 
+		let shuffledRiddles = JSON.parse(JSON.stringify(riddles['en'])); // TODO lang
+		shuffledRiddles.shuffle();
+
 		this.buttonPlayers = {};
-		this.riddleAnswer = riddles.shuffle()[0];
+		this.riddleAnswer = shuffledRiddles[0];
 		this.riddle = this.riddleAnswer.randomCypherText();
 		this.exemptionWasTaken = false;
 
 		for (let player of players) {
-			this.buttonPlayers[player.name] = { player: p, touchingButton: true };
+			this.buttonPlayers[player.name] = { player: player, touchingButton: true };
 		}
 	}
 
 	get allButtonsReleased() {
-		return this.buttonPlayers.every((bp) => !bp.touchingButton);
+		for (let player of this.players) {
+			let buttonPlayer = this.buttonPlayers[player.name];
+			if (buttonPlayer.touchingButton) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	get allButtonsPressed() {
-		return this.buttonPlayers.every((bp) => bp.touchingButton);
+		for (let player of this.players) {
+			let buttonPlayer = this.buttonPlayers[player.name];
+			if (!buttonPlayer.touchingButton) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	isPlayerAnswerCorrect(answer) {
