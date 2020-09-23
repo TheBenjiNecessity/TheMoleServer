@@ -15,8 +15,7 @@ export default function stringExtensions() {
 
 	String.prototype.randomCypherText = function() {
 		const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-		let shuffledAlphabet = alphabet;
-		shuffledAlphabet.shuffle();
+		let shuffledAlphabet = alphabet.shuffle();
 		let result = '';
 		for (let i = 0; i < this.length; i++) {
 			let currentChar = this.charAt(i);
