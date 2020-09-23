@@ -1,5 +1,6 @@
 import Room from '../models/room.model';
 import Player from '../models/player.model';
+import EpisodeSampleService from './episode.sample';
 
 export default class RoomSampleService {
 	static getTestRoomWithTenPlayers() {
@@ -20,29 +21,26 @@ export default class RoomSampleService {
 	}
 
 	static getTestRoomWithFivePlayers() {
-		let room = new Room('TEST');
-
-		room.addPlayer(new Player('test1'));
-		room.addPlayer(new Player('test2'));
-		room.addPlayer(new Player('test3'));
-		room.addPlayer(new Player('test4'));
-		room.addPlayer(new Player('test5'));
-
-		return room;
+		return RoomSampleService.getTestRoomForNumPlayers(5);
 	}
 
 	static getTestRoomWithFourPlayers() {
-		let room = new Room('TEST');
-
-		room.addPlayer(new Player('test1'));
-		room.addPlayer(new Player('test2'));
-		room.addPlayer(new Player('test3'));
-		room.addPlayer(new Player('test4'));
-
-		return room;
+		return RoomSampleService.getTestRoomForNumPlayers(4);
 	}
 
 	static getTestRoomWithNoPlayers() {
 		return new Room('TEST');
+	}
+
+	static getTestRoomForNumPlayers(numPlayers, currentChallenge) {
+		let room = new Room('TEST');
+
+		for (let i = 1; i <= numPlayers; i++) {
+			room.addPlayer(new Player(`test${i}`));
+		}
+
+		room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, currentChallenge);
+
+		return room;
 	}
 }
