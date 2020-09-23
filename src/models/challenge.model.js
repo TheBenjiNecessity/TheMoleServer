@@ -51,11 +51,11 @@ export default class Challenge {
 	}
 
 	get state() {
-		return this.state;
+		return this._state;
 	}
 
 	set state(newState) {
-		this.state = newState;
+		this._state = newState;
 
 		switch (this.state) {
 			case CHALLENGE_STATES.IN_GAME:
