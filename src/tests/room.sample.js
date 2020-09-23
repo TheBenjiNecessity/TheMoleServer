@@ -1,6 +1,5 @@
 import Room from '../models/room.model';
 import Player from '../models/player.model';
-import EpisodeSampleService from './episode.sample';
 
 export default class RoomSampleService {
 	static getTestRoomWithTenPlayers() {
@@ -32,14 +31,12 @@ export default class RoomSampleService {
 		return new Room('TEST');
 	}
 
-	static getTestRoomForNumPlayers(numPlayers, currentChallenge) {
+	static getTestRoomForNumPlayers(numPlayers) {
 		let room = new Room('TEST');
 
 		for (let i = 1; i <= numPlayers; i++) {
 			room.addPlayer(new Player(`test${i}`));
 		}
-
-		room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, currentChallenge);
 
 		return room;
 	}
