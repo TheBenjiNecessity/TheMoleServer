@@ -50,15 +50,6 @@ export default class Challenge {
 		return true;
 	}
 
-	get isChallengeRunning() {
-		return this.challengeStart !== -1;
-	}
-
-	get elapsedTimeInMinutes() {
-		let elapsedUnixTime = this.challengeEnd - this.challengeStart;
-		return elapsedUnixTime / (1000 * 60);
-	}
-
 	get state() {
 		return this.state;
 	}
