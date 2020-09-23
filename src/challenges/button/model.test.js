@@ -1,15 +1,14 @@
 import ButtonChallenge from './model';
-import * as buttonData from './data';
+import buttonData from './data';
 import RoomSampleService from '../../tests/room.sample';
-import arrayExtensions from '../../extensions/array';
-import stringExtensions from '../../extensions/string';
 
-arrayExtensions();
-stringExtensions();
+import initExtensions from '../../extensions/main';
+
+initExtensions();
 
 test('Checks initializing ButtonChallenge model', () => {
 	let room = RoomSampleService.getTestRoomWithFourPlayers();
-	let buttonChallenge = buttonData.getModel(room.players, 'en'); //TODO what if too many players
+	let buttonChallenge = buttonData.getModel(room.players, 'en');
 
 	expect(buttonChallenge.riddleAnswer.length === buttonChallenge.riddle.length).toBe(true);
 	expect(buttonChallenge.riddleAnswer === buttonChallenge.riddle).toBe(false);
