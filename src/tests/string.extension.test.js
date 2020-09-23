@@ -4,10 +4,11 @@ stringExtensions();
 
 test('Checks shuffle method', () => {
 	let unshuffledString = 'abcdef';
-	unshuffledString.shuffle();
-	expect(unshuffledString.length).toBe(6);
-	for (let letter of unshuffledString) {
-		expect(unshuffledString.indexOf(letter) >= 0).toBe(true);
+	let shuffledString = unshuffledString.shuffle();
+	expect(shuffledString.length).toBe(6);
+	expect(shuffledString !== unshuffledString).toBe(true);
+	for (let letter of shuffledString) {
+		expect(unshuffledString.split('').indexOf(letter) >= 0).toBe(true);
 	}
 });
 
@@ -15,6 +16,7 @@ test('Checks randomCypherText method', () => {
 	let unshuffledString = 'abc de fa';
 	let randomCypherText = unshuffledString.randomCypherText();
 	expect(randomCypherText.length).toBe(9);
+	expect(randomCypherText !== unshuffledString).toBe(true);
 	expect(randomCypherText.charAt(3)).toBe(' ');
 	expect(randomCypherText.charAt(6)).toBe(' ');
 

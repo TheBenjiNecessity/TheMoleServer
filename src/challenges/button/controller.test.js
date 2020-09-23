@@ -102,8 +102,8 @@ test('Checks touchedButton method', () => {
 	room = RoomControllerCreator.getInstance().getRoom(room.roomcode);
 	buttonChallenge = room.currentEpisode.currentChallenge;
 
-	expect(buttonChallenge.allButtonsReleased).toBe(true);
-	expect(buttonChallenge.allButtonsPressed).toBe(false);
+	expect(buttonChallenge.allButtonsReleased).toBe(false);
+	expect(buttonChallenge.allButtonsPressed).toBe(true);
 });
 
 test('Checks receivedPuzzleAnswer method (correct answer)', () => {

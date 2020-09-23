@@ -14,11 +14,11 @@ test('Checks initializing ButtonChallenge model', () => {
 	expect(buttonChallenge.riddleAnswer === buttonChallenge.riddle).toBe(false);
 	expect(buttonChallenge.exemptionWasTaken).toBe(false);
 
-	expect(buttonChallenge.buttonPlayers.length).toBe(4);
+	expect(Object.keys(buttonChallenge.buttonPlayers).length).toBe(4);
 
 	for (let player of buttonChallenge.players) {
 		let buttonPlayer = buttonChallenge.buttonPlayers[player.name];
-		expect(buttonPlayer.pressed).toBe(true);
+		expect(buttonPlayer.touchingButton).toBe(true);
 		expect(buttonPlayer.player.name === player.name).toBe(true);
 	}
 });
