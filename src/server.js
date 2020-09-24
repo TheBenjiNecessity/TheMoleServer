@@ -8,6 +8,7 @@ import { RequestServiceCreator } from './services/request.service';
 import WebSocketServiceCreator from './services/websocket.service';
 import RoomControllerCreator from './controllers/room.controller';
 import initExtensions from './extensions/main';
+import RoomSocketHandler from './controllers/room.socket-handler';
 
 initExtensions();
 
@@ -23,7 +24,7 @@ app.use(cors());
 RequestServiceCreator.createService(app);
 
 let webSocketService = WebSocketServiceCreator.getInstance();
-let instance = RoomControllerCreator.getInstance();
+let instance = RoomSocketHandler.getInstance();
 
 async function run() {
 	await instance.init();

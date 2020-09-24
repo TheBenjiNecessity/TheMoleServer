@@ -5,7 +5,10 @@ import RoomService from '../services/room/room.service';
 import ChallengeService from '../services/game/challenge.service';
 
 class RoomControllerInstance {
-	constructor() {
+	constructor(websocketServiceInstance, challengeControllerInstance) {
+		this.websocketServiceInstance = websocketServiceInstance;
+		this.challengeControllerInstance = challengeControllerInstance;
+
 		this.rooms = {};
 		this.challengeData = [];
 	}
@@ -39,12 +42,12 @@ class RoomControllerInstance {
 
 	addPlayerToRoom(roomcode, player) {
 		this.rooms[roomcode].addPlayer(player);
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'add-player');
+		return this.websocketServiceInstance().sendToRoom(roomcode, 'add-player');
 	}
 
 	removePlayerFromRoom(roomcode, player) {
 		this.rooms[roomcode].removePlayer(player.name);
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'remove-player');
+		return this.websocketServiceInstance().sendToRoom(roomcode, 'remove-player');
 	}
 
 	giveObjectsToPlayer(roomcode, playerName, obj, quantity) {
@@ -73,24 +76,6 @@ class RoomControllerInstance {
 		return code;
 	}
 
-	/* ===================================== Socket Events ===================================== */
-	moveNext({ roomcode }) {
-		this.rooms[roomcode].moveNext();
-
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next');
-	}
-
-	// A player has finished their quiz and clicked on the last question
-	quizDone({ roomcode, playerName, quizAnswers }) {
-		// a player has finished answering questions in the quiz
-		this.rooms[roomcode].currentEpisode.setQuizResultsForPlayer(playerName, quizAnswers);
-
-		if (this.rooms[roomcode].currentEpisode.allPlayersFinishedQuiz) {
-			this.rooms[roomcode].moveNext();
-			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next');
-		}
-	}
-
 	performEventOnChallenge(roomcode, event, obj = {}) {
 		let func = this.rooms[roomcode].currentEpisode.currentChallenge[event];
 
@@ -101,11 +86,32 @@ class RoomControllerInstance {
 		return this.rooms[roomcode];
 	}
 
+	/* ===================================== Socket Events ===================================== */
+	moveNext(roomcode) {
+		this.rooms[roomcode].moveNext();
+
+		return 'move-next';
+	}
+
+	// A player has finished their quiz and clicked on the last question
+	quizDone(roomcode, playerName, quizAnswers) {
+		// a player has finished answering questions in the quiz
+		let message = null;
+		this.rooms[roomcode].currentEpisode.setQuizResultsForPlayer(playerName, quizAnswers);
+
+		if (this.rooms[roomcode].currentEpisode.allPlayersFinishedQuiz) {
+			this.rooms[roomcode].moveNext();
+			message = 'move-next';
+		}
+
+		return message;
+	}
+
 	setupSocket(socket) {
 		socket.on('move-next', this.moveNext);
 		socket.on('quiz-done', this.quizDone);
 
-		ChallengeController.getInstance().setupSocket(socket);
+		this.challengeControllerInstance().setupSocket(socket);
 	}
 }
 
@@ -114,7 +120,10 @@ export default class RoomController {
 
 	static getInstance() {
 		if (!RoomController.instance) {
-			RoomController.instance = new RoomControllerInstance();
+			RoomController.instance = new RoomControllerInstance(
+				() => WebSocketServiceCreator.getInstance(),
+				() => ChallengeController.getInstance()
+			);
 		}
 		return RoomController.instance;
 	}
