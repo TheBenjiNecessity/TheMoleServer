@@ -5,17 +5,17 @@ class ButtonChallengeSocketHandlerInstance {
 	constructor() {}
 
 	releasedButton({ roomcode, playerName }) {
-		let message = ButtonChallengeController.releasedButton(roomcode, playerName);
+		let message = ButtonChallengeController.getInstance().releasedButton(roomcode, playerName);
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message);
 	}
 
 	touchedButton({ roomcode, playerName }) {
-		let message = ButtonChallengeController.touchedButton(roomcode, playerName);
+		let message = ButtonChallengeController.getInstance().touchedButton(roomcode, playerName);
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message);
 	}
 
 	receivedPuzzleAnswer({ roomcode, playerName, answer }) {
-		let message = ButtonChallengeController.receivedPuzzleAnswer(roomcode, playerName, answer);
+		let message = ButtonChallengeController.getInstance().receivedPuzzleAnswer(roomcode, playerName, answer);
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message);
 	}
 
