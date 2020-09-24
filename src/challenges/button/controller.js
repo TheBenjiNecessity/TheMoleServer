@@ -17,7 +17,7 @@ class ButtonChallengeControllerInstance {
 			message = 'challenge-end';
 		}
 
-		return { roomcode, message };
+		return message;
 	}
 
 	static touchedButton(roomcode, playerName, timerLength = 600000) {
@@ -32,7 +32,7 @@ class ButtonChallengeControllerInstance {
 			message = 'challenge-start';
 		}
 
-		return { roomcode, message };
+		return message;
 	}
 
 	static receivedPuzzleAnswer(roomcode, playerName, answer) {
@@ -46,7 +46,7 @@ class ButtonChallengeControllerInstance {
 			message = 'challenge-end';
 		}
 
-		return { roomcode, message };
+		return message;
 	}
 }
 
