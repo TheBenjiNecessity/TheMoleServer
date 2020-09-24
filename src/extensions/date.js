@@ -1,7 +1,15 @@
 export default function dateExtensions() {
-	Date.minutesFromNow = function(minutes) {
-		let date = new Date(Date.now() + minutes * 60 * 1000);
+	Date.millisecondsFromNow = function(milliseconds) {
+		let date = new Date(Date.now() + milliseconds);
 		return date.getTime();
+	};
+
+	Date.secondsFromNow = function(seconds) {
+		return Date.millisecondsFromNow(seconds * 1000);
+	};
+
+	Date.minutesFromNow = function(minutes) {
+		return Date.secondsFromNow(minutes * 60);
 	};
 
 	Date.fiveMinutesFromNow = function() {
