@@ -135,9 +135,9 @@ export default class Challenge {
 		}
 	}
 
-	startTimerWithCallback({ roomcode, duringCB, endCB, minutes }) {
+	startTimerWithCallback({ roomcode, duringCB, endCB, milliseconds }) {
 		this.challengeStart = Date.now;
-		this.challengeEnd = Date.minutesFromNow(minutes);
+		this.challengeEnd = Date.millisecondsFromNow(milliseconds);
 		this.isChallengeRunning = true;
 		this.timer = setInterval(() => {
 			if (Date.now > this.challengeEnd) {
