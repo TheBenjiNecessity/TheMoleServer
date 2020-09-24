@@ -1,5 +1,5 @@
-import ButtonChallengeController from './controller';
 import ButtonChallenge from './model';
+import ButtonChallengeSocketHandler from './socket-handler';
 
 export default {
 	type: 'button',
@@ -20,7 +20,7 @@ export default {
 		}
 	},
 	getController: function() {
-		return ButtonChallengeController.getInstance();
+		return ButtonChallengeSocketHandler.getInstance();
 	},
 	getModel: function(players, lang) {
 		return new ButtonChallenge(
