@@ -1,4 +1,4 @@
-import RoomControllerCreator from '../../controllers/room.controller';
+import RoomController from '../../controllers/room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
 import { PATH_CHALLENGE_EVENTS } from './model';
 
@@ -9,14 +9,14 @@ class PathChallengeControllerInstance {
 
 	chooseChest({ roomcode, choice }) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.CHOOSE_LEFT : PATH_CHALLENGE_EVENTS.CHOOSE_RIGHT;
-		RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
+		RoomController.getInstance().performEventOnChallenge(roomcode, event, {});
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'path-choose-chest');
 	}
 
 	addVoteForChest({ roomcode, player, choice }) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.ADD_LEFT_VOTE : PATH_CHALLENGE_EVENTS.ADD_RIGHT_VOTE;
 		let obj = { player };
-		let instance = RoomControllerCreator.getInstance();
+		let instance = RoomController.getInstance();
 		let room = instance.performEventOnChallenge(roomcode, event, obj);
 		let wsMessage = 'path-vote-chest';
 

@@ -1,4 +1,4 @@
-import RoomControllerCreator from './room.controller';
+import RoomController from './room.controller';
 import challengeData from '../challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
 import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
@@ -10,13 +10,13 @@ class ChallengeControllerInstance {
 	}
 
 	raiseHand({ roomcode, player, role }) {
-		let room = RoomControllerCreator.getInstance().getRoom(roomcode);
+		let room = RoomController.getInstance().getRoom(roomcode);
 		if (room.currentEpisode.currentChallenge.state !== CHALLENGE_STATES.ROLE_SELECTION) {
 			return;
 		}
 
 		let event = CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER;
-		room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player, role });
+		room = RoomController.getInstance().performEventOnChallenge(roomcode, event, { player, role });
 
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.RAISE_HAND);
 	}
@@ -27,18 +27,18 @@ class ChallengeControllerInstance {
 	 * @param {*} obj
 	 */
 	agreeToRoles({ roomcode, player }) {
-		let room = RoomControllerCreator.getInstance().getRoom(roomcode);
+		let room = RoomController.getInstance().getRoom(roomcode);
 		let { currentChallenge } = room.currentEpisode;
 		if (currentChallenge.state !== CHALLENGE_STATES.ROLE_SELECTION || !currentChallenge.raisedHandsAreValid) {
 			return;
 		}
 
 		let event = CHALLENGE_EVENTS.ADD_AGREED_PLAYER;
-		room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, { player });
+		room = RoomController.getInstance().performEventOnChallenge(roomcode, event, { player });
 
 		if (room.currentEpisode.currentChallenge.hasMajorityVoteForAgreedPlayers) {
 			room.currentEpisode.currentChallenge.moveNext();
-			RoomControllerCreator.getInstance().setRoom(room);
+			RoomController.getInstance().setRoom(room);
 			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.MOVE_NEXT);
 		} else {
 			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.AGREE_TO_ROLES);
@@ -47,18 +47,18 @@ class ChallengeControllerInstance {
 
 	addPlayerVote({ roomcode, player }) {
 		let event = CHALLENGE_EVENTS.SET_VOTED_PLAYER;
-		RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, player);
+		RoomController.getInstance().performEventOnChallenge(roomcode, event, player);
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.VOTED_PLAYER);
 	}
 
 	removePlayerVote({ roomcode, player }) {
 		let event = CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER;
-		RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, player);
+		RoomController.getInstance().performEventOnChallenge(roomcode, event, player);
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.REMOVE_VOTED_PLAYER);
 	}
 
 	startTimer(roomcode, minutes) {
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, 'startTimerWithCallback', {
+		let room = RoomController.getInstance().performEventOnChallenge(roomcode, 'startTimerWithCallback', {
 			roomcode,
 			duringCB: this.timerTickCallback,
 			endCB: this.timerDoneCallback,

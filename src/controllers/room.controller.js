@@ -4,7 +4,7 @@ import WebSocketServiceCreator from '../services/websocket.service';
 import RoomService from '../services/room/room.service';
 import ChallengeService from '../services/game/challenge.service';
 
-class RoomController {
+class RoomControllerInstance {
 	constructor() {
 		this.rooms = {};
 		this.challengeData = [];
@@ -109,13 +109,13 @@ class RoomController {
 	}
 }
 
-export default class RoomControllerCreator {
+export default class RoomController {
 	constructor() {}
 
 	static getInstance() {
-		if (!RoomControllerCreator.instance) {
-			RoomControllerCreator.instance = new RoomController();
+		if (!RoomController.instance) {
+			RoomController.instance = new RoomControllerInstance();
 		}
-		return RoomControllerCreator.instance;
+		return RoomController.instance;
 	}
 }
