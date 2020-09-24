@@ -1,30 +1,22 @@
-import RoomControllerCreator from '../../controllers/room.controller';
 import WebSocketServiceCreator from '../../services/websocket.service';
-import ChallengeController from '../../controllers/challenge.controller';
 import ButtonChallengeController from './controller';
 
 class ButtonChallengeSocketHandlerInstance {
 	constructor() {}
 
 	releasedButton({ roomcode, playerName }) {
-		let { roomcode, message } = ButtonChallengeController.releasedButton(roomcode, playerName);
-		let room = RoomControllerCreator.getInstance().getInstance();
-
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message, room);
+		let message = ButtonChallengeController.releasedButton(roomcode, playerName);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message);
 	}
 
 	touchedButton({ roomcode, playerName }) {
-		let { roomcode, message } = ButtonChallengeController.touchedButton(roomcode, playerName);
-		let room = RoomControllerCreator.getInstance().getInstance();
-
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message, room);
+		let message = ButtonChallengeController.touchedButton(roomcode, playerName);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message);
 	}
 
 	receivedPuzzleAnswer({ roomcode, playerName, answer }) {
-		let { roomcode, message } = ButtonChallengeController.receivedPuzzleAnswer(roomcode, playerName, answer);
-		let room = RoomControllerCreator.getInstance().getInstance();
-
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message, room);
+		let message = ButtonChallengeController.receivedPuzzleAnswer(roomcode, playerName, answer);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message);
 	}
 
 	setupSocket(socket) {
