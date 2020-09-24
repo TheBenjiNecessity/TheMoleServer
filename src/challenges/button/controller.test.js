@@ -17,7 +17,7 @@ test('Checks releasedButton method', () => {
 	);
 	RoomControllerCreator.getInstance().setRoom(room);
 
-	ButtonChallengeController.getInstance().releasedButton({
+	ButtonChallengeController.releasedButton({
 		roomcode: room.roomcode,
 		playerName: room.playersStillPlaying[0].name
 	});
@@ -37,7 +37,7 @@ test('Checks releasedButton method', () => {
 	).length;
 	expect(numPlayersTouchingButton).toBe(3);
 
-	ButtonChallengeController.getInstance().releasedButton({
+	ButtonChallengeController.releasedButton({
 		roomcode: room.roomcode,
 		playerName: room.playersStillPlaying[1].name
 	});
@@ -48,7 +48,7 @@ test('Checks releasedButton method', () => {
 	).length;
 	expect(numPlayersTouchingButton).toBe(2);
 
-	ButtonChallengeController.getInstance().releasedButton({
+	ButtonChallengeController.releasedButton({
 		roomcode: room.roomcode,
 		playerName: room.playersStillPlaying[2].name
 	});
@@ -59,7 +59,7 @@ test('Checks releasedButton method', () => {
 	).length;
 	expect(numPlayersTouchingButton).toBe(1);
 
-	ButtonChallengeController.getInstance().releasedButton({
+	ButtonChallengeController.releasedButton({
 		roomcode: room.roomcode,
 		playerName: room.playersStillPlaying[3].name
 	});
@@ -83,8 +83,7 @@ test('Checks touchedButton method', () => {
 	);
 	RoomControllerCreator.getInstance().setRoom(room);
 
-	let instance = ButtonChallengeController.getInstance();
-	instance.touchedButton({ roomcode: room.roomcode, playerName: room.playersStillPlaying[0].name });
+	ButtonChallengeController.touchedButton({ roomcode: room.roomcode, playerName: room.playersStillPlaying[0].name });
 
 	room = RoomControllerCreator.getInstance().getRoom(room.roomcode);
 	let buttonChallenge = room.currentEpisode.currentChallenge;
@@ -96,9 +95,9 @@ test('Checks touchedButton method', () => {
 	expect(buttonPlayer !== null || typeof buttonPlayer !== 'undefined').toBe(true);
 	expect(buttonPlayer.touchingButton).toBe(true);
 
-	instance.touchedButton({ roomcode: room.roomcode, playerName: room.playersStillPlaying[1].name });
-	instance.touchedButton({ roomcode: room.roomcode, playerName: room.playersStillPlaying[2].name });
-	instance.touchedButton({ roomcode: room.roomcode, playerName: room.playersStillPlaying[3].name });
+	ButtonChallengeController.touchedButton({ roomcode: room.roomcode, playerName: room.playersStillPlaying[1].name });
+	ButtonChallengeController.touchedButton({ roomcode: room.roomcode, playerName: room.playersStillPlaying[2].name });
+	ButtonChallengeController.touchedButton({ roomcode: room.roomcode, playerName: room.playersStillPlaying[3].name });
 	room = RoomControllerCreator.getInstance().getRoom(room.roomcode);
 	buttonChallenge = room.currentEpisode.currentChallenge;
 
@@ -116,8 +115,7 @@ test('Checks receivedPuzzleAnswer method (correct answer)', () => {
 	room.currentEpisode.currentChallenge.riddle = room.currentEpisode.currentChallenge.riddleAnswer.randomCypherText();
 	RoomControllerCreator.getInstance().setRoom(room);
 
-	let instance = ButtonChallengeController.getInstance();
-	instance.receivedPuzzleAnswer({
+	ButtonChallengeController.receivedPuzzleAnswer({
 		roomcode: room.roomcode,
 		playerName: room.playersStillPlaying[0].name,
 		answer: 'I am going to stop the mole'
@@ -143,8 +141,7 @@ test('Checks receivedPuzzleAnswer method (incorrect answer)', () => {
 	room.currentEpisode.currentChallenge.riddle = room.currentEpisode.currentChallenge.riddleAnswer.randomCypherText();
 	RoomControllerCreator.getInstance().setRoom(room);
 
-	let instance = ButtonChallengeController.getInstance();
-	instance.receivedPuzzleAnswer({
+	ButtonChallengeController.receivedPuzzleAnswer({
 		roomcode: room.roomcode,
 		playerName: room.playersStillPlaying[0].name,
 		answer: 'blah blah blah blah'
