@@ -39,12 +39,12 @@ class RoomController {
 
 	addPlayerToRoom(roomcode, player) {
 		this.rooms[roomcode].addPlayer(player);
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'add-player', this.rooms[roomcode]);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'add-player');
 	}
 
 	removePlayerFromRoom(roomcode, player) {
 		this.rooms[roomcode].removePlayer(player.name);
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'remove-player', this.rooms[roomcode]);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'remove-player');
 	}
 
 	giveObjectsToPlayer(roomcode, playerName, obj, quantity) {
@@ -77,7 +77,7 @@ class RoomController {
 	moveNext({ roomcode }) {
 		this.rooms[roomcode].moveNext();
 
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next');
 	}
 
 	// A player has finished their quiz and clicked on the last question
@@ -87,7 +87,7 @@ class RoomController {
 
 		if (this.rooms[roomcode].currentEpisode.allPlayersFinishedQuiz) {
 			this.rooms[roomcode].moveNext();
-			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next', this.rooms[roomcode]);
+			WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'move-next');
 		}
 	}
 

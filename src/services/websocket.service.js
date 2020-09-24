@@ -1,3 +1,5 @@
+import RoomControllerCreator from '../controllers/room.controller';
+
 class WebSocketService {
 	constructor() {}
 
@@ -16,12 +18,13 @@ class WebSocketService {
 		});
 	}
 
-	sendToRoom(roomcode, action, obj) {
+	sendToRoom(roomcode, action) {
+		let room = RoomControllerCreator.getInstance().getRoom(roomcode);
 		if (this.io) {
-			this.io.in(roomcode).emit(action, obj);
+			this.io.in(roomcode).emit(action, room);
 		}
 
-		return { roomcode, action, obj };
+		return { roomcode, action };
 	}
 }
 

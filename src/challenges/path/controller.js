@@ -9,8 +9,8 @@ class PathChallengeControllerInstance {
 
 	chooseChest({ roomcode, choice }) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.CHOOSE_LEFT : PATH_CHALLENGE_EVENTS.CHOOSE_RIGHT;
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'path-choose-chest', room);
+		RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
+		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'path-choose-chest');
 	}
 
 	addVoteForChest({ roomcode, player, choice }) {
@@ -71,7 +71,7 @@ class PathChallengeControllerInstance {
 			return instance.moveNext({ roomcode });
 		} else {
 			room = instance.getRoom(roomcode);
-			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, wsMessage, room);
+			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, wsMessage);
 		}
 	}
 
