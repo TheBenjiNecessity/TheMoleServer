@@ -1,13 +1,11 @@
 import Room from '../models/room.model';
-import ChallengeController from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 import RoomService from '../services/room/room.service';
 import ChallengeService from '../services/game/challenge.service';
 
 class RoomControllerInstance {
-	constructor(websocketServiceInstance, challengeControllerInstance) {
+	constructor(websocketServiceInstance) {
 		this.websocketServiceInstance = websocketServiceInstance;
-		this.challengeControllerInstance = challengeControllerInstance;
 
 		this.rooms = {};
 		this.challengeData = [];
@@ -106,13 +104,6 @@ class RoomControllerInstance {
 
 		return message;
 	}
-
-	setupSocket(socket) {
-		socket.on('move-next', this.moveNext);
-		socket.on('quiz-done', this.quizDone);
-
-		this.challengeControllerInstance().setupSocket(socket);
-	}
 }
 
 export default class RoomController {
@@ -120,10 +111,7 @@ export default class RoomController {
 
 	static getInstance() {
 		if (!RoomController.instance) {
-			RoomController.instance = new RoomControllerInstance(
-				() => WebSocketServiceCreator.getInstance(),
-				() => ChallengeController.getInstance()
-			);
+			RoomController.instance = new RoomControllerInstance(() => WebSocketServiceCreator.getInstance());
 		}
 		return RoomController.instance;
 	}
