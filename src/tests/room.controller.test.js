@@ -16,7 +16,6 @@ test('Checks "roomCodeAlreadyExists" method', () => {
 });
 
 test('Checks "generateRandomRoomCodeNotUsed" method', () => {
-	// TODO: generate all possible room codes in list and remove one for testing?
 	let room = RoomSampleService.getTestRoomWithTenPlayers(); // Gets room with roomcode 'TEST'
 	RoomControllerCreator.getInstance().setRoom(room);
 
