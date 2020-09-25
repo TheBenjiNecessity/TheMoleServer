@@ -1,4 +1,3 @@
-import Room from '../models/room.model';
 import ChallengeController from '../controllers/challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 
