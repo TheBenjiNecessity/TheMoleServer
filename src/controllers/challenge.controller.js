@@ -20,8 +20,12 @@ class ChallengeControllerInstance {
 			return;
 		}
 
-		let event = CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER;
-		room = this.roomControllerInstance().performEventOnChallenge(roomcode, event, player, role);
+		this.roomControllerInstance().performEventOnChallenge(
+			roomcode,
+			CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER,
+			player,
+			role
+		);
 
 		return this.websocketServiceInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.RAISE_HAND);
 	}
@@ -38,8 +42,7 @@ class ChallengeControllerInstance {
 			return;
 		}
 
-		let event = CHALLENGE_EVENTS.ADD_AGREED_PLAYER;
-		room = this.roomControllerInstance().performEventOnChallenge(roomcode, event, player);
+		this.roomControllerInstance().performEventOnChallenge(roomcode, CHALLENGE_EVENTS.ADD_AGREED_PLAYER, player);
 
 		if (room.currentEpisode.currentChallenge.hasMajorityVoteForAgreedPlayers) {
 			room.currentEpisode.currentChallenge.moveNext();
