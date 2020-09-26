@@ -1,5 +1,6 @@
 import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
+import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
 
 class ButtonChallengeControllerInstance {
 	constructor(roomControllerInstance, challengeControllerInstance) {
@@ -15,7 +16,7 @@ class ButtonChallengeControllerInstance {
 
 		// If all buttons are released then the game is over
 		if (buttonChallenge.allButtonsReleased) {
-			this.roomControllerInstance().performEventOnChallenge(roomcode, 'endChallenge');
+			this.roomControllerInstance().performEventOnChallenge(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
 			message = 'challenge-end';
 		}
 
@@ -44,7 +45,7 @@ class ButtonChallengeControllerInstance {
 
 		if (buttonChallenge.isPlayerAnswerCorrect(answer)) {
 			this.roomControllerInstance().giveObjectsToPlayer(roomcode, playerName, 'exemption', 1);
-			this.roomControllerInstance().performEventOnChallenge(roomcode, 'endChallenge');
+			this.roomControllerInstance().performEventOnChallenge(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
 			message = 'challenge-end';
 		}
 

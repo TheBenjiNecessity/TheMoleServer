@@ -69,17 +69,15 @@ class ChallengeControllerInstance {
 		timerTickCallback = this.timerTickCallback,
 		timerDoneCallback = this.timerDoneCallback
 	) {
-		let room = this.roomControllerInstance().performEventOnChallenge(
+		this.roomControllerInstance().performEventOnChallenge(
 			roomcode,
-			'startTimerWithCallback',
+			CHALLENGE_EVENTS.START_TIMER,
 			roomcode,
 			timerTickCallback,
 			timerDoneCallback,
 			milliseconds,
 			interval
 		);
-
-		return room;
 	}
 
 	timerTickCallback(roomcode) {

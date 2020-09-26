@@ -12,7 +12,9 @@ export const CHALLENGE_EVENTS = {
 	ADD_AGREED_PLAYER: 'addAgreedPlayer',
 	RAISE_HAND_FOR_PLAYER: 'raiseHandForPlayer',
 	SET_VOTED_PLAYER: 'setVotedPlayer',
-	REMOVE_VOTED_PLAYER: 'removeVotedPlayer'
+	REMOVE_VOTED_PLAYER: 'removeVotedPlayer',
+	END_CHALLENGE: 'endChallenge',
+	START_TIMER: 'startTimerWithCallback'
 };
 
 export const CHALLENGE_STATES = {
