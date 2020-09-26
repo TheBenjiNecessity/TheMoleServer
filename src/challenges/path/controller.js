@@ -5,7 +5,10 @@ import { PATH_CHALLENGE_EVENTS } from './model';
 const POINTS_FOR_CONTINUING = 7;
 
 class PathChallengeControllerInstance {
-	constructor() {}
+	constructor(roomControllerInstance, websocketServiceInstance) {
+		this.roomControllerInstance = roomControllerInstance;
+		this.websocketServiceInstance = websocketServiceInstance;
+	}
 
 	chooseChest({ roomcode, choice }) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.CHOOSE_LEFT : PATH_CHALLENGE_EVENTS.CHOOSE_RIGHT;
@@ -15,8 +18,7 @@ class PathChallengeControllerInstance {
 
 	addVoteForChest({ roomcode, player, choice }) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.ADD_LEFT_VOTE : PATH_CHALLENGE_EVENTS.ADD_RIGHT_VOTE;
-		let instance = RoomController.getInstance();
-		let room = instance.performEventOnChallenge(roomcode, event, player);
+		let room = this.roomControllerInstance().performEventOnChallenge(roomcode, event, player);
 		let wsMessage = 'path-vote-chest';
 
 		let pathChallenge = room.currentEpisode.currentChallenge;
@@ -24,12 +26,19 @@ class PathChallengeControllerInstance {
 			let { contentsOfChosenChest } = pathChallenge;
 
 			if (contentsOfChosenChest === 'continue') {
-				instance.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.MOVE_TO_NEW_ROW, player);
+				this.roomControllerInstance().performEventOnChallenge(
+					roomcode,
+					PATH_CHALLENGE_EVENTS.MOVE_TO_NEW_ROW,
+					player
+				);
 				wsMessage = 'walker-continued';
 
 				if (pathChallenge.walkerIsDone) {
-					instance.addPoints(roomcode, POINTS_FOR_CONTINUING);
-					instance.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.SET_NEW_WALKER);
+					this.roomControllerInstance().addPoints(roomcode, POINTS_FOR_CONTINUING);
+					this.roomControllerInstance().performEventOnChallenge(
+						roomcode,
+						PATH_CHALLENGE_EVENTS.SET_NEW_WALKER
+					);
 					wsMessage = 'walker-done';
 				}
 			} else {
@@ -37,40 +46,45 @@ class PathChallengeControllerInstance {
 					case 'exemption':
 					case 'black-exemption':
 					case 'joker':
-						instance.giveObjectsToPlayer(roomcode, player.name, contentsOfChosenChest, 1);
+						this.roomControllerInstance().giveObjectsToPlayer(
+							roomcode,
+							player.name,
+							contentsOfChosenChest,
+							1
+						);
 						wsMessage = 'walker-got-' + contentsOfChosenChest;
 						break;
 					case 'two jokers':
-						instance.giveObjectsToPlayer(roomcode, player.name, 'joker', 2);
+						this.roomControllerInstance().giveObjectsToPlayer(roomcode, player.name, 'joker', 2);
 						wsMessage = 'walker-got-' + contentsOfChosenChest;
 						wsMessage.replace(' ', '-');
 						break;
 					case 'three jokers':
-						instance.giveObjectsToPlayer(roomcode, player.name, 'joker', 3);
+						this.roomControllerInstance().giveObjectsToPlayer(roomcode, player.name, 'joker', 3);
 						wsMessage = 'walker-got-' + contentsOfChosenChest;
 						wsMessage.replace(' ', '-');
 						break;
 					case 'minus 3 points':
-						instance.removePoints(roomcode, 3);
+						this.roomControllerInstance().removePoints(roomcode, 3);
 						wsMessage = 'walker-lost-three-points';
 						break;
 					case 'minus 5 points':
-						instance.removePoints(roomcode, 5);
+						this.roomControllerInstance().removePoints(roomcode, 5);
 						wsMessage = 'walker-lost-five-points';
 						break;
 					default:
 						break;
 				}
 
-				instance.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.SET_NEW_WALKER);
+				this.roomControllerInstance().performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.SET_NEW_WALKER);
 			}
 		}
 
 		if (pathChallenge.challengeIsDone) {
-			return instance.moveNext({ roomcode });
+			return this.roomControllerInstance().moveNext({ roomcode });
 		} else {
-			room = instance.getRoom(roomcode);
-			return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, wsMessage);
+			room = this.roomControllerInstance().getRoom(roomcode);
+			return this.websocketServiceInstance().sendToRoom(roomcode, wsMessage);
 		}
 	}
 
@@ -85,7 +99,10 @@ export default class PathChallengeController {
 
 	static getInstance() {
 		if (!PathChallengeController.instance) {
-			PathChallengeController.instance = new PathChallengeControllerInstance();
+			PathChallengeController.instance = new PathChallengeControllerInstance(
+				() => RoomController.getInstance(),
+				() => WebSocketServiceCreator.getInstance()
+			);
 		}
 
 		return PathChallengeController.instance;
