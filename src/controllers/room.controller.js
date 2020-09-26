@@ -26,8 +26,8 @@ class RoomControllerInstance {
 		return this.rooms[roomcode];
 	}
 
-	deleteRoom(room) {
-		// TODO when do rooms get deleted?
+	deleteRoom(roomcode) {
+		delete this.rooms[roomcode];
 	}
 
 	getRoom(roomcode) {
@@ -93,8 +93,7 @@ class RoomControllerInstance {
 		this.rooms[roomcode].currentEpisode.setQuizResultsForPlayer(playerName, quizAnswers);
 
 		if (this.rooms[roomcode].currentEpisode.allPlayersFinishedQuiz) {
-			this.rooms[roomcode].moveNext();
-			message = 'move-next';
+			message = this.moveNext(roomcode);
 		}
 
 		return message;
