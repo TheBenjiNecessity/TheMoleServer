@@ -2,11 +2,15 @@ import PathChallengeController from './controller';
 import RoomControllerCreator from '../../controllers/room.controller';
 import RoomSampleService from '../../tests/room.sample';
 import EpisodeSampleService from '../../tests/episode.sample';
+import pathData from './data';
 
 test('Checks "chooseChest" method', () => {
 	let roomcode = 'TEST';
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(
+		room,
+		pathData.getModel(room.playersStillPlaying, 'en')
+	);
 	RoomControllerCreator.getInstance().setRoom(room);
 
 	let pathChallengeController = PathChallengeController.getInstance();
@@ -23,9 +27,13 @@ test('Checks "chooseChest" method', () => {
 
 test('Checks "addVoteForChest" method', () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(
+		room,
+		pathData.getModel(room.playersStillPlaying, 'en')
+	);
 	let player = room.players[0];
-	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	let pathChallenge = room.currentEpisode.currentChallenge;
+
 	pathChallenge.chooseLeft();
 	RoomControllerCreator.getInstance().setRoom(room);
 
