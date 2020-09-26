@@ -1,5 +1,5 @@
-import ChallengeController from '../controllers/challenge.controller';
-import RoomControllerCreator from '../controllers/room.controller';
+import ChallengeController from './challenge.controller';
+import RoomControllerCreator from './room.controller';
 import RoomSampleService from '../tests/room.sample';
 import EpisodeSampleService from '../tests/episode.sample';
 
