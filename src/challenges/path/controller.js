@@ -9,15 +9,14 @@ class PathChallengeControllerInstance {
 
 	chooseChest({ roomcode, choice }) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.CHOOSE_LEFT : PATH_CHALLENGE_EVENTS.CHOOSE_RIGHT;
-		RoomController.getInstance().performEventOnChallenge(roomcode, event, {});
+		RoomController.getInstance().performEventOnChallenge(roomcode, event);
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'path-choose-chest');
 	}
 
 	addVoteForChest({ roomcode, player, choice }) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.ADD_LEFT_VOTE : PATH_CHALLENGE_EVENTS.ADD_RIGHT_VOTE;
-		let obj = { player };
 		let instance = RoomController.getInstance();
-		let room = instance.performEventOnChallenge(roomcode, event, obj);
+		let room = instance.performEventOnChallenge(roomcode, event, player);
 		let wsMessage = 'path-vote-chest';
 
 		let pathChallenge = room.currentEpisode.currentChallenge;
@@ -25,7 +24,7 @@ class PathChallengeControllerInstance {
 			let { contentsOfChosenChest } = pathChallenge;
 
 			if (contentsOfChosenChest === 'continue') {
-				instance.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.MOVE_TO_NEW_ROW, obj);
+				instance.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.MOVE_TO_NEW_ROW, player);
 				wsMessage = 'walker-continued';
 
 				if (pathChallenge.walkerIsDone) {

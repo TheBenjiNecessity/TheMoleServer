@@ -4,6 +4,8 @@ import WebSocketServiceCreator from '../services/websocket.service';
 import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
 import ChallengeService from '../services/game/challenge.service';
 
+const MILLISECONDS_IN_SECOND = 1000;
+
 class ChallengeControllerInstance {
 	constructor(roomControllerInstance, websocketServiceInstance) {
 		this.websocketServiceInstance = websocketServiceInstance;
@@ -19,7 +21,7 @@ class ChallengeControllerInstance {
 		}
 
 		let event = CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER;
-		room = this.roomControllerInstance().performEventOnChallenge(roomcode, event, { player, role });
+		room = this.roomControllerInstance().performEventOnChallenge(roomcode, event, player, role);
 
 		return this.websocketServiceInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.RAISE_HAND);
 	}
@@ -37,7 +39,7 @@ class ChallengeControllerInstance {
 		}
 
 		let event = CHALLENGE_EVENTS.ADD_AGREED_PLAYER;
-		room = this.roomControllerInstance().performEventOnChallenge(roomcode, event, { player });
+		room = this.roomControllerInstance().performEventOnChallenge(roomcode, event, player);
 
 		if (room.currentEpisode.currentChallenge.hasMajorityVoteForAgreedPlayers) {
 			room.currentEpisode.currentChallenge.moveNext();
@@ -60,13 +62,22 @@ class ChallengeControllerInstance {
 		return this.websocketServiceInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.REMOVE_VOTED_PLAYER);
 	}
 
-	startTimer(roomcode, minutes) {
-		let room = this.roomControllerInstance().performEventOnChallenge(roomcode, 'startTimerWithCallback', {
+	startTimer(
+		roomcode,
+		milliseconds,
+		interval = MILLISECONDS_IN_SECOND,
+		timerTickCallback = this.timerTickCallback,
+		timerDoneCallback = this.timerDoneCallback
+	) {
+		let room = this.roomControllerInstance().performEventOnChallenge(
 			roomcode,
-			duringCB: this.timerTickCallback,
-			endCB: this.timerDoneCallback,
-			minutes
-		});
+			'startTimerWithCallback',
+			roomcode,
+			timerTickCallback,
+			timerDoneCallback,
+			milliseconds,
+			interval
+		);
 
 		return room;
 	}
@@ -76,7 +87,7 @@ class ChallengeControllerInstance {
 	}
 
 	timerDoneCallback(roomcode) {
-		return this.websocketServiceInstance().sendToRoom(roomcode, 'challenge-timer-end');
+		return this.websocketServiceInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_OVER);
 	}
 
 	setupSocket(socket) {

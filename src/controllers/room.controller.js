@@ -74,13 +74,8 @@ class RoomControllerInstance {
 		return code;
 	}
 
-	performEventOnChallenge(roomcode, event, obj = {}) {
-		let func = this.rooms[roomcode].currentEpisode.currentChallenge[event];
-
-		if (func && typeof func === 'function') {
-			this.rooms[roomcode].currentEpisode.currentChallenge[event](obj);
-		}
-
+	performEventOnChallenge(roomcode, event, ...args) {
+		this.rooms[roomcode].currentEpisode.currentChallenge[event].apply(null, args);
 		return this.rooms[roomcode];
 	}
 

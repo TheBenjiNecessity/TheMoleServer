@@ -6,14 +6,14 @@ class PlatterChallengeControllerInstance {
 
 	chooseExemption({ roomcode, player }) {
 		let event = 'take-exemption';
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event);
 		RoomControllerCreator.getInstance().giveObjectsToPlayer(roomcode, player, 'exemption', 1);
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'took-exemption');
 	}
 
 	chooseMoney({ roomcode }) {
 		let event = 'take-money';
-		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event, {});
+		let room = RoomControllerCreator.getInstance().performEventOnChallenge(roomcode, event);
 		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'took-money');
 	}
 
