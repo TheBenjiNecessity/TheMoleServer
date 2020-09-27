@@ -3,9 +3,7 @@ import EpisodeService from '../services/game/episode.service';
 import ChallengeService from '../services/game/challenge.service';
 import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
 import Episode from './episode.model';
-import arrayExtensions from '../extensions/array';
-
-arrayExtensions();
+import '../extensions/array';
 
 export default class Room {
 	roomcode: string;
