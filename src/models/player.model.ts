@@ -1,6 +1,14 @@
 import QuizAnswers from './quiz/quiz-answers.model';
+import Role from './role.model';
 
 export default class Player {
+	name: string;
+	eliminated: boolean;
+	isMole: boolean;
+	currentRole: Role;
+	quizAnswers: QuizAnswers;
+	objects: any; // TODO
+
 	constructor(name) {
 		this.name = name;
 		this.eliminated = false;

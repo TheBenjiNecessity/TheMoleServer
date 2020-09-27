@@ -1,3 +1,5 @@
+import Answer from './quiz-answer.model';
+
 /**
  * The answers to a quiz
  * @property {array<Answer>} answers the list of answers provided by a player
@@ -5,6 +7,10 @@
  * @property {int} objectsUsed the objects like exemptions or jokers used during the quiz
  */
 export default class QuizAnswers {
+	answers: Answer[];
+	time: number;
+	objectsUsed: any;
+
 	constructor(answers = [], time = -1, objectsUsed = { exemption: 0, joker: 0, 'black-exemption': 0 }) {
 		this.answers = answers;
 		this.time = time;

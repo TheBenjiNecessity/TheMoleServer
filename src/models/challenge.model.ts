@@ -4,9 +4,39 @@ import Question from './quiz/question.model';
 
 import { ROOM_MAX_PLAYERS } from '../contants/room.constants';
 import { CHALLENGE_STATES } from '../contants/challenge.constants';
+import Player from './player.model';
 
 export default class Challenge {
-	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState, roles, type) {
+	private _state: string;
+
+	players: Player[];
+	title: string;
+	type: string;
+	description: string;
+	maxPlayers: number;
+	minPlayers: number;
+	roles: Role[];
+	questions: Question[];
+
+	agreedPlayers: Player[];
+	raisedHands: RaisedHand[];
+	votedPlayers: any;
+	challengeStart: number;
+	challengeEnd: number;
+	isChallengeRunning: boolean;
+	timer: any;
+
+	constructor(
+		players: Player[],
+		title: string,
+		description: string,
+		maxPlayers: number,
+		minPlayers: number,
+		questions: Question[],
+		initialState: string,
+		roles: Role[],
+		type: string
+	) {
 		if (
 			maxPlayers > ROOM_MAX_PLAYERS ||
 			minPlayers > ROOM_MAX_PLAYERS ||
@@ -23,9 +53,8 @@ export default class Challenge {
 		this.description = description;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
-		this.roles = roles && roles.length ? roles.map((r) => new Role(r.name, r.numPlayers)) : [];
-		this.questions =
-			questions && questions.length ? questions.map((qd) => new Question(qd.text, qd.type, qd.choices)) : [];
+		this.roles = roles;
+		this.questions = questions;
 		this._state = initialState;
 		this.agreedPlayers = [];
 		this.raisedHands = [];
@@ -42,7 +71,7 @@ export default class Challenge {
 
 	get raisedHandsAreValid() {
 		for (let role of this.roles) {
-			let raisedHandsOfRole = this.raisedHands.filter((rh) => rh.role === role.name);
+			let raisedHandsOfRole = this.raisedHands.filter((rh) => rh.role.name === role.name);
 			if (raisedHandsOfRole.length !== role.numPlayers) {
 				return false;
 			}
@@ -84,7 +113,7 @@ export default class Challenge {
 			let indexOfRaisedHand = this.raisedHands.indexOf(foundRaisedHand);
 			this.raisedHands[indexOfRaisedHand].role = role;
 		} else {
-			this.raisedHands.push(new RaisedHand(player, role));
+			this.raisedHands.push({ player, role });
 		}
 
 		this.agreedPlayers = [];
@@ -115,7 +144,7 @@ export default class Challenge {
 
 		for (let i = 0; i < this.players.length; i++) {
 			this.players[i].currentRole = null;
-			let raisedHand = this.raiseHands.find((rh) => rh.player.name === this.players[i].name);
+			let raisedHand = this.raisedHands.find((rh) => rh.player.name === this.players[i].name);
 			if (raisedHand) {
 				this.players[i].currentRole = raisedHand.role;
 			}
@@ -136,11 +165,11 @@ export default class Challenge {
 	}
 
 	startTimerWithCallback(roomcode, duringCB, endCB, millisecondsFromNow, millisecondsInterval) {
-		this.challengeStart = Date.now;
+		this.challengeStart = Date.now();
 		this.challengeEnd = Date.millisecondsFromNow(millisecondsFromNow);
 		this.isChallengeRunning = true;
 		this.timer = setInterval(() => {
-			if (Date.now > this.challengeEnd) {
+			if (Date.now() >= this.challengeEnd) {
 				endCB(roomcode);
 				this.endChallenge();
 			} else {

@@ -1,4 +1,7 @@
 import QuizService from '../services/game/quiz.service';
+import Challenge from './challenge.model';
+import Player from './player.model';
+import Quiz from './quiz/quiz.model';
 
 /**
  * Stores things to do with an episode
@@ -8,12 +11,18 @@ import QuizService from '../services/game/quiz.service';
  * @property {Object} quiz the quiz at the end of this episode
  */
 export default class Episode {
+	currentChallengeIndex: number;
+	challenges: Challenge[];
+	players: Player[];
+	quiz: Quiz;
+	molePlayer: Player;
+
 	constructor(playersStillPlaying, challenges, unusedGeneralQuizQuestions) {
 		this.currentChallengeIndex = 0;
 		this.challenges = challenges;
 		this.players = playersStillPlaying;
 
-		let questionsArray = this.challenges.map((c) => c.questions).flat();
+		let questionsArray = [].concat(...this.challenges.map((c) => c.questions));
 		this.quiz = QuizService.generateQuiz(this.players, questionsArray, unusedGeneralQuizQuestions);
 	}
 
