@@ -1,13 +1,22 @@
-import questionData from '../models/quiz/question.data';
+import questionData from './quiz/question.data';
 import EpisodeService from '../services/game/episode.service';
 import ChallengeService from '../services/game/challenge.service';
 import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
-import Episode from '../models/episode.model';
+import Episode from './episode.model';
 import arrayExtensions from '../extensions/array';
 
 arrayExtensions();
 
 export default class Room {
+	roomcode: string;
+	_state: string;
+	players: any[];
+	_currentEpisode: any;
+	unusedChallenges: any[];
+	isInProgress: boolean;
+	points: number;
+	unaskedQuestions: any[];
+
 	constructor(roomcode) {
 		this.roomcode = roomcode;
 		this._state = ROOM_STATE.LOBBY;
@@ -82,7 +91,7 @@ export default class Room {
 		}
 	}
 
-	addPlayer(player) {
+	addPlayer(player): boolean {
 		if (this.isFull || this.isInProgress) {
 			return false;
 		}
@@ -95,7 +104,7 @@ export default class Room {
 		return true;
 	}
 
-	removePlayer(playerName) {
+	removePlayer(playerName): void {
 		if (this.isInProgress) {
 			throw 'Cannot remove player from game in progress';
 		}
@@ -103,12 +112,12 @@ export default class Room {
 		this.players = this.players.filter((p) => p.name === playerName);
 	}
 
-	hasPlayer(playerName) {
+	hasPlayer(playerName): boolean {
 		let roomPlayer = this.players.find((p) => p.name === playerName);
 		return typeof roomPlayer !== 'undefined';
 	}
 
-	giveObjectsToPlayer(playerName, object, quantity) {
+	giveObjectsToPlayer(playerName, object, quantity): void {
 		for (let i = 0; i < this.players.length; i++) {
 			if (this.players[i].name === playerName) {
 				this.players[i].setObjects(object, quantity);
@@ -117,7 +126,7 @@ export default class Room {
 		}
 	}
 
-	removeObjectsFromPlayer(playerName, object, quantity) {
+	removeObjectsFromPlayer(playerName, object, quantity): void {
 		for (let i = 0; i < this.players.length; i++) {
 			if (this.players[i].name === playerName) {
 				this.players[i].removeObjects(object, quantity);
@@ -126,11 +135,11 @@ export default class Room {
 		}
 	}
 
-	addPoints(points = 1) {
+	addPoints(points = 1): void {
 		this.points += points;
 	}
 
-	removePoints(points = 1) {
+	removePoints(points = 1): void {
 		this.points -= points;
 
 		if (this.points < 0) {
@@ -138,19 +147,19 @@ export default class Room {
 		}
 	}
 
-	removeUnaskedQuestion(text) {
+	removeUnaskedQuestion(text): void {
 		this.unaskedQuestions = this.unaskedQuestions.filter((q) => q.text !== text);
 	}
 
-	removeUnusedChallenge(type) {
+	removeUnusedChallenge(type): void {
 		this.unusedChallenges = this.unusedChallenges.filter((c) => c.type !== type);
 	}
 
-	addChallengeData(challengeData) {
+	addChallengeData(challengeData): void {
 		this.unusedChallenges = JSON.parse(JSON.stringify(challengeData));
 	}
 
-	moveNext() {
+	moveNext(): boolean {
 		switch (this.state) {
 			case ROOM_STATE.LOBBY:
 				this.state = ROOM_STATE.WELCOME;

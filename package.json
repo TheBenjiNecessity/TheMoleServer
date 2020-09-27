@@ -4,10 +4,10 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "babel src -d lib && node ./lib/server.js",
+		"start": "npm run build && node ./dist/server.js",
 		"test": "jest",
-		"customTests": "babel src -d lib && node ./lib/tests.js",
-		"build": "babel src -d lib"
+		"customTests": "npm run build && node ./dist/tests.js",
+		"build": "npx tsc"
 	},
 	"repository": {
 		"type": "git",
@@ -30,7 +30,10 @@
 		"@babel/cli": "^7.11.6",
 		"@babel/core": "^7.11.6",
 		"@babel/preset-env": "^7.11.5",
-		"jest": "^26.4.2"
+		"@types/jest": "^26.0.14",
+		"jest": "^26.4.2",
+		"ts-jest": "^26.4.0",
+		"typescript": "^4.0.3"
 	},
 	"jest": {
 		"verbose": true,
