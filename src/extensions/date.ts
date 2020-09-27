@@ -1,32 +1,42 @@
-export {};
-
 declare global {
 	interface DateConstructor {
-		millisecondsFromNow: (milliseconds: number) => number;
-		secondsFromNow: (seconds: number) => number;
-		minutesFromNow: (minutes: number) => number;
-		fiveMinutesFromNow: () => number;
-		tenMinutesFromNow: () => number;
+		millisecondsFromNow: (milliseconds: number, dateWrapper?: DateWrapper) => number;
+		secondsFromNow: (seconds: number, dateWrapper?: DateWrapper) => number;
+		minutesFromNow: (minutes: number, dateWrapper?: DateWrapper) => number;
+		fiveMinutesFromNow: (dateWrapper?: DateWrapper) => number;
+		tenMinutesFromNow: (dateWrapper?: DateWrapper) => number;
 	}
 }
 
-Date.millisecondsFromNow = function(milliseconds) {
-	let date = new Date(Date.now() + milliseconds);
+export class DateWrapper {
+	private _date: Date;
+
+	constructor(fixedDateTime: Date) {
+		this._date = fixedDateTime;
+	}
+
+	get now(): number {
+		return this._date ? this._date.getTime() : Date.now();
+	}
+}
+
+Date.millisecondsFromNow = function(milliseconds, dateWrapper: DateWrapper = new DateWrapper(null)) {
+	let date = new Date(dateWrapper.now + milliseconds);
 	return date.getTime();
 };
 
-Date.secondsFromNow = function(seconds) {
-	return Date.millisecondsFromNow(seconds * 1000);
+Date.secondsFromNow = function(seconds, dateWrapper: DateWrapper = new DateWrapper(null)) {
+	return Date.millisecondsFromNow(seconds * 1000, dateWrapper);
 };
 
-Date.minutesFromNow = function(minutes) {
-	return Date.secondsFromNow(minutes * 60);
+Date.minutesFromNow = function(minutes, dateWrapper: DateWrapper = new DateWrapper(null)) {
+	return Date.secondsFromNow(minutes * 60, dateWrapper);
 };
 
-Date.fiveMinutesFromNow = function() {
-	return Date.minutesFromNow(5);
+Date.fiveMinutesFromNow = function(dateWrapper: DateWrapper = new DateWrapper(null)) {
+	return Date.minutesFromNow(5, dateWrapper);
 };
 
-Date.tenMinutesFromNow = function() {
-	return Date.minutesFromNow(10);
+Date.tenMinutesFromNow = function(dateWrapper: DateWrapper = new DateWrapper(null)) {
+	return Date.minutesFromNow(10, dateWrapper);
 };
