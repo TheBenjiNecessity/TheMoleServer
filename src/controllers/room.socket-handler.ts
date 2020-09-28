@@ -1,7 +1,7 @@
 import ChallengeController from './challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
 
-class RoomSocketHandlerInstance {
+class RoomSocketHandlerInstance implements ISocketHandler {
 	websocketServiceInstance: Function;
 	roomSocketInstance: Function;
 	challengeControllerInstance: Function;

@@ -6,7 +6,7 @@ import ChallengeService from '../services/game/challenge.service';
 
 const MILLISECONDS_IN_SECOND = 1000;
 
-class ChallengeControllerInstance {
+class ChallengeControllerInstance implements ISocketHandler {
 	websocketServiceInstance: Function;
 	roomControllerInstance: Function;
 
@@ -92,14 +92,14 @@ class ChallengeControllerInstance {
 		return this.websocketServiceInstance().sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_OVER);
 	}
 
-	setupSocket(socket) {
+	async setupSocket(socket) {
 		socket.on('raise-hand', this.raiseHand);
 		socket.on('agree-to-roles', this.agreeToRoles);
 		socket.on('add-player-vote', this.addPlayerVote);
 		socket.on('remove-player-vote', this.removePlayerVote);
 
 		for (let type of challengeData) {
-			let childInstance = ChallengeService.getChallengeControllerForType(type);
+			let childInstance = await ChallengeService.getChallengeControllerForType(type);
 			if (childInstance) {
 				childInstance.setupSocket(socket);
 			}

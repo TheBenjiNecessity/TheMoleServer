@@ -1,7 +1,7 @@
 import WebSocketServiceCreator from '../../services/websocket.service';
 import ButtonChallengeController from './controller';
 
-class ButtonChallengeSocketHandlerInstance {
+class ButtonChallengeSocketHandlerInstance implements ISocketHandler {
 	constructor() {}
 
 	releasedButton({ roomcode, playerName }) {
