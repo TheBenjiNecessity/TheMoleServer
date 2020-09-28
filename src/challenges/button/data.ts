@@ -1,28 +1,35 @@
+import ChallengeData from '../../interfaces/challenge-data';
+import IController from '../../interfaces/controller.interface';
+import ISocketHandler from '../../interfaces/socket-handler.interface';
+import Challenge from '../../models/challenge.model';
+import ButtonChallengeController from './controller';
 import ButtonChallenge from './model';
 import ButtonChallengeSocketHandler from './socket-handler';
 
-export default {
-	type: 'button',
-	maxPlayers: 4,
-	minPlayers: 4,
-	initialState: 'game',
-	lang: {
-		en: {
-			title: 'The Button',
-			description: '',
-			questions: [
-				{
-					text: 'Did the mole take the jokers?',
-					type: 'choices',
-					choices: [ 'Yes', 'No' ]
-				}
-			]
-		}
-	},
-	getController: function() {
+export default class ButtonChallengeData extends ChallengeData {
+	constructor() {
+		super('button', 4, 4, 'game', {
+			en: {
+				title: 'The Button',
+				description: '',
+				questions: [
+					{
+						text: 'Did the mole take the jokers?',
+						type: 'choices',
+						choices: [ 'Yes', 'No' ]
+					}
+				]
+			}
+		});
+	}
+
+	getController(): IController {
+		return ButtonChallengeController.getInstance();
+	}
+	getSocketHandler(): ISocketHandler {
 		return ButtonChallengeSocketHandler.getInstance();
-	},
-	getModel: function(players, lang) {
+	}
+	getModel(players, lang): Challenge {
 		return new ButtonChallenge(
 			players,
 			this.lang[lang].title,
@@ -33,4 +40,4 @@ export default {
 			this.initialState
 		);
 	}
-};
+}
