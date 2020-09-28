@@ -1,10 +1,11 @@
 import RoomController from '../../controllers/room.controller';
-import WebSocketServiceCreator from '../../services/websocket.service';
+import WebSocketService from '../../services/websocket.service';
 import { PATH_CHALLENGE_EVENTS } from './model';
+import IController from '../../interfaces/controller.interface';
 
 const POINTS_FOR_CONTINUING = 7;
 
-class PathChallengeControllerInstance {
+class PathChallengeControllerInstance implements IController {
 	roomControllerInstance: Function;
 	websocketServiceInstance: Function;
 
@@ -13,13 +14,13 @@ class PathChallengeControllerInstance {
 		this.websocketServiceInstance = websocketServiceInstance;
 	}
 
-	chooseChest({ roomcode, choice }) {
+	chooseChest(roomcode, choice) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.CHOOSE_LEFT : PATH_CHALLENGE_EVENTS.CHOOSE_RIGHT;
 		RoomController.getInstance().performEventOnChallenge(roomcode, event);
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, 'path-choose-chest');
+		return 'path-choose-chest';
 	}
 
-	addVoteForChest({ roomcode, player, choice }) {
+	addVoteForChest(roomcode, player, choice) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.ADD_LEFT_VOTE : PATH_CHALLENGE_EVENTS.ADD_RIGHT_VOTE;
 		let room = this.roomControllerInstance().performEventOnChallenge(roomcode, event, player);
 		let wsMessage = 'path-vote-chest';
@@ -84,16 +85,10 @@ class PathChallengeControllerInstance {
 		}
 
 		if (pathChallenge.challengeIsDone) {
-			return this.roomControllerInstance().moveNext({ roomcode });
-		} else {
-			room = this.roomControllerInstance().getRoom(roomcode);
-			return this.websocketServiceInstance().sendToRoom(roomcode, wsMessage);
+			this.roomControllerInstance().moveNext(roomcode);
 		}
-	}
 
-	setupSocket(socket) {
-		socket.on('path-choose-chest', this.chooseChest);
-		socket.on('path-add-vote-chest', this.addVoteForChest);
+		return wsMessage;
 	}
 }
 
@@ -106,7 +101,7 @@ export default class PathChallengeController {
 		if (!PathChallengeController.instance) {
 			PathChallengeController.instance = new PathChallengeControllerInstance(
 				() => RoomController.getInstance(),
-				() => WebSocketServiceCreator.getInstance()
+				() => WebSocketService.getInstance()
 			);
 		}
 
