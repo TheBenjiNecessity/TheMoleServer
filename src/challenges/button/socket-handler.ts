@@ -27,6 +27,8 @@ class ButtonChallengeSocketHandlerInstance {
 }
 
 export default class ButtonChallengeSocketHandler {
+	static instance: ButtonChallengeSocketHandlerInstance;
+
 	constructor() {}
 
 	static getInstance() {

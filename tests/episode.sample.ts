@@ -1,7 +1,6 @@
-import Episode from '../models/episode.model';
-import Question from '../models/quiz/question.model';
-import questionData from '../models/quiz/question.data';
-import Challenge from '../models/challenge.model';
+import Challenge from '../src/models/challenge.model';
+import questionData from '../src/models/quiz/question.data';
+import Episode from '../src/models/episode.model';
 
 export default class EpisodeSampleService {
 	static getTestEpisode(room) {
@@ -9,7 +8,9 @@ export default class EpisodeSampleService {
 		return new Episode(
 			room.playersStillPlaying,
 			[ currentChallenge ],
-			questionData.map((q) => new Question(q.text, q.type, q.choices))
+			questionData.map((q) => {
+				return { text: q.text, type: q.type, choices: q.choices };
+			})
 		);
 	}
 
@@ -17,7 +18,9 @@ export default class EpisodeSampleService {
 		return new Episode(
 			room.playersStillPlaying,
 			[ currentChallenge ],
-			questionData.map((q) => new Question(q.text, q.type, q.choices))
+			questionData.map((q) => {
+				return { text: q.text, type: q.type, choices: q.choices };
+			})
 		);
 	}
 }

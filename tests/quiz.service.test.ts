@@ -1,18 +1,18 @@
-import QuizService from '../services/game/quiz.service';
-import RoomSampleService from '../tests/room.sample';
-import { MAX_NUM_QUESTIONS } from '../contants/quiz.constants';
-import questionData from '../models/quiz/question.data';
-import Question from '../models/quiz/question.model';
-import ChallengeService from '../services/game/challenge.service';
+import ChallengeService from '../src/services/game/challenge.service';
+import RoomSampleService from './room.sample';
+import questionData from '../src/models/quiz/question.data';
+import { MAX_NUM_QUESTIONS } from '../src/contants/quiz.constants';
+import QuizService from '../src/services/game/quiz.service';
 
 test('Checks generateQuiz method', async () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let challengeData = await ChallengeService.listChallengeData();
-	let challengeQuestions = challengeData
-		.map((c) => c.lang.en.questions)
-		.flat()
-		.map((q) => new Question(q.text, q.type, q.choices));
-	let unusedGeneralQuestions = questionData.map((q) => new Question(q.text, q.type, q.choices));
+	let challengeQuestions = [].concat(...challengeData.map((c) => c.lang.en.questions)).map((q) => {
+		return { text: q.text, type: q.type, choices: q.choices };
+	});
+	let unusedGeneralQuestions = questionData.map((q) => {
+		return { text: q.text, type: q.type, choices: q.choices };
+	});
 	let quiz = QuizService.generateQuiz(room.playersStillPlaying, challengeQuestions, unusedGeneralQuestions);
 	expect(quiz.questions.length).toBe(MAX_NUM_QUESTIONS);
 	expect(quiz.questions[quiz.questions.length - 1].text).toBe('Who is the mole?');
@@ -43,7 +43,7 @@ test('Checks createQuestion method', () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
 
 	//'player'
-	let playerQuestion = QuizService.createQuestion(room.playersStillPlaying, 'Test text', 'player', []);
+	let playerQuestion = QuizService.createQuestion('Test text', 'player', [], room.playersStillPlaying);
 	expect(playerQuestion.text).toBe('Test text');
 	expect(playerQuestion.type).toBe('player');
 	expect(playerQuestion.choices.length).toBe(10);
@@ -60,7 +60,7 @@ test('Checks createQuestion method', () => {
 	expect(playerQuestion.choices[9]).toBe('test0');
 
 	//'rank'
-	let rankQuestion = QuizService.createQuestion(room.playersStillPlaying, 'Test text', 'rank', []);
+	let rankQuestion = QuizService.createQuestion('Test text', 'rank', [], room.playersStillPlaying);
 	expect(rankQuestion.text).toBe('Test text');
 	expect(rankQuestion.type).toBe('rank');
 	expect(rankQuestion.choices.length).toBe(10);
@@ -77,12 +77,12 @@ test('Checks createQuestion method', () => {
 	expect(rankQuestion.choices[9]).toBe('tenth');
 
 	// generic
-	let question = QuizService.createQuestion(room.playersStillPlaying, 'Test text 2', '', [
-		'north',
-		'south',
-		'east',
-		'west'
-	]);
+	let question = QuizService.createQuestion(
+		'Test text 2',
+		'',
+		[ 'north', 'south', 'east', 'west' ],
+		room.playersStillPlaying
+	);
 	expect(question.text).toBe('Test text 2');
 	expect(question.type).toBe('');
 	expect(question.choices.length).toBe(4);

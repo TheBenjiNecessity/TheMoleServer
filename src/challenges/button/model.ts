@@ -1,9 +1,16 @@
 import Challenge from '../../models/challenge.model';
+import Player from '../../models/player.model';
 import riddles from './riddles.data';
+import '../../extensions/array';
 
 const type = 'button';
 
 export default class ButtonChallenge extends Challenge {
+	buttonPlayers: { [id: string]: { player: Player; touchingButton: boolean } };
+	riddleAnswer: string;
+	riddle: string;
+	exemptionWasTaken: boolean;
+
 	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState) {
 		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
 

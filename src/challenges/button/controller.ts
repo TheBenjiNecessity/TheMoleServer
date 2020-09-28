@@ -3,7 +3,10 @@ import ChallengeController from '../../controllers/challenge.controller';
 import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
 
 class ButtonChallengeControllerInstance {
-	constructor(roomControllerInstance, challengeControllerInstance) {
+	roomControllerInstance: Function;
+	challengeControllerInstance: Function;
+
+	constructor(roomControllerInstance: Function, challengeControllerInstance: Function) {
 		this.roomControllerInstance = roomControllerInstance;
 		this.challengeControllerInstance = challengeControllerInstance;
 	}
@@ -54,13 +57,14 @@ class ButtonChallengeControllerInstance {
 }
 
 export default class ButtonChallengeController {
+	static instance: ButtonChallengeControllerInstance;
 	constructor() {}
 
 	static getInstance() {
 		if (!ButtonChallengeController.instance) {
 			ButtonChallengeController.instance = new ButtonChallengeControllerInstance(
-				RoomController.getInstance(),
-				ChallengeController.getInstance()
+				() => RoomController.getInstance(),
+				() => ChallengeController.getInstance()
 			);
 		}
 

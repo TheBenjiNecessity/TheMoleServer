@@ -1,7 +1,7 @@
 import PathChallengeController from './controller';
 import RoomControllerCreator from '../../controllers/room.controller';
-import RoomSampleService from '../../tests/room.sample';
-import EpisodeSampleService from '../../tests/episode.sample';
+import RoomSampleService from '../../../tests/room.sample';
+import EpisodeSampleService from '../../../tests/episode.sample';
 import pathData from './data';
 
 test('Checks "chooseChest" method', () => {

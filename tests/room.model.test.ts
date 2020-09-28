@@ -1,6 +1,6 @@
-import Room from '../models/room.model';
-import Player from '../models/player.model';
-import RoomSampleService from '../tests/room.sample';
+import Player from '../src/models/player.model';
+import Room from '../src/models/room.model';
+import RoomSampleService from './room.sample';
 
 test('Tests room init', () => {
 	let room = new Room('TEST');

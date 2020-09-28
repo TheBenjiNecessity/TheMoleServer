@@ -1,10 +1,5 @@
-import ButtonChallenge from './model';
 import buttonData from './data';
-import RoomSampleService from '../../tests/room.sample';
-
-import initExtensions from '../../extensions/main';
-
-initExtensions();
+import RoomSampleService from '../../../tests/room.sample';
 
 test('Checks initializing ButtonChallenge model', () => {
 	let room = RoomSampleService.getTestRoomWithFourPlayers();

@@ -5,7 +5,10 @@ import { PATH_CHALLENGE_EVENTS } from './model';
 const POINTS_FOR_CONTINUING = 7;
 
 class PathChallengeControllerInstance {
-	constructor(roomControllerInstance, websocketServiceInstance) {
+	roomControllerInstance: Function;
+	websocketServiceInstance: Function;
+
+	constructor(roomControllerInstance: Function, websocketServiceInstance: Function) {
 		this.roomControllerInstance = roomControllerInstance;
 		this.websocketServiceInstance = websocketServiceInstance;
 	}
@@ -95,6 +98,8 @@ class PathChallengeControllerInstance {
 }
 
 export default class PathChallengeController {
+	static instance: PathChallengeControllerInstance;
+
 	constructor() {}
 
 	static getInstance() {

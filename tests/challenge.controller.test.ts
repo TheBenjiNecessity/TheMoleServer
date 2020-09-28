@@ -1,7 +1,7 @@
 import ChallengeController from '../src/controllers/challenge.controller';
 import RoomControllerCreator from '../src/controllers/room.controller';
-import RoomSampleService from '../tests/room.sample';
-import EpisodeSampleService from '../tests/episode.sample';
+import RoomSampleService from './room.sample';
+import EpisodeSampleService from './episode.sample';
 
 test.skip('Checks "raiseHand" method', () => {
 	//TODO: need to create role based challenge for this too work

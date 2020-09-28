@@ -1,4 +1,5 @@
 import Challenge from '../../models/challenge.model';
+import Player from '../../models/player.model';
 
 const MAX_CHESTS = 5;
 
@@ -27,7 +28,25 @@ const possibleValues = [
 	'minus 5 points'
 ];
 
+interface Chest {
+	left: string;
+	right: string;
+}
+
+interface Votes {
+	left: Player[];
+	right: Player[];
+}
+
 export default class PathChallenge extends Challenge {
+	players: Player[];
+	walkers: Player[];
+	currentWalker: Player;
+	votes: Votes;
+	chests: Chest[];
+	currentChestIndex: number;
+	currentChoice: string;
+
 	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState) {
 		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
 
