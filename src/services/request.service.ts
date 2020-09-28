@@ -12,10 +12,9 @@ class RequestService {
 		app.listen(process.env.PORT || 3001);
 	}
 
-	createRoom(req, res) {
+	createRoom(req, res): void {
 		// creates a websocket and returns a room code that can be used to interact with the websocket
-		let roomHandler = new RoomControllerCreator.getInstance();
-		let room = roomHandler.addRoom();
+		let room = RoomControllerCreator.getInstance().addRoom();
 
 		res.send({
 			success: true,
@@ -24,7 +23,7 @@ class RequestService {
 		});
 	}
 
-	joinRoom(req, res) {
+	joinRoom(req, res): void {
 		let { roomcode } = req.params;
 		let { player } = req.body;
 
@@ -135,7 +134,7 @@ class RequestService {
 		});
 	}
 
-	getRoom(req, res) {
+	getRoom(req, res): void {
 		let roomcode = req.params.roomcode;
 		// Check if room exists
 		if (!roomcode) {
@@ -176,6 +175,8 @@ class RequestService {
 }
 
 export class RequestServiceCreator {
+	static instance: RequestService;
+
 	constructor() {}
 
 	static getInstance() {

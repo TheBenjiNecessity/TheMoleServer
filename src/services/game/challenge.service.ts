@@ -1,23 +1,24 @@
 import challengeTypes from '../../challenges/challenge.data';
+import Player from '../../models/player.model';
 
 export default class ChallengeService {
 	constructor() {}
 
-	static async getChallengeDataForType(type) {
+	static async getChallengeDataForType(type: string): Promise<any> {
 		return import(`../../challenges/${type}/data`);
 	}
 
-	static async getChallengeControllerForType(type) {
+	static async getChallengeControllerForType(type: string): Promise<any> {
 		let challengeData = await ChallengeService.getChallengeDataForType(type);
 		return challengeData.getController();
 	}
 
-	static async getChallengeForType(type, players) {
+	static async getChallengeForType(type: string, players: Player[]): Promise<any> {
 		let challengeData = await ChallengeService.getChallengeDataForType(type);
 		return challengeData.getModel(players, 'en');
 	}
 
-	static async listChallengesForNumPlayers(numPlayers) {
+	static async listChallengesForNumPlayers(numPlayers: number): Promise<any[]> {
 		let numPlayersRestrictedChallenges = [];
 		for (let type of challengeTypes) {
 			let challengeData = await ChallengeService.getChallengeDataForType(type);
@@ -28,7 +29,7 @@ export default class ChallengeService {
 		return numPlayersRestrictedChallenges;
 	}
 
-	static async listChallengeData() {
+	static async listChallengeData(): Promise<any[]> {
 		return new Promise((resolve, reject) => {
 			let promises = challengeTypes.map((type) => ChallengeService.getChallengeDataForType(type));
 			Promise.all(promises).then((challenges) => resolve(challenges.map((c) => c.default)));

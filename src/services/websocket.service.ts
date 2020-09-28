@@ -1,6 +1,8 @@
 import RoomController from '../controllers/room.controller';
 
 class WebSocketService {
+	io: any;
+
 	constructor() {}
 
 	init(io, roomHandler) {
@@ -19,8 +21,8 @@ class WebSocketService {
 	}
 
 	sendToRoom(roomcode, action) {
-		let room = RoomController.getInstance().getRoom(roomcode);
 		if (this.io) {
+			let room = RoomController.getInstance().getRoom(roomcode);
 			this.io.in(roomcode).emit(action, room);
 		}
 
@@ -29,6 +31,8 @@ class WebSocketService {
 }
 
 export default class WebSocketServiceCreator {
+	static instance: WebSocketService;
+
 	constructor() {}
 
 	static getInstance() {

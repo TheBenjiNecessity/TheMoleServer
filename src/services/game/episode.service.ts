@@ -1,7 +1,7 @@
 export default class EpisodeService {
 	constructor() {}
 
-	static getNumChallenges(numPlayers) {
+	static getNumChallenges(numPlayers: number): number {
 		switch (numPlayers) {
 			case 10:
 			case 9:

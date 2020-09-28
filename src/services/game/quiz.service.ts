@@ -2,6 +2,7 @@ import Question from '../../models/quiz/question.model';
 import Quiz from '../../models/quiz/quiz.model';
 import { MAX_CHALLENGE_QUESTIONS } from '../../contants/room.constants';
 import { MAX_NUM_QUESTIONS, RANKS } from '../../contants/quiz.constants';
+import Player from '../../models/player.model';
 
 export default class QuizService {
 	constructor() {}
@@ -10,23 +11,30 @@ export default class QuizService {
 	 * Creates a question for the final question of a quiz
 	 * @param {*} room 
 	 */
-	static getFinalQuizQuestion(playersStillPlaying) {
-		return QuizService.createQuestion(playersStillPlaying, 'Who is the mole?', 'player', []);
+	static getFinalQuizQuestion(playersStillPlaying: Player[]): Question {
+		return QuizService.createQuestion('Who is the mole?', 'player', [], playersStillPlaying);
 	}
 
-	static createQuestion(playersStillPlaying, text, type, choices) {
+	static createQuestion(
+		text: string,
+		type: string,
+		choices: string[] = [],
+		playersStillPlaying: Player[] = []
+	): Question {
 		switch (type) {
 			case 'player':
-				return new Question(text, type, playersStillPlaying.map((p) => p.name));
+				let playerNames = playersStillPlaying.map((p: Player) => p.name);
+				return { text, type, choices: playerNames };
 			case 'rank':
 				let numPlayers = playersStillPlaying.length;
-				return new Question(text, type, RANKS.slice(0, numPlayers));
+				let ranks = RANKS.slice(0, numPlayers);
+				return { text, type, choices: ranks };
 			default:
-				return new Question(text, type, choices);
+				return { text, type, choices };
 		}
 	}
 
-	static generateQuiz(playersStillPlaying, challengeQuestions, unusedGeneralQuestions) {
+	static generateQuiz(playersStillPlaying, challengeQuestions, unusedGeneralQuestions): Quiz {
 		let questions = [];
 		challengeQuestions.shuffle();
 		unusedGeneralQuestions.shuffle();
@@ -38,6 +46,6 @@ export default class QuizService {
 		questions.shuffle();
 		questions.push(QuizService.getFinalQuizQuestion(playersStillPlaying));
 
-		return new Quiz(questions);
+		return { questions };
 	}
 }
