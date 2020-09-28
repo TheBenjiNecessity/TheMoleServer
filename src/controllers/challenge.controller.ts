@@ -7,11 +7,12 @@ import ChallengeService from '../services/game/challenge.service';
 const MILLISECONDS_IN_SECOND = 1000;
 
 class ChallengeControllerInstance {
+	websocketServiceInstance: Function;
+	roomControllerInstance: Function;
+
 	constructor(roomControllerInstance, websocketServiceInstance) {
 		this.websocketServiceInstance = websocketServiceInstance;
 		this.roomControllerInstance = roomControllerInstance;
-
-		this.challengeClasses = {};
 	}
 
 	raiseHand({ roomcode, player, role }) {
@@ -107,6 +108,8 @@ class ChallengeControllerInstance {
 }
 
 export default class ChallengeController {
+	static instance: ChallengeControllerInstance;
+
 	constructor() {}
 
 	static getInstance() {

@@ -2,9 +2,14 @@ import Room from '../models/room.model';
 import WebSocketServiceCreator from '../services/websocket.service';
 import RoomService from '../services/room/room.service';
 import ChallengeService from '../services/game/challenge.service';
+import Challenge from '../models/challenge.model';
 
 class RoomControllerInstance {
-	constructor(websocketServiceInstance) {
+	rooms: { [id: string]: Room };
+	challengeData: Challenge[];
+	websocketServiceInstance: Function;
+
+	constructor(websocketServiceInstance: Function) {
 		this.websocketServiceInstance = websocketServiceInstance;
 
 		this.rooms = {};
@@ -101,6 +106,8 @@ class RoomControllerInstance {
 }
 
 export default class RoomController {
+	static instance: RoomControllerInstance;
+
 	constructor() {}
 
 	static getInstance() {
