@@ -3,6 +3,7 @@ import challengeData from '../challenges/challenge.data';
 import WebSocketServiceCreator from '../services/websocket.service';
 import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
 import ChallengeService from '../services/game/challenge.service';
+import ISocketHandler from '../interfaces/socket-handler.interface';
 
 const MILLISECONDS_IN_SECOND = 1000;
 

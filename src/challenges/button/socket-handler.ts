@@ -1,3 +1,4 @@
+import ISocketHandler from '../../interfaces/socket-handler.interface';
 import WebSocketServiceCreator from '../../services/websocket.service';
 import ButtonChallengeController from './controller';
 

@@ -1,3 +1,3 @@
-export interface ISocketHandler {
+export default interface ISocketHandler {
 	setupSocket(socket: any): void;
-}
+};

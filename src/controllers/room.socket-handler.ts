@@ -1,5 +1,6 @@
 import ChallengeController from './challenge.controller';
 import WebSocketServiceCreator from '../services/websocket.service';
+import ISocketHandler from '../interfaces/socket-handler.interface';
 
 class RoomSocketHandlerInstance implements ISocketHandler {
 	websocketServiceInstance: Function;
