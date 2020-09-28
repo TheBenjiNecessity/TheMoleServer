@@ -14,6 +14,7 @@ export default class Room {
 	isInProgress: boolean;
 	points: number;
 	unaskedQuestions: any[];
+	language: string;
 
 	constructor(roomcode) {
 		this.roomcode = roomcode;
