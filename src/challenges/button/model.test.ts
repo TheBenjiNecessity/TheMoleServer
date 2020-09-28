@@ -1,9 +1,10 @@
-import buttonData from './data';
+import ButtonChallengeData from './data';
 import RoomSampleService from '../../../tests/room.sample';
+import ButtonChallenge from './model';
 
 test('Checks initializing ButtonChallenge model', () => {
 	let room = RoomSampleService.getTestRoomWithFourPlayers();
-	let buttonChallenge = buttonData.getModel(room.players, 'en');
+	let buttonChallenge = new ButtonChallengeData().getModel(room.players, 'en') as ButtonChallenge;
 
 	expect(buttonChallenge.riddleAnswer.length === buttonChallenge.riddle.length).toBe(true);
 	expect(buttonChallenge.riddleAnswer === buttonChallenge.riddle).toBe(false);
@@ -20,7 +21,7 @@ test('Checks initializing ButtonChallenge model', () => {
 
 test('Checks allButtonsReleased/allButtonsPressed getters', () => {
 	let room = RoomSampleService.getTestRoomWithFourPlayers();
-	let buttonChallenge = buttonData.getModel(room.players, 'en');
+	let buttonChallenge = new ButtonChallengeData().getModel(room.players, 'en') as ButtonChallenge;
 
 	expect(buttonChallenge.allButtonsReleased).toBe(false);
 	expect(buttonChallenge.allButtonsPressed).toBe(true);
@@ -68,7 +69,7 @@ test('Checks allButtonsReleased/allButtonsPressed getters', () => {
 
 test('Checks isPlayerAnswerCorrect method', () => {
 	let room = RoomSampleService.getTestRoomWithFourPlayers();
-	let buttonChallenge = buttonData.getModel(room.players, 'en');
+	let buttonChallenge = new ButtonChallengeData().getModel(room.players, 'en') as ButtonChallenge;
 
 	buttonChallenge.riddleAnswer = 'I am going to stop the mole';
 	buttonChallenge.riddle = buttonChallenge.riddleAnswer.randomCypherText();
