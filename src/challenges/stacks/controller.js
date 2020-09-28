@@ -1,5 +1,5 @@
 import RoomControllerCreator from '../room.controller';
-import WebSocketServiceCreator from '../../services/websocket.service';
+import WebSocketService from '../../services/websocket.service';
 
 class StacksChallengeControllerInstance {
 	constructor() {}

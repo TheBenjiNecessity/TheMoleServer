@@ -1,5 +1,5 @@
 import RoomControllerCreator from '../../controllers/room.controller';
-import WebSocketServiceCreator from '../../services/websocket.service';
+import WebSocketService from '../../services/websocket.service';
 
 class OutAndSafeChallengeControllerInstance {
 	constructor() {}

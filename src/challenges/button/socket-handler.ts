@@ -1,5 +1,5 @@
 import ISocketHandler from '../../interfaces/socket-handler.interface';
-import WebSocketServiceCreator from '../../services/websocket.service';
+import WebSocketService from '../../services/websocket.service';
 import ButtonChallengeController from './controller';
 
 class ButtonChallengeSocketHandlerInstance implements ISocketHandler {
@@ -7,17 +7,17 @@ class ButtonChallengeSocketHandlerInstance implements ISocketHandler {
 
 	releasedButton({ roomcode, playerName }) {
 		let message = ButtonChallengeController.getInstance().releasedButton(roomcode, playerName);
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message);
+		return WebSocketService.getInstance().sendToRoom(roomcode, message);
 	}
 
 	touchedButton({ roomcode, playerName }) {
 		let message = ButtonChallengeController.getInstance().touchedButton(roomcode, playerName);
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message);
+		return WebSocketService.getInstance().sendToRoom(roomcode, message);
 	}
 
 	receivedPuzzleAnswer({ roomcode, playerName, answer }) {
 		let message = ButtonChallengeController.getInstance().receivedPuzzleAnswer(roomcode, playerName, answer);
-		return WebSocketServiceCreator.getInstance().sendToRoom(roomcode, message);
+		return WebSocketService.getInstance().sendToRoom(roomcode, message);
 	}
 
 	setupSocket(socket) {

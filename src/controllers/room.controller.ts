@@ -1,5 +1,5 @@
 import Room from '../models/room.model';
-import WebSocketServiceCreator from '../services/websocket.service';
+import WebSocketService from '../services/websocket.service';
 import RoomService from '../services/room/room.service';
 import ChallengeService from '../services/game/challenge.service';
 import Challenge from '../models/challenge.model';
@@ -112,7 +112,7 @@ export default class RoomController {
 
 	static getInstance() {
 		if (!RoomController.instance) {
-			RoomController.instance = new RoomControllerInstance(() => WebSocketServiceCreator.getInstance());
+			RoomController.instance = new RoomControllerInstance(() => WebSocketService.getInstance());
 		}
 		return RoomController.instance;
 	}
