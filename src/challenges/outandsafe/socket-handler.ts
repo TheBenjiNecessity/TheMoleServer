@@ -5,13 +5,13 @@ import OutAndSafeChallengeController from './controller';
 class OutAndSafeChallengeSocketHandlerInstance implements ISocketHandler {
 	constructor() {}
 
-	releasedButton({ roomcode, playerName }) {
+	test({ roomcode, playerName }) {
 		let message = OutAndSafeChallengeController.getInstance().test(roomcode, playerName);
 		return WebSocketService.getInstance().sendToRoom(roomcode, message);
 	}
 
 	setupSocket(socket) {
-		socket.on('button-released-button', this.releasedButton);
+		socket.on('test', this.test);
 	}
 }
 
