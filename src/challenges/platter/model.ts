@@ -3,6 +3,9 @@ import Challenge from '../../models/challenge.model';
 const type = 'platter';
 
 export default class PlatterChallenge extends Challenge {
+	exemptionWasTaken: boolean;
+	numMoneyTokens: number;
+
 	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState) {
 		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
 
