@@ -1,5 +1,5 @@
 import ChallengeController from './challenge.controller';
-import WebSocketServiceCreator from '../services/websocket.service';
+import WebSocketService from '../services/websocket.service';
 import ISocketHandler from '../interfaces/socket-handler.interface';
 
 class RoomSocketHandlerInstance implements ISocketHandler {
@@ -28,8 +28,6 @@ class RoomSocketHandlerInstance implements ISocketHandler {
 	setupSocket(socket) {
 		socket.on('move-next', this.moveNext);
 		socket.on('quiz-done', this.quizDone);
-
-		this.challengeControllerInstance().setupSocket(socket);
 	}
 }
 
@@ -41,7 +39,7 @@ export default class RoomSocketHandler {
 		if (!RoomSocketHandler.instance) {
 			RoomSocketHandler.instance = new RoomSocketHandlerInstance(
 				() => RoomSocketHandler.getInstance(),
-				() => WebSocketServiceCreator.getInstance(),
+				() => WebSocketService.getInstance(),
 				() => ChallengeController.getInstance()
 			);
 		}
