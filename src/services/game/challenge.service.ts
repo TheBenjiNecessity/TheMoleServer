@@ -1,38 +1,23 @@
 import challengeTypes from '../../challenges/challenge.data';
 import Player from '../../models/player.model';
+import ChallengeData from '../../interfaces/challenge-data';
 
 export default class ChallengeService {
 	constructor() {}
 
-	static async getChallengeDataForType(type: string): Promise<any> {
-		return await import(`../../challenges/${type}/data`);
+	static async getChallengeDataForType(type: string): Promise<ChallengeData> {
+		let challengeData = await import(`../../challenges/${type}/data`);
+		return challengeData.data;
 	}
 
-	static async getChallengeControllerForType(type: string): Promise<any> {
-		let challengeData = await ChallengeService.getChallengeDataForType(type);
-		return challengeData.getController();
+	static listChallengesForNumPlayers(numPlayers: number, challengeData: ChallengeData[]): ChallengeData[] {
+		return challengeData.filter((cd) => cd.maxPlayers >= numPlayers && cd.minPlayers <= numPlayers);
 	}
 
-	static async getChallengeForType(type: string, players: Player[]): Promise<any> {
-		let challengeData = await ChallengeService.getChallengeDataForType(type);
-		return challengeData.getModel(players, 'en');
-	}
-
-	static async listChallengesForNumPlayers(numPlayers: number): Promise<any[]> {
-		let numPlayersRestrictedChallenges = [];
-		for (let type of challengeTypes) {
-			let challengeData = await ChallengeService.getChallengeDataForType(type);
-			if (challengeData.maxPlayers >= numPlayers && challengeData.minPlayers >= numPlayers) {
-				numPlayersRestrictedChallenges.push(challengeData);
-			}
-		}
-		return numPlayersRestrictedChallenges;
-	}
-
-	static async listChallengeData(): Promise<any[]> {
+	static async listChallengeData(): Promise<ChallengeData[]> {
 		return new Promise((resolve, reject) => {
 			let promises = challengeTypes.map((type) => ChallengeService.getChallengeDataForType(type));
-			Promise.all(promises).then((challenges) => resolve(challenges.map((c) => c.default)));
+			Promise.all(promises).then((challenges) => resolve(challenges));
 		});
 	}
 }
