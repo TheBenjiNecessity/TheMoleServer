@@ -1,6 +1,6 @@
 import RoomController from './room.controller';
 import challengeData from '../challenges/challenge.data';
-import WebSocketServiceCreator from '../services/websocket.service';
+import WebSocketService from '../services/websocket.service';
 import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
 import ChallengeService from '../services/game/challenge.service';
 import ISocketHandler from '../interfaces/socket-handler.interface';
@@ -117,7 +117,7 @@ export default class ChallengeController {
 		if (!ChallengeController.instance) {
 			ChallengeController.instance = new ChallengeControllerInstance(
 				() => RoomController.getInstance(),
-				() => WebSocketServiceCreator.getInstance()
+				() => WebSocketService.getInstance()
 			);
 		}
 
