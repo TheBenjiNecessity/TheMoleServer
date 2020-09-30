@@ -1,22 +1,38 @@
+import ChallengeController from '../controllers/challenge.controller';
 import RoomController from '../controllers/room.controller';
+import RoomSocketHandler from '../controllers/room.socket-handler';
+import ChallengeService from './game/challenge.service';
 
-class WebSocketService {
+class WebSocketServiceInstance {
 	io: any;
 
 	constructor() {}
 
-	init(io, roomHandler) {
+	init(io) {
 		this.io = io;
 
-		//TODO send user the current room upon connection if possible
-		this.io.on('connection', (socket) => {
+		this.io.on('connection', async (socket) => {
 			socket.on('join', (roomcode) => {
 				if (roomcode) {
 					socket.join(roomcode);
+
+					let room = RoomController.getInstance().getRoom(roomcode);
+
+					if (room) {
+						socket.emit('get-room', room);
+					}
 				}
 			});
 
-			roomHandler.setupSocket(socket);
+			RoomSocketHandler.getInstance().setupSocket(socket);
+			ChallengeController.getInstance().setupSocket(socket);
+
+			for (let challenge of RoomController.getInstance().challengeData) {
+				let childInstance = await ChallengeService.getChallengeControllerForType(challenge.type);
+				if (childInstance) {
+					childInstance.setupSocket(socket);
+				}
+			}
 		});
 	}
 
@@ -30,16 +46,16 @@ class WebSocketService {
 	}
 }
 
-export default class WebSocketServiceCreator {
-	static instance: WebSocketService;
+export default class WebSocketService {
+	static instance: WebSocketServiceInstance;
 
 	constructor() {}
 
 	static getInstance() {
-		if (!WebSocketServiceCreator.instance) {
-			WebSocketServiceCreator.instance = new WebSocketService();
+		if (!WebSocketService.instance) {
+			WebSocketService.instance = new WebSocketServiceInstance();
 		}
 
-		return WebSocketServiceCreator.instance;
+		return WebSocketService.instance;
 	}
 }
