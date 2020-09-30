@@ -6,7 +6,7 @@ import PlatterChallengeController from './controller';
 import PlatterChallenge from './model';
 import PlatterChallengeSocketHandler from './socket-handler';
 
-export default class PlatterChallengeData extends ChallengeData {
+class PlatterChallengeData extends ChallengeData {
 	constructor() {
 		super('platter', 6, 4, 'game', {
 			en: {
@@ -46,3 +46,5 @@ export default class PlatterChallengeData extends ChallengeData {
 		);
 	}
 }
+
+export default { data: new PlatterChallengeData() };

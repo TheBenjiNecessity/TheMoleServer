@@ -6,7 +6,7 @@ import OutAndSafeChallengeController from './controller';
 import OutAndSafeChallenge from './model';
 import OutAndSafeChallengeSocketHandler from './socket-handler';
 
-export default class OutAndSafeChallengeData extends ChallengeData {
+class OutAndSafeChallengeData extends ChallengeData {
 	constructor() {
 		super('out-and-safe', 10, 5, 'game', {
 			en: {
@@ -41,3 +41,5 @@ export default class OutAndSafeChallengeData extends ChallengeData {
 		);
 	}
 }
+
+export default { data: new OutAndSafeChallengeData() };

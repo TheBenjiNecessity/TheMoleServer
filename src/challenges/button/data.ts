@@ -6,7 +6,7 @@ import ButtonChallengeController from './controller';
 import ButtonChallenge from './model';
 import ButtonChallengeSocketHandler from './socket-handler';
 
-export default class ButtonChallengeData extends ChallengeData {
+class ButtonChallengeData extends ChallengeData {
 	constructor() {
 		super('button', 4, 4, 'game', {
 			en: {
@@ -41,3 +41,5 @@ export default class ButtonChallengeData extends ChallengeData {
 		);
 	}
 }
+
+export default { data: new ButtonChallengeData() };

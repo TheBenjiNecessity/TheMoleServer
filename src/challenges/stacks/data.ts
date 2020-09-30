@@ -6,7 +6,7 @@ import StacksChallengeController from './controller';
 import StacksChallenge from './model';
 import StacksChallengeSocketHandler from './socket-handler';
 
-export default class PlatterChallengeData extends ChallengeData {
+class PlatterChallengeData extends ChallengeData {
 	constructor() {
 		super('stacks', 6, 6, 'game', {
 			en: {
@@ -41,3 +41,5 @@ export default class PlatterChallengeData extends ChallengeData {
 		);
 	}
 }
+
+export default { data: new PlatterChallengeData() };

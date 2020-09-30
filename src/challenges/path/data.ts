@@ -6,7 +6,7 @@ import PathChallengeController from './controller';
 import PathChallenge from './model';
 import PathChallengeSocketHandler from './socket-handler';
 
-export default class PathChallengeData extends ChallengeData {
+class PathChallengeData extends ChallengeData {
 	constructor() {
 		super('path', 5, 5, 'walker', {
 			en: {
@@ -51,3 +51,5 @@ export default class PathChallengeData extends ChallengeData {
 		);
 	}
 }
+
+export default { data: new PathChallengeData() };
