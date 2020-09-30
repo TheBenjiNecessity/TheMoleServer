@@ -98,13 +98,6 @@ class ChallengeControllerInstance implements ISocketHandler {
 		socket.on('agree-to-roles', this.agreeToRoles);
 		socket.on('add-player-vote', this.addPlayerVote);
 		socket.on('remove-player-vote', this.removePlayerVote);
-
-		for (let type of challengeData) {
-			let childInstance = await ChallengeService.getChallengeControllerForType(type);
-			if (childInstance) {
-				childInstance.setupSocket(socket);
-			}
-		}
 	}
 }
 
