@@ -1,23 +1,15 @@
 import RoomControllerCreator from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
+import Controller from '../../interfaces/controller';
+import RoomController from '../../controllers/room.controller';
+import ChallengeController from '../../controllers/challenge.controller';
 
-class OutAndSafeChallengeControllerInstance {
-	constructor() {}
+export default class OutAndSafeChallengeController extends Controller {
+	constructor(protected roomController: RoomController, protected challengeController: ChallengeController) {
+		super(roomController);
+	}
 
 	test(roomcode, player) {
 		return 'test';
-	}
-}
-
-export default class OutAndSafeChallengeController {
-	static instance: OutAndSafeChallengeControllerInstance;
-	constructor() {}
-
-	static getInstance() {
-		if (!OutAndSafeChallengeController.instance) {
-			OutAndSafeChallengeController.instance = new OutAndSafeChallengeControllerInstance();
-		}
-
-		return OutAndSafeChallengeController.instance;
 	}
 }

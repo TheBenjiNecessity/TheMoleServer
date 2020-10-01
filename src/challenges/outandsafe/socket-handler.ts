@@ -1,30 +1,22 @@
-import ISocketHandler from '../../interfaces/socket-handler.interface';
 import WebSocketService from '../../services/websocket.service';
 import OutAndSafeChallengeController from './controller';
+import SocketHandler from '../../interfaces/socket-handler';
+import RoomController from '../../controllers/room.controller';
 
-class OutAndSafeChallengeSocketHandlerInstance implements ISocketHandler {
-	constructor() {}
+export default class OutAndSafeChallengeSocketHandler extends SocketHandler {
+	constructor(
+		protected roomController: RoomController,
+		protected webSocketService: WebSocketService,
+		protected socket: any,
+		private outAndSafeChallengeController: OutAndSafeChallengeController
+	) {
+		super(roomController, webSocketService, socket);
 
-	test({ roomcode, playerName }) {
-		let message = OutAndSafeChallengeController.getInstance().test(roomcode, playerName);
-		return WebSocketService.getInstance().sendToRoom(roomcode, message);
-	}
-
-	setupSocket(socket) {
 		socket.on('test', this.test);
 	}
-}
 
-export default class OutAndSafeChallengeSocketHandler {
-	static instance: OutAndSafeChallengeSocketHandlerInstance;
-
-	constructor() {}
-
-	static getInstance() {
-		if (!OutAndSafeChallengeSocketHandler.instance) {
-			OutAndSafeChallengeSocketHandler.instance = new OutAndSafeChallengeSocketHandlerInstance();
-		}
-
-		return OutAndSafeChallengeSocketHandler.instance;
+	test({ roomcode, playerName }) {
+		let message = this.outAndSafeChallengeController.test(roomcode, playerName);
+		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 }

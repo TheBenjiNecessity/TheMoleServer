@@ -1,10 +1,13 @@
 import ChallengeData from '../../interfaces/challenge-data';
-import IController from '../../interfaces/controller.interface';
-import ISocketHandler from '../../interfaces/socket-handler.interface';
 import Challenge from '../../models/challenge.model';
 import OutAndSafeChallengeController from './controller';
 import OutAndSafeChallenge from './model';
 import OutAndSafeChallengeSocketHandler from './socket-handler';
+import SocketHandler from '../../interfaces/socket-handler';
+import Controller from '../../interfaces/controller';
+import RoomController from '../../controllers/room.controller';
+import WebSocketService from '../../services/websocket.service';
+import ChallengeController from '../../controllers/challenge.controller';
 
 class OutAndSafeChallengeData extends ChallengeData {
 	constructor() {
@@ -23,11 +26,25 @@ class OutAndSafeChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(): IController {
-		return OutAndSafeChallengeController.getInstance();
+	getController(roomController: RoomController, challengeController: ChallengeController): Controller {
+		return new OutAndSafeChallengeController(roomController, challengeController);
 	}
-	getSocketHandler(): ISocketHandler {
-		return OutAndSafeChallengeSocketHandler.getInstance();
+	setupSocketHandler(
+		roomController: RoomController,
+		webSocketService: WebSocketService,
+		socket: any,
+		challengeController: ChallengeController
+	): SocketHandler {
+		let outAndSafeChallengeController = this.getController(
+			roomController,
+			challengeController
+		) as OutAndSafeChallengeController;
+		return new OutAndSafeChallengeSocketHandler(
+			roomController,
+			webSocketService,
+			socket,
+			outAndSafeChallengeController
+		);
 	}
 	getModel(players, lang): Challenge {
 		return new OutAndSafeChallenge(
