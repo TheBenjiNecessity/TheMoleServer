@@ -1,36 +1,28 @@
-import ISocketHandler from '../../interfaces/socket-handler.interface';
 import WebSocketService from '../../services/websocket.service';
 import PathChallengeController from './controller';
+import SocketHandler from '../../interfaces/socket-handler';
+import RoomController from '../../controllers/room.controller';
 
-class PathChallengeSocketHandlerInstance implements ISocketHandler {
-	constructor() {}
+export default class PathChallengeSocketHandlerInstance extends SocketHandler {
+	constructor(
+		protected roomController: RoomController,
+		protected webSocketService: WebSocketService,
+		protected socket: any,
+		private pathChallengeController: PathChallengeController
+	) {
+		super(roomController, webSocketService, socket);
 
-	chooseChest({ roomcode, choice }) {
-		let message = PathChallengeController.getInstance().chooseChest(roomcode, choice);
-		return WebSocketService.getInstance().sendToRoom(roomcode, message);
-	}
-
-	addVoteForChest({ roomcode, player, choice }) {
-		let message = PathChallengeController.getInstance().addVoteForChest(roomcode, player, choice);
-		return WebSocketService.getInstance().sendToRoom(roomcode, message);
-	}
-
-	setupSocket(socket) {
 		socket.on('path-choose-chest', this.chooseChest);
 		socket.on('path-add-vote-chest', this.addVoteForChest);
 	}
-}
 
-export default class PathChallengeSocketHandler {
-	static instance: PathChallengeSocketHandlerInstance;
+	chooseChest({ roomcode, choice }) {
+		let message = this.pathChallengeController.chooseChest(roomcode, choice);
+		return this.webSocketService.sendToRoom(roomcode, message);
+	}
 
-	constructor() {}
-
-	static getInstance() {
-		if (!PathChallengeSocketHandler.instance) {
-			PathChallengeSocketHandler.instance = new PathChallengeSocketHandlerInstance();
-		}
-
-		return PathChallengeSocketHandler.instance;
+	addVoteForChest({ roomcode, player, choice }) {
+		let message = this.pathChallengeController.addVoteForChest(roomcode, player, choice);
+		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 }

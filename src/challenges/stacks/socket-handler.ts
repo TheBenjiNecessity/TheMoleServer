@@ -1,29 +1,26 @@
-import RoomControllerCreator from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 import StacksChallengeController from './controller';
+import SocketHandler from '../../interfaces/socket-handler';
+import RoomController from '../../controllers/room.controller';
 
-class StacksChallengeSocketHandlerInstance {
-	constructor() {}
+export default class StacksChallengeSocketHandler extends SocketHandler {
+	constructor(
+		protected roomController: RoomController,
+		protected webSocketService: WebSocketService,
+		protected socket: any,
+		private stacksChallengeController: StacksChallengeController
+	) {
+		super(roomController, webSocketService, socket);
+
+		socket.on('test', this.test);
+	}
 
 	test({ roomcode, playerName }) {
-		let message = StacksChallengeController.getInstance().test(roomcode, playerName);
-		return WebSocketService.getInstance().sendToRoom(roomcode, message);
+		let message = this.stacksChallengeController.test(roomcode, playerName);
+		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 
 	setupSocket(socket) {
 		socket.on('test', this.test);
-	}
-}
-
-export default class StacksChallengeSocketHandler {
-	static instance: StacksChallengeSocketHandlerInstance;
-	constructor() {}
-
-	static getInstance() {
-		if (!StacksChallengeSocketHandler.instance) {
-			StacksChallengeSocketHandler.instance = new StacksChallengeSocketHandlerInstance();
-		}
-
-		return StacksChallengeSocketHandler.instance;
 	}
 }

@@ -1,12 +1,15 @@
 import ChallengeData from '../../interfaces/challenge-data';
-import IController from '../../interfaces/controller.interface';
-import ISocketHandler from '../../interfaces/socket-handler.interface';
 import Challenge from '../../models/challenge.model';
 import StacksChallengeController from './controller';
 import StacksChallenge from './model';
 import StacksChallengeSocketHandler from './socket-handler';
+import SocketHandler from '../../interfaces/socket-handler';
+import Controller from '../../interfaces/controller';
+import RoomController from '../../controllers/room.controller';
+import WebSocketService from '../../services/websocket.service';
+import ChallengeController from '../../controllers/challenge.controller';
 
-class PlatterChallengeData extends ChallengeData {
+class StacksChallengeData extends ChallengeData {
 	constructor() {
 		super('stacks', 6, 6, 'game', {
 			en: {
@@ -23,11 +26,20 @@ class PlatterChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(): IController {
-		return StacksChallengeController.getInstance();
+	getController(roomController: RoomController, challengeController: ChallengeController): Controller {
+		return new StacksChallengeController(roomController, challengeController);
 	}
-	getSocketHandler(): ISocketHandler {
-		return StacksChallengeSocketHandler.getInstance();
+	setupSocketHandler(
+		roomController: RoomController,
+		webSocketService: WebSocketService,
+		socket: any,
+		challengeController: ChallengeController
+	): SocketHandler {
+		let StacksChallengeController = this.getController(
+			roomController,
+			challengeController
+		) as StacksChallengeController;
+		return new StacksChallengeSocketHandler(roomController, webSocketService, socket, StacksChallengeController);
 	}
 	getModel(players, lang): Challenge {
 		return new StacksChallenge(
@@ -42,4 +54,4 @@ class PlatterChallengeData extends ChallengeData {
 	}
 }
 
-export default { data: new PlatterChallengeData() };
+export default { data: new StacksChallengeData() };

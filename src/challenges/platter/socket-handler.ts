@@ -1,36 +1,28 @@
-import ISocketHandler from '../../interfaces/socket-handler.interface';
 import WebSocketService from '../../services/websocket.service';
 import PlatterChallengeController from './controller';
+import SocketHandler from '../../interfaces/socket-handler';
+import RoomController from '../../controllers/room.controller';
 
-class PlatterChallengeSocketHandlerInstance implements ISocketHandler {
-	constructor() {}
+export default class PlatterChallengeSocketHandlerInstance extends SocketHandler {
+	constructor(
+		protected roomController: RoomController,
+		protected webSocketService: WebSocketService,
+		protected socket: any,
+		private platterChallengeController: PlatterChallengeController
+	) {
+		super(roomController, webSocketService, socket);
 
-	chooseExemption({ roomcode, playerName }) {
-		let message = PlatterChallengeController.getInstance().chooseExemption(roomcode, playerName);
-		return WebSocketService.getInstance().sendToRoom(roomcode, message);
-	}
-
-	chooseMoney({ roomcode }) {
-		let message = PlatterChallengeController.getInstance().chooseMoney(roomcode);
-		return WebSocketService.getInstance().sendToRoom(roomcode, message);
-	}
-
-	setupSocket(socket) {
 		socket.on('platter-choose-exemption', this.chooseExemption);
 		socket.on('platter-choose-money', this.chooseMoney);
 	}
-}
 
-export default class PlatterChallengeSocketHandler {
-	static instance: PlatterChallengeSocketHandlerInstance;
+	chooseExemption({ roomcode, playerName }) {
+		let message = this.platterChallengeController.chooseExemption(roomcode, playerName);
+		return this.webSocketService.sendToRoom(roomcode, message);
+	}
 
-	constructor() {}
-
-	static getInstance() {
-		if (!PlatterChallengeSocketHandler.instance) {
-			PlatterChallengeSocketHandler.instance = new PlatterChallengeSocketHandlerInstance();
-		}
-
-		return PlatterChallengeSocketHandler.instance;
+	chooseMoney({ roomcode }) {
+		let message = this.platterChallengeController.chooseMoney(roomcode);
+		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 }
