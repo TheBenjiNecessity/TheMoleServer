@@ -1,8 +1,11 @@
 import Challenge from '../models/challenge.model';
 import Player from '../models/player.model';
 import Question from '../models/quiz/question.model';
-import IController from './controller.interface';
-import ISocketHandler from './socket-handler.interface';
+import RoomController from '../controllers/room.controller';
+import WebSocketService from '../services/websocket.service';
+import SocketHandler from './socket-handler';
+import ChallengeController from '../controllers/challenge.controller';
+import Controller from './controller';
 
 interface LanguageData {
 	title: string;
@@ -19,7 +22,12 @@ export default abstract class ChallengeData {
 		public lang: { [code: string]: LanguageData }
 	) {}
 
-	abstract getController(): IController;
-	abstract getSocketHandler(): ISocketHandler;
+	abstract getController(roomController: RoomController, challengeController: ChallengeController): Controller;
+	abstract setupSocketHandler(
+		roomController: RoomController,
+		webSocketService: WebSocketService,
+		socket: any,
+		challengeController: ChallengeController
+	): SocketHandler;
 	abstract getModel(players: Player[], lang: string): Challenge;
 }
