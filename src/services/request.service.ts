@@ -1,10 +1,11 @@
 import RoomControllerCreator from '../controllers/room.controller';
 import Player from '../models/player.model';
+import RoomController from '../controllers/room.controller';
 
 const PORT = process.env.PORT || 8999;
 
-class RequestService {
-	constructor(app) {
+export default class RequestService {
+	constructor(private app, private roomController: RoomController) {
 		app.post('/create', this.createRoom);
 		app.put('/join/:roomcode', this.joinRoom);
 		app.get('/room/:roomcode', this.getRoom);
@@ -14,7 +15,7 @@ class RequestService {
 
 	createRoom(req, res): void {
 		// creates a websocket and returns a room code that can be used to interact with the websocket
-		let room = RoomControllerCreator.getInstance().addRoom();
+		let room = this.roomController.addRoom();
 
 		res.send({
 			success: true,
@@ -67,8 +68,7 @@ class RequestService {
 		}
 
 		let newPlayer = new Player(player.name);
-		let roomHandler = RoomControllerCreator.getInstance();
-		let room = roomHandler.getRoom(roomcode);
+		let room = this.roomController.getRoom(roomcode);
 
 		// Check if room exists
 		if (!room) {
@@ -124,7 +124,7 @@ class RequestService {
 			return;
 		}
 
-		roomHandler.addPlayerToRoom(room.roomcode, newPlayer);
+		this.roomController.addPlayerToRoom(room.roomcode, newPlayer);
 
 		res.send({
 			success: true,
@@ -150,8 +150,7 @@ class RequestService {
 			return;
 		}
 
-		let roomHandler = RoomControllerCreator.getInstance();
-		let room = roomHandler.getRoom(roomcode);
+		let room = this.roomController.getRoom(roomcode);
 
 		// Check if room exists
 		if (!room) {
@@ -171,23 +170,5 @@ class RequestService {
 			success: true,
 			room: room
 		});
-	}
-}
-
-export class RequestServiceCreator {
-	static instance: RequestService;
-
-	constructor() {}
-
-	static getInstance() {
-		return RequestServiceCreator.instance;
-	}
-
-	static createService(app) {
-		if (!RequestServiceCreator.instance) {
-			RequestServiceCreator.instance = new RequestService(app);
-		}
-
-		return RequestServiceCreator.instance;
 	}
 }

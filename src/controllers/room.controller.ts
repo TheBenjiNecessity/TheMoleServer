@@ -1,23 +1,22 @@
 import Room from '../models/room.model';
 import WebSocketService from '../services/websocket.service';
 import RoomService from '../services/room/room.service';
-import ChallengeService from '../services/game/challenge.service';
-import Challenge from '../models/challenge.model';
+import ChallengeData from '../interfaces/challenge-data';
 
-class RoomControllerInstance {
-	rooms: { [id: string]: Room };
-	challengeData: Challenge[];
-	websocketServiceInstance: Function;
+export default class RoomController {
+	constructor(
+		private websocketServiceInstance: WebSocketService,
+		private challengeData: ChallengeData[],
+		private roomGetter: () => { [id: string]: Room },
+		private roomSetter: (rooms: { [id: string]: Room }) => void
+	) {}
 
-	constructor(websocketServiceInstance: Function) {
-		this.websocketServiceInstance = websocketServiceInstance;
-
-		this.rooms = {};
-		this.challengeData = [];
+	get rooms(): { [id: string]: Room } {
+		return this.roomGetter();
 	}
 
-	async init() {
-		this.challengeData = await ChallengeService.listChallengeData();
+	set rooms(rooms: { [id: string]: Room }) {
+		this.roomSetter(rooms);
 	}
 
 	roomCodeAlreadyExists(code) {
@@ -45,12 +44,12 @@ class RoomControllerInstance {
 
 	addPlayerToRoom(roomcode, player) {
 		this.rooms[roomcode].addPlayer(player);
-		return this.websocketServiceInstance().sendToRoom(roomcode, 'add-player');
+		return this.websocketServiceInstance.sendToRoom(roomcode, 'add-player');
 	}
 
 	removePlayerFromRoom(roomcode, player) {
 		this.rooms[roomcode].removePlayer(player.name);
-		return this.websocketServiceInstance().sendToRoom(roomcode, 'remove-player');
+		return this.websocketServiceInstance.sendToRoom(roomcode, 'remove-player');
 	}
 
 	giveObjectsToPlayer(roomcode, playerName, obj, quantity) {
@@ -102,18 +101,5 @@ class RoomControllerInstance {
 		}
 
 		return message;
-	}
-}
-
-export default class RoomController {
-	static instance: RoomControllerInstance;
-
-	constructor() {}
-
-	static getInstance() {
-		if (!RoomController.instance) {
-			RoomController.instance = new RoomControllerInstance(() => WebSocketService.getInstance());
-		}
-		return RoomController.instance;
 	}
 }
