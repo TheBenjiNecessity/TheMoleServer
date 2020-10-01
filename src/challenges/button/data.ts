@@ -1,10 +1,13 @@
 import ChallengeData from '../../interfaces/challenge-data';
-import IController from '../../interfaces/controller.interface';
-import ISocketHandler from '../../interfaces/socket-handler.interface';
 import Challenge from '../../models/challenge.model';
 import ButtonChallengeController from './controller';
 import ButtonChallenge from './model';
 import ButtonChallengeSocketHandler from './socket-handler';
+import RoomController from '../../controllers/room.controller';
+import ChallengeController from '../../controllers/challenge.controller';
+import SocketHandler from '../../interfaces/socket-handler';
+import WebSocketService from '../../services/websocket.service';
+import Controller from '../../interfaces/controller';
 
 class ButtonChallengeData extends ChallengeData {
 	constructor() {
@@ -23,11 +26,20 @@ class ButtonChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(): IController {
-		return ButtonChallengeController.getInstance();
+	getController(roomController: RoomController, challengeController: ChallengeController): Controller {
+		return new ButtonChallengeController(roomController, challengeController);
 	}
-	getSocketHandler(): ISocketHandler {
-		return ButtonChallengeSocketHandler.getInstance();
+	setupSocketHandler(
+		roomController: RoomController,
+		webSocketService: WebSocketService,
+		socket: any,
+		challengeController: ChallengeController
+	): SocketHandler {
+		let buttonChallengeController = this.getController(
+			roomController,
+			challengeController
+		) as ButtonChallengeController;
+		return new ButtonChallengeSocketHandler(roomController, webSocketService, socket, buttonChallengeController);
 	}
 	getModel(players, lang): Challenge {
 		return new ButtonChallenge(

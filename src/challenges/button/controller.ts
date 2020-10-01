@@ -1,14 +1,14 @@
 import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
+import Controller from '../../interfaces/controller';
 
-class ButtonChallengeControllerInstance {
+export default class ButtonChallengeController extends Controller {
 	roomControllerInstance: Function;
 	challengeControllerInstance: Function;
 
-	constructor(roomControllerInstance: Function, challengeControllerInstance: Function) {
-		this.roomControllerInstance = roomControllerInstance;
-		this.challengeControllerInstance = challengeControllerInstance;
+	constructor(protected roomController: RoomController, protected challengeController: ChallengeController) {
+		super(roomController);
 	}
 
 	releasedButton(roomcode, playerName) {
@@ -26,7 +26,7 @@ class ButtonChallengeControllerInstance {
 		return message;
 	}
 
-	touchedButton(roomcode, playerName, timerLength = 600000) {
+	touchedButton(roomcode, playerName, timerTickCallback, timerDoneCallback, interval = 1000, timerLength = 600000) {
 		let message = 'button-player-pressed';
 		let event = 'setPlayerPressedButton';
 		let room = this.roomControllerInstance().performEventOnChallenge(roomcode, event, playerName);
@@ -34,7 +34,7 @@ class ButtonChallengeControllerInstance {
 
 		// If it is the start of the game and everyone touches their button then the game begins
 		if (buttonChallenge.allButtonsPressed && !buttonChallenge.isChallengeRunning) {
-			this.challengeControllerInstance().startTimer(roomcode, timerLength);
+			this.challengeController.startTimer(roomcode, timerLength, interval, timerTickCallback, timerDoneCallback);
 			message = 'challenge-start';
 		}
 
@@ -53,21 +53,5 @@ class ButtonChallengeControllerInstance {
 		}
 
 		return message;
-	}
-}
-
-export default class ButtonChallengeController {
-	static instance: ButtonChallengeControllerInstance;
-	constructor() {}
-
-	static getInstance() {
-		if (!ButtonChallengeController.instance) {
-			ButtonChallengeController.instance = new ButtonChallengeControllerInstance(
-				() => RoomController.getInstance(),
-				() => ChallengeController.getInstance()
-			);
-		}
-
-		return ButtonChallengeController.instance;
 	}
 }
