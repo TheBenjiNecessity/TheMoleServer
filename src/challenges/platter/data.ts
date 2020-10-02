@@ -9,7 +9,7 @@ import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
 
-class PlatterChallengeData extends ChallengeData {
+export default class PlatterChallengeData extends ChallengeData {
 	constructor() {
 		super('platter', 6, 4, 'game', {
 			en: {
@@ -58,5 +58,3 @@ class PlatterChallengeData extends ChallengeData {
 		);
 	}
 }
-
-export default { data: new PlatterChallengeData() };

@@ -9,7 +9,7 @@ import SocketHandler from '../../interfaces/socket-handler';
 import WebSocketService from '../../services/websocket.service';
 import Controller from '../../interfaces/controller';
 
-class ButtonChallengeData extends ChallengeData {
+export default class ButtonChallengeData extends ChallengeData {
 	constructor() {
 		super('button', 4, 4, 'game', {
 			en: {
@@ -53,5 +53,3 @@ class ButtonChallengeData extends ChallengeData {
 		);
 	}
 }
-
-export default { data: new ButtonChallengeData() };

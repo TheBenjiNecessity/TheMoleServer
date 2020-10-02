@@ -9,7 +9,7 @@ import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
 
-class PathChallengeData extends ChallengeData {
+export default class PathChallengeData extends ChallengeData {
 	constructor() {
 		super('path', 5, 5, 'walker', {
 			en: {
@@ -63,5 +63,3 @@ class PathChallengeData extends ChallengeData {
 		);
 	}
 }
-
-export default { data: new PathChallengeData() };

@@ -9,7 +9,7 @@ import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
 
-class OutAndSafeChallengeData extends ChallengeData {
+export default class OutAndSafeChallengeData extends ChallengeData {
 	constructor() {
 		super('out-and-safe', 10, 5, 'game', {
 			en: {
@@ -58,5 +58,3 @@ class OutAndSafeChallengeData extends ChallengeData {
 		);
 	}
 }
-
-export default { data: new OutAndSafeChallengeData() };
