@@ -4,13 +4,14 @@ import ChallengeService from '../services/game/challenge.service';
 import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
 import Episode from './episode.model';
 import '../extensions/array';
+import ChallengeData from '../interfaces/challenge-data';
 
 export default class Room {
 	roomcode: string;
 	_state: string;
 	players: any[];
 	_currentEpisode: any;
-	unusedChallenges: any[];
+	unusedChallenges: ChallengeData[];
 	isInProgress: boolean;
 	points: number;
 	unaskedQuestions: any[];
@@ -155,7 +156,7 @@ export default class Room {
 	}
 
 	addChallengeData(challengeData): void {
-		this.unusedChallenges = JSON.parse(JSON.stringify(challengeData));
+		this.unusedChallenges = challengeData;
 	}
 
 	moveNext(): boolean {
