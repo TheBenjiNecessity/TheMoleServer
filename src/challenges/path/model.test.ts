@@ -30,15 +30,14 @@ test('Checks initializing challenge model', () => {
 	expect(Array.isArray(pathChallenge.walkers)).toBe(true);
 	expect(pathChallenge.walkers.length).toBe(9);
 
-	let { playersStillPlaying } = room;
-	let playerNamesFromRoom = playersStillPlaying.map((p) => p.name);
-	expect(playersStillPlaying.length).toBe(pathChallenge.players.length);
+	let playerNamesFromRoom = pathChallenge.players.map((p) => p.name);
+	expect(pathChallenge.players.length).toBe(pathChallenge.players.length);
 	for (let i = 0; i < pathChallenge.players.length; i++) {
 		let player = pathChallenge.players[i];
 		expect(playerNamesFromRoom.indexOf(player.name) >= 0).toBe(true);
 	}
 
-	for (let i = 0; i < playersStillPlaying.length - 1; i++) {
+	for (let i = 0; i < pathChallenge.players.length - 1; i++) {
 		let walker = pathChallenge.walkers[i];
 		expect(playerNamesFromRoom.indexOf(walker.name) >= 0).toBe(true);
 	}
