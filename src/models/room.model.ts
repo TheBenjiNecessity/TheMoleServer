@@ -205,9 +205,10 @@ export default class Room {
 		let challenges = [];
 		let numChallenges = EpisodeService.getNumChallenges(this.players.length);
 		for (let i = 0; i < numChallenges; i++) {
-			let numRestrictedChallenges = this.numRestrictedChallenges;
-			numRestrictedChallenges = numRestrictedChallenges.filter(
-				(c) => (challenges.length ? !challenges.map((used) => used.type).includes(c.type) : true)
+			let numRestrictedChallenges = ChallengeService.listChallengesForNumPlayers(
+				this.playersStillPlaying.length,
+				this.unusedChallenges,
+				challenges
 			);
 
 			if (numRestrictedChallenges.length <= 0) {
@@ -215,15 +216,7 @@ export default class Room {
 			}
 
 			numRestrictedChallenges.shuffle();
-
-			let challenge = ChallengeService.getChallengeForType(
-				numRestrictedChallenges[0].type,
-				this.playersStillPlaying
-			);
-
-			if (challenge) {
-				challenges.push(challenge);
-			}
+			challenges.push(numRestrictedChallenges[0]);
 		}
 
 		this.currentEpisode = new Episode(this.playersStillPlaying, challenges, this.unaskedQuestions);
