@@ -2,26 +2,57 @@ import ChallengeController from '../src/controllers/challenge.controller';
 import RoomControllerCreator from '../src/controllers/room.controller';
 import RoomSampleService from './room.sample';
 import EpisodeSampleService from './episode.sample';
+import RoomController from '../src/controllers/room.controller';
+import Room from '../src/models/room.model';
+import WebSocketService from '../src/services/websocket.service';
+
+let rooms: { [id: string]: Room } = {};
+
+function getMockRoomController() {
+	let webSocketService = new WebSocketService(null);
+	return new RoomController(
+		webSocketService,
+		[],
+		() => rooms,
+		(r) => {
+			rooms = r;
+		}
+	);
+}
+
+function getMockRoom(numPlayers) {
+	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
+	return room;
+}
+
+function getMockComponents(numPlayers) {
+	let room = getMockRoom(numPlayers);
+	let roomController = getMockRoomController();
+	let challengeController = new ChallengeController(roomController);
+
+	roomController.setRoom(room);
+
+	return { room, roomController, challengeController };
+}
 
 test.skip('Checks "raiseHand" method', () => {
 	//TODO: need to create role based challenge for this too work
-	let roomcode = 'TEST';
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
+	let { room, roomController, challengeController } = getMockComponents(10);
+	let { roomcode } = room;
 	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
-	RoomControllerCreator.getInstance().setRoom(room);
 
 	let player = room.players[0];
 
-	let challengeController = ChallengeController.getInstance();
-	challengeController.raiseHand({ roomcode, player, role: 'test' });
-	let pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
+	challengeController.raiseHand(roomcode, player, 'test');
+	let pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
 	expect(pathChallenge.raisedHands.length).toBe(1);
 	expect(pathChallenge.raisedHands[0].role).toBe('test');
 	expect(pathChallenge.raisedHands[0].player.name).toBe('test1');
 
-	challengeController.raiseHand({ roomcode, player, role: 'test2' });
-	pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
+	challengeController.raiseHand(roomcode, player, 'test2');
+	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
 	expect(pathChallenge.raisedHands.length).toBe(1);
 	expect(pathChallenge.raisedHands[0].role).toBe('test2');
@@ -29,63 +60,61 @@ test.skip('Checks "raiseHand" method', () => {
 });
 
 test.skip('Checks "agreeToRoles" method', () => {
-	let roomcode = 'TEST';
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
-	RoomControllerCreator.getInstance().setRoom(room);
-
+	let { room, roomController, challengeController } = getMockComponents(10);
+	let { roomcode } = room;
 	let player = room.players[0];
 
-	let challengeController = ChallengeController.getInstance();
-	challengeController.agreeToRoles({ roomcode, player });
-	let pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
+
+	challengeController.agreeToRoles(roomcode, player);
+	let pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
 	expect(pathChallenge.agreedPlayers.length).toBe(1);
 	expect(pathChallenge.agreedPlayers[0].name).toBe('test1');
 
-	challengeController.agreeToRoles({ roomcode, player });
-	pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
+	challengeController.agreeToRoles(roomcode, player);
+	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
 	expect(pathChallenge.agreedPlayers.length).toBe(1);
 	expect(pathChallenge.agreedPlayers[0].name).toBe('test1');
 });
 
 test('Checks "addPlayerVote" method', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
+	let { room, roomController, challengeController } = getMockComponents(10);
 	let { roomcode } = room;
 	let player = room.players[0];
-	let challengeController = ChallengeController.getInstance();
 
 	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
-	RoomControllerCreator.getInstance().setRoom(room);
-	challengeController.addPlayerVote({ roomcode, player });
-	let pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
+	roomController.setRoom(room);
+	challengeController.addPlayerVote(roomcode, player);
+	let pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
 	expect(Object.keys(pathChallenge.votedPlayers).length).toBe(1);
 	expect(pathChallenge.votedPlayers[player.name]).toBe(1);
 });
 
 test('Checks "removePlayerVote" method', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
+	let { room, roomController, challengeController } = getMockComponents(10);
 	let { roomcode } = room;
 	let player = room.players[0];
-	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
-	RoomControllerCreator.getInstance().setRoom(room);
-	let challengeController = ChallengeController.getInstance();
-	let pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
 
-	challengeController.addPlayerVote({ roomcode, player });
-	pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
+	roomController.setRoom(room);
+
+	let pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
+
+	challengeController.addPlayerVote(roomcode, player);
+	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 	expect(Object.keys(pathChallenge.votedPlayers).length).toBe(1);
 	expect(pathChallenge.votedPlayers[player.name]).toBe(1);
 
-	challengeController.removePlayerVote({ roomcode, player });
-	pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
+	challengeController.removePlayerVote(roomcode, player);
+	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 	expect(Object.keys(pathChallenge.votedPlayers).length).toBe(0);
 	expect(typeof pathChallenge.votedPlayers[player.name]).toBe('undefined');
 
-	challengeController.removePlayerVote({ roomcode, player });
-	pathChallenge = RoomControllerCreator.getInstance().getRoom(roomcode).currentEpisode.currentChallenge;
+	challengeController.removePlayerVote(roomcode, player);
+	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 	expect(Object.keys(pathChallenge.votedPlayers).length).toBe(0);
 	expect(typeof pathChallenge.votedPlayers[player.name]).toBe('undefined');
 });
