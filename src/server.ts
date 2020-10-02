@@ -14,12 +14,14 @@ import './extensions/main';
 import Room from './models/room.model';
 import ChallengeSocketHandler from './controllers/challenge.socket-handler';
 import ChallengeController from './controllers/challenge.controller';
+import ChallengeData from './interfaces/challenge-data';
 
 const app = require('express')();
 const server = http.createServer(app);
 const io = require('socket.io')(server);
 
 let rooms: { [id: string]: Room } = {};
+let challengeData: ChallengeData[];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,7 +29,7 @@ app.use(methodOverride());
 app.use(cors());
 
 async function run() {
-	let challengeData = await ChallengeService.listChallengeData();
+	challengeData = await ChallengeService.listChallengeData();
 	let webSocketService = new WebSocketService(io);
 	let roomController = new RoomController(
 		webSocketService,
