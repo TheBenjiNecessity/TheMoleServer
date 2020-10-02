@@ -117,7 +117,7 @@ export default class Room {
 		return typeof roomPlayer !== 'undefined';
 	}
 
-	giveObjectsToPlayer(playerName, object, quantity): void {
+	giveObjectsToPlayer(playerName, object, quantity = 1): void {
 		for (let i = 0; i < this.players.length; i++) {
 			if (this.players[i].name === playerName) {
 				this.players[i].setObjects(object, quantity);
@@ -126,7 +126,7 @@ export default class Room {
 		}
 	}
 
-	removeObjectsFromPlayer(playerName, object, quantity): void {
+	removeObjectsFromPlayer(playerName, object, quantity = 1): void {
 		for (let i = 0; i < this.players.length; i++) {
 			if (this.players[i].name === playerName) {
 				this.players[i].removeObjects(object, quantity);
