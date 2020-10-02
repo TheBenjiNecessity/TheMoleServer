@@ -1,10 +1,23 @@
 import Challenge from '../src/models/challenge.model';
 import Player from '../src/models/player.model';
 import RoomSampleService from './room.sample';
+import EpisodeSampleService from './episode.sample';
+
+function getMockRoom(numPlayers) {
+	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
+	return room;
+}
+
+function getMockComponents(numPlayers) {
+	let room = getMockRoom(numPlayers);
+	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
+
+	return { challenge };
+}
 
 test('Checks "canSupportNumPlayers" method', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
+	let { challenge } = getMockComponents(10);
 
 	expect(challenge.canSupportNumPlayers(1)).toBe(false);
 	expect(challenge.canSupportNumPlayers(2)).toBe(false);
@@ -19,8 +32,7 @@ test('Checks "canSupportNumPlayers" method', () => {
 });
 
 test('Checks "addAgreedPlayer" method', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
+	let { challenge } = getMockComponents(10);
 	let player = new Player('test');
 	challenge.addAgreedPlayer(player);
 
@@ -34,8 +46,7 @@ test('Checks "addAgreedPlayer" method', () => {
 });
 
 test('Checks "raiseHandForPlayer" method', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
+	let { challenge } = getMockComponents(10);
 	challenge.raiseHandForPlayer(new Player('test'), 'test');
 
 	expect(challenge.raisedHands.length).toBe(1);
@@ -62,8 +73,7 @@ test('Checks "raiseHandForPlayer" method', () => {
 });
 
 test('Checks "setVotedPlayer" method', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
+	let { challenge } = getMockComponents(10);
 
 	challenge.setVotedPlayer(new Player('test'));
 	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
@@ -79,8 +89,7 @@ test('Checks "setVotedPlayer" method', () => {
 });
 
 test('Checks "removeVotedPlayer" method', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
+	let { challenge } = getMockComponents(10);
 
 	challenge.setVotedPlayer(new Player('test'));
 	challenge.setVotedPlayer(new Player('test'));
