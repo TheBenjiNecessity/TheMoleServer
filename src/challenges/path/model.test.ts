@@ -1,12 +1,17 @@
 import PathChallenge from './model';
-import RoomSampleService from '../../tests/room.sample';
-import arrayExtensions from '../../extensions/array';
+import RoomSampleService from '../../../tests/room.sample';
+import '../../extensions/array';
+import PathChallengeData from './data';
 
-arrayExtensions();
+function getMockPathChallenge(): PathChallenge {
+	let room = RoomSampleService.getTestRoomWithTenPlayers();
+	let pathChallengeData = new PathChallengeData();
+	let pathChallenge = pathChallengeData.getModel(room.playersStillPlaying, 'en') as PathChallenge;
+	return pathChallenge;
+}
 
 test('Checks initializing challenge model', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room.playersStillPlaying);
+	let pathChallenge = getMockPathChallenge();
 	expect(Array.isArray(pathChallenge.chests)).toBe(true);
 	expect(pathChallenge.chests.length).toBe(5);
 
@@ -45,8 +50,7 @@ test('Checks initializing challenge model', () => {
 });
 
 test('Checks getters/setters', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room.playersStillPlaying);
+	let pathChallenge = getMockPathChallenge();
 
 	expect(typeof pathChallenge.contentsOfChosenChest).toBe('undefined');
 	expect(pathChallenge.walkerIsDone).toBe(false);
@@ -63,50 +67,50 @@ test('Checks getters/setters', () => {
 	];
 
 	pathChallenge.votes.left = [];
-	pathChallenge.votes.left.push(room.players[0]);
-	pathChallenge.votes.left.push(room.players[1]);
-	pathChallenge.votes.left.push(room.players[2]);
-	pathChallenge.votes.left.push(room.players[3]);
+	pathChallenge.votes.left.push(pathChallenge.players[0]);
+	pathChallenge.votes.left.push(pathChallenge.players[1]);
+	pathChallenge.votes.left.push(pathChallenge.players[2]);
+	pathChallenge.votes.left.push(pathChallenge.players[3]);
 
 	pathChallenge.votes.right = [];
-	pathChallenge.votes.right.push(room.players[4]);
-	pathChallenge.votes.right.push(room.players[5]);
-	pathChallenge.votes.right.push(room.players[6]);
-	pathChallenge.votes.right.push(room.players[7]);
-	pathChallenge.votes.right.push(room.players[8]);
-	pathChallenge.votes.right.push(room.players[9]);
+	pathChallenge.votes.right.push(pathChallenge.players[4]);
+	pathChallenge.votes.right.push(pathChallenge.players[5]);
+	pathChallenge.votes.right.push(pathChallenge.players[6]);
+	pathChallenge.votes.right.push(pathChallenge.players[7]);
+	pathChallenge.votes.right.push(pathChallenge.players[8]);
+	pathChallenge.votes.right.push(pathChallenge.players[9]);
 
 	expect(pathChallenge.hasMajorityVote).toBe(true);
 
 	pathChallenge.votes.left = [];
-	pathChallenge.votes.left.push(room.players[0]);
-	pathChallenge.votes.left.push(room.players[1]);
-	pathChallenge.votes.left.push(room.players[2]);
-	pathChallenge.votes.left.push(room.players[3]);
-	pathChallenge.votes.left.push(room.players[4]);
-	pathChallenge.votes.left.push(room.players[5]);
+	pathChallenge.votes.left.push(pathChallenge.players[0]);
+	pathChallenge.votes.left.push(pathChallenge.players[1]);
+	pathChallenge.votes.left.push(pathChallenge.players[2]);
+	pathChallenge.votes.left.push(pathChallenge.players[3]);
+	pathChallenge.votes.left.push(pathChallenge.players[4]);
+	pathChallenge.votes.left.push(pathChallenge.players[5]);
 
 	pathChallenge.votes.right = [];
-	pathChallenge.votes.right.push(room.players[6]);
-	pathChallenge.votes.right.push(room.players[7]);
-	pathChallenge.votes.right.push(room.players[8]);
-	pathChallenge.votes.right.push(room.players[9]);
+	pathChallenge.votes.right.push(pathChallenge.players[6]);
+	pathChallenge.votes.right.push(pathChallenge.players[7]);
+	pathChallenge.votes.right.push(pathChallenge.players[8]);
+	pathChallenge.votes.right.push(pathChallenge.players[9]);
 
 	expect(pathChallenge.hasMajorityVote).toBe(true);
 
 	pathChallenge.votes.left = [];
-	pathChallenge.votes.left.push(room.players[0]);
-	pathChallenge.votes.left.push(room.players[1]);
-	pathChallenge.votes.left.push(room.players[2]);
-	pathChallenge.votes.left.push(room.players[3]);
-	pathChallenge.votes.left.push(room.players[4]);
+	pathChallenge.votes.left.push(pathChallenge.players[0]);
+	pathChallenge.votes.left.push(pathChallenge.players[1]);
+	pathChallenge.votes.left.push(pathChallenge.players[2]);
+	pathChallenge.votes.left.push(pathChallenge.players[3]);
+	pathChallenge.votes.left.push(pathChallenge.players[4]);
 
 	pathChallenge.votes.right = [];
-	pathChallenge.votes.right.push(room.players[5]);
-	pathChallenge.votes.right.push(room.players[6]);
-	pathChallenge.votes.right.push(room.players[7]);
-	pathChallenge.votes.right.push(room.players[8]);
-	pathChallenge.votes.right.push(room.players[9]);
+	pathChallenge.votes.right.push(pathChallenge.players[5]);
+	pathChallenge.votes.right.push(pathChallenge.players[6]);
+	pathChallenge.votes.right.push(pathChallenge.players[7]);
+	pathChallenge.votes.right.push(pathChallenge.players[8]);
+	pathChallenge.votes.right.push(pathChallenge.players[9]);
 
 	expect(pathChallenge.hasMajorityVote).toBe(false);
 
@@ -154,8 +158,7 @@ test('Checks getters/setters', () => {
 });
 
 test('Checks walker choices', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room.playersStillPlaying);
+	let pathChallenge = getMockPathChallenge();
 
 	expect(pathChallenge.currentChoice).toBe(null);
 
@@ -169,8 +172,7 @@ test('Checks walker choices', () => {
 });
 
 test('Checks walker choices', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room.playersStillPlaying);
+	let pathChallenge = getMockPathChallenge();
 
 	expect(pathChallenge.currentChestIndex).toBe(0);
 	pathChallenge.moveToNewRow();
@@ -186,49 +188,47 @@ test('Checks walker choices', () => {
 });
 
 test('Checks addLeftVote/addRightVote', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room.playersStillPlaying);
+	let pathChallenge = getMockPathChallenge();
 
-	pathChallenge.currentWalker = room.players[0];
-	pathChallenge.walkers = room.players.slice(1, room.players.length - 1);
+	pathChallenge.currentWalker = pathChallenge.players[0];
+	pathChallenge.walkers = pathChallenge.players.slice(1, pathChallenge.players.length - 1);
 
 	expect(pathChallenge.votes.left.length).toBe(0);
 	expect(pathChallenge.votes.right.length).toBe(0);
 
 	//current choice hasn't been set yet
-	pathChallenge.addLeftVote(room.players[1]);
+	pathChallenge.addLeftVote(pathChallenge.players[1]);
 	expect(pathChallenge.votes.left.length).toBe(0);
 
-	pathChallenge.addRightVote(room.players[1]);
+	pathChallenge.addRightVote(pathChallenge.players[1]);
 	expect(pathChallenge.votes.right.length).toBe(0);
 
 	pathChallenge.currentChoice = 'left';
 
 	// player[0] is the walker and so cannot be voting
-	pathChallenge.addLeftVote(room.players[0]);
+	pathChallenge.addLeftVote(pathChallenge.players[0]);
 	expect(pathChallenge.votes.left.length).toBe(0);
-	pathChallenge.addRightVote(room.players[0]);
+	pathChallenge.addRightVote(pathChallenge.players[0]);
 	expect(pathChallenge.votes.right.length).toBe(0);
 
 	// good vote
-	pathChallenge.addLeftVote(room.players[1]);
+	pathChallenge.addLeftVote(pathChallenge.players[1]);
 	expect(pathChallenge.votes.left.length).toBe(1);
-	pathChallenge.addRightVote(room.players[2]);
+	pathChallenge.addRightVote(pathChallenge.players[2]);
 	expect(pathChallenge.votes.right.length).toBe(1);
 
 	// votes should swap when same player swaps their vote
 	pathChallenge.votes = { left: [], right: [] };
-	pathChallenge.addLeftVote(room.players[1]);
+	pathChallenge.addLeftVote(pathChallenge.players[1]);
 	expect(pathChallenge.votes.left.length).toBe(1);
 	expect(pathChallenge.votes.right.length).toBe(0);
-	pathChallenge.addRightVote(room.players[1]);
+	pathChallenge.addRightVote(pathChallenge.players[1]);
 	expect(pathChallenge.votes.left.length).toBe(0);
 	expect(pathChallenge.votes.right.length).toBe(1);
 });
 
 test('Checks setNewWalker', () => {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let pathChallenge = new PathChallenge(room.playersStillPlaying);
+	let pathChallenge = getMockPathChallenge();
 
 	pathChallenge.currentChestIndex = 1;
 	pathChallenge.currentChoice = 'left';
@@ -241,8 +241,20 @@ test('Checks setNewWalker', () => {
 	];
 
 	pathChallenge.votes = {
-		left: [ room.players[0], room.players[1], room.players[2], room.players[3] ],
-		right: [ room.players[4], room.players[5], room.players[6], room.players[7], room.players[8], room.players[9] ]
+		left: [
+			pathChallenge.players[0],
+			pathChallenge.players[1],
+			pathChallenge.players[2],
+			pathChallenge.players[3]
+		],
+		right: [
+			pathChallenge.players[4],
+			pathChallenge.players[5],
+			pathChallenge.players[6],
+			pathChallenge.players[7],
+			pathChallenge.players[8],
+			pathChallenge.players[9]
+		]
 	};
 
 	pathChallenge.setNewWalker();
