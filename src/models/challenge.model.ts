@@ -6,6 +6,8 @@ import { ROOM_MAX_PLAYERS } from '../contants/room.constants';
 import { CHALLENGE_STATES } from '../contants/challenge.constants';
 import Player from './player.model';
 
+import '../extensions/date';
+
 export default class Challenge {
 	private _state: string;
 
