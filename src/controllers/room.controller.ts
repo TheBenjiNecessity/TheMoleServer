@@ -26,8 +26,11 @@ export default class RoomController {
 	addRoom() {
 		var roomcode = this.generateRandomRoomCodeNotUsed();
 		this.rooms[roomcode] = new Room(roomcode);
-		this.rooms[roomcode].addChallengeData(this.challengeData);
 		return this.rooms[roomcode];
+	}
+
+	setChallengeDataForRoom(roomcode) {
+		this.rooms[roomcode].addChallengeData(this.challengeData);
 	}
 
 	deleteRoom(roomcode) {

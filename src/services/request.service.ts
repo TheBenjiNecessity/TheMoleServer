@@ -16,6 +16,7 @@ export default class RequestService {
 	createRoom(req, res): void {
 		// creates a websocket and returns a room code that can be used to interact with the websocket
 		let room = this.roomController.addRoom();
+		this.roomController.setChallengeDataForRoom(room.roomcode);
 
 		res.send({
 			success: true,
