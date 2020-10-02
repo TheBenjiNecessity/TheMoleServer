@@ -1,5 +1,4 @@
 import challengeTypes from '../../challenges/challenge.data';
-import Player from '../../models/player.model';
 import ChallengeData from '../../interfaces/challenge-data';
 
 export default class ChallengeService {
@@ -10,14 +9,22 @@ export default class ChallengeService {
 		return challengeData.data;
 	}
 
-	static listChallengesForNumPlayers(numPlayers: number, challengeData: ChallengeData[]): ChallengeData[] {
-		return challengeData.filter((cd) => cd.maxPlayers >= numPlayers && cd.minPlayers <= numPlayers);
-	}
-
 	static async listChallengeData(): Promise<ChallengeData[]> {
 		return new Promise((resolve, reject) => {
 			let promises = challengeTypes.map((type) => ChallengeService.getChallengeDataForType(type));
 			Promise.all(promises).then((challenges) => resolve(challenges));
 		});
+	}
+
+	static listChallengesForNumPlayers(
+		numPlayers: number,
+		challengeData: ChallengeData[],
+		usedChallenges: ChallengeData[]
+	): ChallengeData[] {
+		let numPlayerRestrictedChallenges = challengeData.filter(
+			(cd) => cd.maxPlayers >= numPlayers && cd.minPlayers <= numPlayers
+		);
+
+		return numPlayerRestrictedChallenges.filter((nc) => usedChallenges.map((uc) => uc.type).indexOf(nc.type) < 0);
 	}
 }
