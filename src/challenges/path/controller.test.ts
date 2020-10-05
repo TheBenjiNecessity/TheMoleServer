@@ -25,7 +25,7 @@ function getMockRoomController() {
 	);
 }
 
-function getMockButtonChallengeController(roomController: RoomController) {
+function getMockPathChallengeController(roomController: RoomController) {
 	let challengeController = new ChallengeController(roomController);
 	return new PathChallengeController(roomController, challengeController);
 }
@@ -42,7 +42,7 @@ function getMockRoom() {
 function getMockComponents() {
 	let room = getMockRoom();
 	let roomController = getMockRoomController();
-	let pathChallengeController = getMockButtonChallengeController(roomController);
+	let pathChallengeController = getMockPathChallengeController(roomController);
 
 	roomController.setRoom(room);
 
@@ -65,13 +65,18 @@ test('Checks "chooseChest" method', () => {
 
 test('Checks "addVoteForChest" method', () => {
 	let { room, roomController, pathChallengeController } = getMockComponents();
-	let player = room.players[0];
-	let pathChallenge = room.currentEpisode.currentChallenge;
+	let pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
+	let player = room.players.find((p) => p.name !== pathChallenge.currentWalker.name);
 
-	pathChallenge.chooseLeft();
-	roomController.setRoom(room);
+	expect(typeof player !== 'undefined').toBe(true);
+
+	pathChallengeController.chooseChest(room.roomcode, 'left');
 
 	let result = pathChallengeController.addVoteForChest(room.roomcode, player, 'left');
+
+	room = roomController.getRoom(room.roomcode);
+	pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
+
 	expect(pathChallenge.votes.left.length).toBe(1);
 	expect(pathChallenge.votes.right.length).toBe(0);
 	expect(result).toBe('path-vote-chest');
