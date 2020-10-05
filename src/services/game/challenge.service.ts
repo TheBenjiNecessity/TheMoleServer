@@ -6,7 +6,7 @@ export default class ChallengeService {
 
 	static async getChallengeDataForType(type: string): Promise<ChallengeData> {
 		let challengeData = await import(`../../challenges/${type}/data`);
-		return challengeData.data;
+		return new challengeData.default();
 	}
 
 	static async listChallengeData(): Promise<ChallengeData[]> {
