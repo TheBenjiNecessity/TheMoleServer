@@ -82,7 +82,7 @@ export default class RoomController {
 	}
 
 	performEventOnChallenge(roomcode, event, ...args) {
-		this.rooms[roomcode].currentEpisode.currentChallenge[event].apply(null, args);
+		this.rooms[roomcode].currentEpisode.currentChallenge[event](args);
 		return this.rooms[roomcode];
 	}
 
