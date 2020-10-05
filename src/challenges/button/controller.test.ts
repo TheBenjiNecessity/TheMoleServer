@@ -11,6 +11,7 @@ import ChallengeController from '../../controllers/challenge.controller';
 let rooms: { [id: string]: Room } = {};
 
 function getMockRoomController() {
+	rooms = {};
 	let webSocketService = new WebSocketService(null);
 	return new RoomController(
 		webSocketService,
@@ -98,8 +99,8 @@ test('Checks releasedButton method', () => {
 test('Checks touchedButton method', () => {
 	let { room, roomController, buttonChallengeController } = getMockComponents();
 
-	const mockTickCallback = jest.fn(() => null);
-	const mockDoneCallback = jest.fn(() => null);
+	const mockTickCallback = (roomcode: string) => {};
+	const mockDoneCallback = (roomcode: string) => {};
 	buttonChallengeController.touchedButton(
 		room.roomcode,
 		room.playersStillPlaying[0].name,

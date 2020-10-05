@@ -5,10 +5,13 @@ import EpisodeSampleService from './episode.sample';
 import RoomController from '../src/controllers/room.controller';
 import Room from '../src/models/room.model';
 import WebSocketService from '../src/services/websocket.service';
+import ChallengeData from '../src/interfaces/challenge-data';
+import Challenge from '../src/models/challenge.model';
 
 let rooms: { [id: string]: Room } = {};
 
 function getMockRoomController() {
+	rooms = {};
 	let webSocketService = new WebSocketService(null);
 	return new RoomController(
 		webSocketService,
@@ -86,11 +89,11 @@ test('Checks "addPlayerVote" method', () => {
 
 	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	roomController.setRoom(room);
-	challengeController.addPlayerVote(roomcode, player);
-	let pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
+	challengeController.addPlayerVote(roomcode, player.name);
+	let challenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge as Challenge;
 
-	expect(Object.keys(pathChallenge.votedPlayers).length).toBe(1);
-	expect(pathChallenge.votedPlayers[player.name]).toBe(1);
+	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
+	expect(challenge.votedPlayers[player.name]).toBe(1);
 });
 
 test('Checks "removePlayerVote" method', () => {
@@ -103,17 +106,17 @@ test('Checks "removePlayerVote" method', () => {
 
 	let pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
-	challengeController.addPlayerVote(roomcode, player);
+	challengeController.addPlayerVote(roomcode, player.name);
 	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 	expect(Object.keys(pathChallenge.votedPlayers).length).toBe(1);
 	expect(pathChallenge.votedPlayers[player.name]).toBe(1);
 
-	challengeController.removePlayerVote(roomcode, player);
+	challengeController.removePlayerVote(roomcode, player.name);
 	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 	expect(Object.keys(pathChallenge.votedPlayers).length).toBe(0);
 	expect(typeof pathChallenge.votedPlayers[player.name]).toBe('undefined');
 
-	challengeController.removePlayerVote(roomcode, player);
+	challengeController.removePlayerVote(roomcode, player.name);
 	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 	expect(Object.keys(pathChallenge.votedPlayers).length).toBe(0);
 	expect(typeof pathChallenge.votedPlayers[player.name]).toBe('undefined');

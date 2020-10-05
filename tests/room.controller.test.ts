@@ -12,6 +12,7 @@ const ROOMCODE_REGEX = /[A-Z]{4}/;
 let rooms: { [id: string]: Room } = {};
 
 function getMockRoomController() {
+	rooms = {};
 	let webSocketService = new WebSocketService(null);
 	return new RoomController(
 		webSocketService,
@@ -184,7 +185,7 @@ test('Checks "moveNext" method', () => {
 
 	expect(roomController.getRoom(roomcode).state).toBe(ROOM_STATE.LOBBY);
 
-	roomController.moveNext({ roomcode });
+	roomController.moveNext(roomcode);
 
 	expect(roomController.getRoom(roomcode).state).toBe(ROOM_STATE.WELCOME);
 });

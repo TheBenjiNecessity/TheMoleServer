@@ -75,15 +75,15 @@ test('Checks "raiseHandForPlayer" method', () => {
 test('Checks "setVotedPlayer" method', () => {
 	let { challenge } = getMockComponents(10);
 
-	challenge.setVotedPlayer(new Player('test'));
+	challenge.setVotedPlayer('test');
 	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
 	expect(challenge.votedPlayers['test']).toBe(1);
 
-	challenge.setVotedPlayer(new Player('test'));
+	challenge.setVotedPlayer('test');
 	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
 	expect(challenge.votedPlayers['test']).toBe(2);
 
-	challenge.setVotedPlayer(new Player('test1'));
+	challenge.setVotedPlayer('test1');
 	expect(Object.keys(challenge.votedPlayers).length).toBe(2);
 	expect(challenge.votedPlayers['test1']).toBe(1);
 });
@@ -91,16 +91,16 @@ test('Checks "setVotedPlayer" method', () => {
 test('Checks "removeVotedPlayer" method', () => {
 	let { challenge } = getMockComponents(10);
 
-	challenge.setVotedPlayer(new Player('test'));
-	challenge.setVotedPlayer(new Player('test'));
-	challenge.setVotedPlayer(new Player('test1'));
+	challenge.setVotedPlayer('test');
+	challenge.setVotedPlayer('test');
+	challenge.setVotedPlayer('test1');
 
-	challenge.removeVotedPlayer(new Player('test'));
+	challenge.removeVotedPlayer('test');
 
 	expect(Object.keys(challenge.votedPlayers).length).toBe(2);
 	expect(challenge.votedPlayers['test']).toBe(1);
 
-	challenge.removeVotedPlayer(new Player('test1'));
+	challenge.removeVotedPlayer('test1');
 
 	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
 	expect(typeof challenge.votedPlayers['test1']).toBe('undefined');
