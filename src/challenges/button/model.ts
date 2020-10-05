@@ -2,6 +2,7 @@ import Challenge from '../../models/challenge.model';
 import Player from '../../models/player.model';
 import riddles from './riddles.data';
 import '../../extensions/array';
+import '../../extensions/string';
 
 const type = 'button';
 
