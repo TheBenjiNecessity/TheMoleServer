@@ -121,20 +121,20 @@ export default class Challenge {
 		this.agreedPlayers = [];
 	}
 
-	setVotedPlayer(player) {
-		if (!this.votedPlayers[player.name]) {
-			this.votedPlayers[player.name] = 1;
+	setVotedPlayer(playerName: string) {
+		if (!this.votedPlayers[playerName]) {
+			this.votedPlayers[playerName] = 1;
 		} else {
-			this.votedPlayers[player.name]++;
+			this.votedPlayers[playerName]++;
 		}
 	}
 
-	removeVotedPlayer(player) {
-		if (this.votedPlayers[player.name]) {
-			this.votedPlayers[player.name]--;
+	removeVotedPlayer(playerName: string) {
+		if (this.votedPlayers[playerName]) {
+			this.votedPlayers[playerName]--;
 
-			if (this.votedPlayers[player.name] <= 0) {
-				delete this.votedPlayers[player.name];
+			if (this.votedPlayers[playerName] <= 0) {
+				delete this.votedPlayers[playerName];
 			}
 		}
 	}
