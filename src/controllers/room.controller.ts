@@ -2,6 +2,7 @@ import Room from '../models/room.model';
 import WebSocketService from '../services/websocket.service';
 import RoomService from '../services/room/room.service';
 import ChallengeData from '../interfaces/challenge-data';
+import Player from '../models/player.model';
 
 export default class RoomController {
 	constructor(
@@ -19,8 +20,8 @@ export default class RoomController {
 		this.roomSetter(rooms);
 	}
 
-	roomCodeAlreadyExists(code) {
-		return typeof this.rooms[code] !== 'undefined';
+	roomCodeAlreadyExists(roomcode: string) {
+		return typeof this.rooms[roomcode] !== 'undefined';
 	}
 
 	addRoom() {
@@ -29,45 +30,45 @@ export default class RoomController {
 		return this.rooms[roomcode];
 	}
 
-	setChallengeDataForRoom(roomcode) {
+	setChallengeDataForRoom(roomcode: string) {
 		this.rooms[roomcode].addChallengeData(this.challengeData);
 	}
 
-	deleteRoom(roomcode) {
+	deleteRoom(roomcode: string) {
 		delete this.rooms[roomcode];
 	}
 
-	getRoom(roomcode) {
+	getRoom(roomcode: string) {
 		return this.rooms[roomcode];
 	}
 
-	setRoom(room) {
+	setRoom(room: Room) {
 		this.rooms[room.roomcode] = room;
 	}
 
-	addPlayerToRoom(roomcode, player) {
+	addPlayerToRoom(roomcode: string, player: Player) {
 		this.rooms[roomcode].addPlayer(player);
 		return this.websocketServiceInstance.sendToRoom(roomcode, 'add-player');
 	}
 
-	removePlayerFromRoom(roomcode, player) {
+	removePlayerFromRoom(roomcode: string, player: Player) {
 		this.rooms[roomcode].removePlayer(player.name);
 		return this.websocketServiceInstance.sendToRoom(roomcode, 'remove-player');
 	}
 
-	giveObjectsToPlayer(roomcode, playerName, obj, quantity) {
+	giveObjectsToPlayer(roomcode: string, playerName: string, obj: string, quantity: number) {
 		this.rooms[roomcode].giveObjectsToPlayer(playerName, obj, quantity);
 	}
 
-	removeObjectsFromPlayer(roomcode, playerName, obj, quantity) {
+	removeObjectsFromPlayer(roomcode: string, playerName: string, obj: string, quantity: number) {
 		this.rooms[roomcode].removeObjectsFromPlayer(playerName, obj, quantity);
 	}
 
-	addPoints(roomcode, points = 1) {
+	addPoints(roomcode: string, points: number = 1) {
 		this.rooms[roomcode].addPoints(points);
 	}
 
-	removePoints(roomcode, points = 1) {
+	removePoints(roomcode: string, points: number = 1) {
 		this.rooms[roomcode].removePoints(points);
 	}
 
@@ -81,20 +82,20 @@ export default class RoomController {
 		return code;
 	}
 
-	performEventOnChallenge(roomcode, event, ...args) {
-		this.rooms[roomcode].currentEpisode.currentChallenge[event](args);
+	performEventOnChallenge(roomcode: string, event: string, ...args) {
+		this.rooms[roomcode].currentEpisode.currentChallenge[event](...args);
 		return this.rooms[roomcode];
 	}
 
 	/* ===================================== Socket Events ===================================== */
-	moveNext(roomcode) {
+	moveNext(roomcode: string) {
 		this.rooms[roomcode].moveNext();
 
 		return 'move-next';
 	}
 
 	// A player has finished their quiz and clicked on the last question
-	quizDone(roomcode, playerName, quizAnswers) {
+	quizDone(roomcode: string, playerName: string, quizAnswers) {
 		// a player has finished answering questions in the quiz
 		let message = null;
 		this.rooms[roomcode].currentEpisode.setQuizResultsForPlayer(playerName, quizAnswers);
