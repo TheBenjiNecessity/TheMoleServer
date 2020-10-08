@@ -7,7 +7,7 @@ export default class Player {
 	isMole: boolean;
 	currentRole: Role;
 	quizAnswers: QuizAnswers;
-	objects: any; // TODO
+	objects: { exemption: number; joker: number; 'black-exemption': number };
 
 	constructor(name) {
 		this.name = name;
@@ -20,6 +20,18 @@ export default class Player {
 			joker: 0,
 			'black-exemption': 0
 		};
+	}
+
+	get numExemptions(): number {
+		return this.objects.exemption;
+	}
+
+	get numBlackExemptions(): number {
+		return this.objects['black-exemption'];
+	}
+
+	get numJoker(): number {
+		return this.objects.joker;
 	}
 
 	setObjects(object, quantity = 1) {
