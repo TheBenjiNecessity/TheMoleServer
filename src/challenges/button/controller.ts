@@ -23,7 +23,14 @@ export default class ButtonChallengeController extends Controller {
 		return message;
 	}
 
-	touchedButton(roomcode, playerName, timerTickCallback, timerDoneCallback, interval = 1000, timerLength = 600000) {
+	touchedButton(
+		roomcode,
+		playerName,
+		timerTickCallback = (roomcode: string) => {},
+		timerDoneCallback = (roomcode: string) => {},
+		interval = 1000,
+		timerLength = 600000
+	) {
 		let message = 'button-player-pressed';
 		let event = 'setPlayerPressedButton';
 		let room = this.roomController.performEventOnChallenge(roomcode, event, playerName);
