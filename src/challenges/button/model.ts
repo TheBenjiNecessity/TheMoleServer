@@ -3,8 +3,10 @@ import Player from '../../models/player.model';
 import riddles from './riddles.data';
 import '../../extensions/array';
 import '../../extensions/string';
+import { DATETIME } from '../../contants/datetime.constants';
 
 const type = 'button';
+const POINTS_PER_MINUTE = 2;
 
 export default class ButtonChallenge extends Challenge {
 	buttonPlayers: { [id: string]: { player: Player; touchingButton: boolean } };
@@ -46,6 +48,15 @@ export default class ButtonChallenge extends Challenge {
 			}
 		}
 		return true;
+	}
+
+	getPointsForTime(
+		millisecondsPerSecond: number = DATETIME.MILLISECONDS_PER_SECONDS,
+		secondsPerMinute: number = DATETIME.SECONDS_PER_MINUTE
+	) {
+		let elapsedSeconds = this.challengeDiff / millisecondsPerSecond;
+		let elapsedMinutes = Math.floor(elapsedSeconds / secondsPerMinute);
+		return Math.floor(elapsedMinutes * POINTS_PER_MINUTE);
 	}
 
 	isPlayerAnswerCorrect(answer) {
