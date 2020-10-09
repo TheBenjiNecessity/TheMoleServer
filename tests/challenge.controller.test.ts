@@ -1,11 +1,9 @@
 import ChallengeController from '../src/controllers/challenge.controller';
-import RoomControllerCreator from '../src/controllers/room.controller';
 import RoomSampleService from './room.sample';
 import EpisodeSampleService from './episode.sample';
 import RoomController from '../src/controllers/room.controller';
 import Room from '../src/models/room.model';
 import WebSocketService from '../src/services/websocket.service';
-import ChallengeData from '../src/interfaces/challenge-data';
 import Challenge from '../src/models/challenge.model';
 
 let rooms: { [id: string]: Room } = {};

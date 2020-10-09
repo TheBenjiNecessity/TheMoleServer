@@ -1,4 +1,3 @@
-import Challenge from '../src/models/challenge.model';
 import Player from '../src/models/player.model';
 import RoomSampleService from './room.sample';
 import EpisodeSampleService from './episode.sample';
