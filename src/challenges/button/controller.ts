@@ -9,7 +9,7 @@ export default class ButtonChallengeController extends Controller {
 		super(roomController);
 	}
 
-	releasedButton(roomcode, playerName) {
+	releasedButton(roomcode: string, playerName: string) {
 		let event = 'setPlayerReleasedButton';
 		let message = 'button-player-released';
 		let room = this.roomController.performEventOnChallenge(roomcode, event, playerName);
@@ -25,12 +25,12 @@ export default class ButtonChallengeController extends Controller {
 	}
 
 	touchedButton(
-		roomcode,
-		playerName,
+		roomcode: string,
+		playerName: string,
 		timerTickCallback = (roomcode: string) => {},
 		timerDoneCallback = (roomcode: string) => {},
-		interval = 1000,
-		timerLength = 600000
+		interval: number = 1000,
+		timerLength: number = 600000
 	) {
 		let message = 'button-player-pressed';
 		let event = 'setPlayerPressedButton';
@@ -46,7 +46,7 @@ export default class ButtonChallengeController extends Controller {
 		return message;
 	}
 
-	receivedPuzzleAnswer(roomcode, playerName, answer) {
+	receivedPuzzleAnswer(roomcode: string, playerName: string, answer: string) {
 		let room = this.roomController.getRoom(roomcode);
 		let message = 'button-player-answered';
 		let buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
