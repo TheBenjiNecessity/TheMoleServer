@@ -75,7 +75,7 @@ export default class Room {
 				this.currentEpisode.goToNextChallenge();
 				break;
 			case ROOM_STATE.EXECUTION:
-				let executedPlayer = this.currentEpisode.getExecutedPlayer();
+				let executedPlayer = this.currentEpisode.eliminatedPlayer;
 
 				for (let i = 0; i < this.players.length; i++) {
 					if (executedPlayer.name === this.players[i].name) {
