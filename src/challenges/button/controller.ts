@@ -2,6 +2,7 @@ import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
 import Controller from '../../interfaces/controller';
+import ButtonChallenge from './model';
 
 export default class ButtonChallengeController extends Controller {
 	constructor(protected roomController: RoomController, protected challengeController: ChallengeController) {
@@ -12,7 +13,7 @@ export default class ButtonChallengeController extends Controller {
 		let event = 'setPlayerReleasedButton';
 		let message = 'button-player-released';
 		let room = this.roomController.performEventOnChallenge(roomcode, event, playerName);
-		let buttonChallenge = room.currentEpisode.currentChallenge;
+		let buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
 
 		// If all buttons are released then the game is over
 		if (buttonChallenge.allButtonsReleased) {
@@ -34,7 +35,7 @@ export default class ButtonChallengeController extends Controller {
 		let message = 'button-player-pressed';
 		let event = 'setPlayerPressedButton';
 		let room = this.roomController.performEventOnChallenge(roomcode, event, playerName);
-		let buttonChallenge = room.currentEpisode.currentChallenge;
+		let buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
 
 		// If it is the start of the game and everyone touches their button then the game begins
 		if (buttonChallenge.allButtonsPressed && !buttonChallenge.isChallengeRunning) {
@@ -48,7 +49,7 @@ export default class ButtonChallengeController extends Controller {
 	receivedPuzzleAnswer(roomcode, playerName, answer) {
 		let room = this.roomController.getRoom(roomcode);
 		let message = 'button-player-answered';
-		let buttonChallenge = room.currentEpisode.currentChallenge;
+		let buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
 
 		if (buttonChallenge.isPlayerAnswerCorrect(answer)) {
 			this.roomController.giveObjectsToPlayer(roomcode, playerName, 'exemption', 1);
