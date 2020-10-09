@@ -5,12 +5,13 @@ import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
 import Episode from './episode.model';
 import '../extensions/array';
 import ChallengeData from '../interfaces/challenge-data';
+import Player from './player.model';
 
 export default class Room {
 	roomcode: string;
 	_state: string;
-	players: any[];
-	_currentEpisode: any;
+	players: Player[];
+	_currentEpisode: Episode;
 	unusedChallenges: ChallengeData[];
 	isInProgress: boolean;
 	points: number;
