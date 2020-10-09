@@ -8,7 +8,7 @@ import Player from './player.model';
 
 import '../extensions/date';
 
-export default class Challenge {
+export default abstract class Challenge {
 	private _state: string;
 
 	players: Player[];

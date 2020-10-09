@@ -1,10 +1,10 @@
-import Challenge from '../src/models/challenge.model';
+import PathChallenge from '../src/challenges/path/model';
 import questionData from '../src/models/quiz/question.data';
 import Episode from '../src/models/episode.model';
 
 export default class EpisodeSampleService {
 	static getTestEpisode(room) {
-		let currentChallenge = new Challenge(room.playersStillPlaying, 'Test', '', 10, 3, [], 'game', [], 'test');
+		let currentChallenge = new PathChallenge(room.playersStillPlaying, 'Test', '', 10, 3, [], 'game');
 		return new Episode(
 			room.playersStillPlaying,
 			[ currentChallenge ],

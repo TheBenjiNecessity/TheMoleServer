@@ -2,6 +2,7 @@ import Challenge from '../src/models/challenge.model';
 import Player from '../src/models/player.model';
 import RoomSampleService from './room.sample';
 import EpisodeSampleService from './episode.sample';
+import PathChallenge from '../src/challenges/path/model';
 
 function getMockRoom(numPlayers) {
 	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
@@ -11,7 +12,7 @@ function getMockRoom(numPlayers) {
 
 function getMockComponents(numPlayers) {
 	let room = getMockRoom(numPlayers);
-	let challenge = new Challenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game', [], 'path');
+	let challenge = new PathChallenge(room.playersStillPlaying, 'Path', '', 10, 5, [], 'game');
 
 	return { challenge };
 }
