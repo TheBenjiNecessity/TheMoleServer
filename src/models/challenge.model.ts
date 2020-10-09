@@ -24,9 +24,11 @@ export default class Challenge {
 	raisedHands: RaisedHand[];
 	votedPlayers: any;
 	challengeStart: number;
+	challengeCurrent: number;
 	challengeEnd: number;
 	isChallengeRunning: boolean;
 	timer: any;
+	currentTime: number;
 
 	constructor(
 		players: Player[],
@@ -65,6 +67,7 @@ export default class Challenge {
 		this.challengeEnd = -1;
 		this.isChallengeRunning = false;
 		this.timer = null;
+		this.challengeCurrent = 0;
 	}
 
 	get hasMajorityVoteForAgreedPlayers() {
@@ -92,9 +95,17 @@ export default class Challenge {
 			case CHALLENGE_STATES.IN_GAME:
 				this.setRoles();
 				break;
+			case CHALLENGE_STATES.CHALLENGE_END:
+				clearInterval(this.timer);
+				this.isChallengeRunning = false;
+				break;
 			default:
 				break;
 		}
+	}
+
+	get challengeDiff() {
+		return this.challengeCurrent - this.challengeStart;
 	}
 
 	canSupportNumPlayers(numPlayers) {
@@ -168,10 +179,13 @@ export default class Challenge {
 
 	startTimerWithCallback(roomcode, duringCB, endCB, millisecondsFromNow, millisecondsInterval) {
 		this.challengeStart = Date.now();
-		this.challengeEnd = Date.millisecondsFromNow(millisecondsFromNow);
+		this.challengeCurrent = this.challengeStart;
+		this.challengeEnd = this.challengeStart + millisecondsFromNow;
+
 		this.isChallengeRunning = true;
 		this.timer = setInterval(() => {
-			if (Date.now() >= this.challengeEnd) {
+			this.challengeCurrent += millisecondsInterval;
+			if (this.challengeCurrent >= this.challengeEnd) {
 				endCB(roomcode);
 				this.endChallenge();
 			} else {
@@ -181,8 +195,6 @@ export default class Challenge {
 	}
 
 	endChallenge() {
-		clearInterval(this.timer);
-		this.isChallengeRunning = false;
-		this.moveNext();
+		this.state = CHALLENGE_STATES.CHALLENGE_END;
 	}
 }
