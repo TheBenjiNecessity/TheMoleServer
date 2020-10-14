@@ -3,9 +3,9 @@ import RoomController from '../src/controllers/room.controller';
 import Player from '../src/models/player.model';
 import Room from '../src/models/room.model';
 import RoomService from '../src/services/room/room.service';
-import RoomSampleService from './room.sample';
+import RoomSampleService from '../src/models/samples/room.sample';
 import WebSocketService from '../src/services/websocket.service';
-import EpisodeSampleService from './episode.sample';
+import EpisodeSampleService from '../src/models/samples/episode.sample';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
 

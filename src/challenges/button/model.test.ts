@@ -1,5 +1,5 @@
 import ButtonChallengeData from './data';
-import RoomSampleService from '../../../tests/room.sample';
+import RoomSampleService from '../../models/samples/room.sample';
 import ButtonChallenge from './model';
 
 test('Checks initializing ButtonChallenge model', () => {

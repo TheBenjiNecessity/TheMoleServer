@@ -1,6 +1,6 @@
 import Player from '../src/models/player.model';
-import RoomSampleService from './room.sample';
-import EpisodeSampleService from './episode.sample';
+import RoomSampleService from '../src/models/samples/room.sample';
+import EpisodeSampleService from '../src/models/samples/episode.sample';
 import PathChallenge from '../src/challenges/path/model';
 
 function getMockRoom(numPlayers) {

@@ -1,6 +1,6 @@
-import PathChallenge from '../src/challenges/path/model';
-import questionData from '../src/models/quiz/question.data';
-import Episode from '../src/models/episode.model';
+import PathChallenge from '../../challenges/path/model';
+import questionData from '../quiz/question.data';
+import Episode from '../episode.model';
 
 export default class EpisodeSampleService {
 	static getTestEpisode(room) {

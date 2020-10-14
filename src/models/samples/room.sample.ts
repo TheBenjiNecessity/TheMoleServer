@@ -1,5 +1,5 @@
-import Player from '../src/models/player.model';
-import Room from '../src/models/room.model';
+import Player from '../player.model';
+import Room from '../room.model';
 
 export default class RoomSampleService {
 	static getTestRoomWithTenPlayers() {
