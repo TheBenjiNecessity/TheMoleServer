@@ -8,6 +8,8 @@ import Room from '../../models/room.model';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
 
+const SAMPLE_RIDDLE_ANSWER = 'I am going to stop the mole';
+
 let rooms: { [id: string]: Room } = {};
 
 function getMockRoomController() {
@@ -30,10 +32,10 @@ function getMockButtonChallengeController(roomController: RoomController) {
 
 function getMockRoom() {
 	let room = RoomSampleService.getTestRoomForNumPlayers(4);
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, new ButtonChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as ButtonChallenge);
+	let buttonChallenge = new ButtonChallengeData().getModel(room.playersStillPlaying, 'en') as ButtonChallenge;
+	buttonChallenge.riddleAnswer = SAMPLE_RIDDLE_ANSWER;
+	buttonChallenge.riddle = buttonChallenge.riddleAnswer.randomCypherText();
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, buttonChallenge);
 	return room;
 }
 
@@ -154,18 +156,16 @@ test('Checks touchedButton method', () => {
 
 test('Checks receivedPuzzleAnswer method (correct answer)', () => {
 	let { room, roomController, buttonChallengeController } = getMockComponents();
-	room.currentEpisode.currentChallenge.riddleAnswer = 'I am going to stop the mole';
-	room.currentEpisode.currentChallenge.riddle = room.currentEpisode.currentChallenge.riddleAnswer.randomCypherText();
-	roomController.setRoom(room);
+	let buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
 
 	buttonChallengeController.receivedPuzzleAnswer(
 		room.roomcode,
 		room.playersStillPlaying[0].name,
-		'I am going to stop the mole'
+		SAMPLE_RIDDLE_ANSWER
 	);
 
 	room = roomController.getRoom(room.roomcode);
-	let buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
+	buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
 
 	expect(room.playersStillPlaying[0].objects.exemption).toBe(1);
 	expect(room.playersStillPlaying[1].objects.exemption).toBe(0);
@@ -176,9 +176,6 @@ test('Checks receivedPuzzleAnswer method (correct answer)', () => {
 
 test('Checks receivedPuzzleAnswer method (incorrect answer)', () => {
 	let { room, roomController, buttonChallengeController } = getMockComponents();
-	room.currentEpisode.currentChallenge.riddleAnswer = 'I am going to stop the mole';
-	room.currentEpisode.currentChallenge.riddle = room.currentEpisode.currentChallenge.riddleAnswer.randomCypherText();
-	roomController.setRoom(room);
 
 	buttonChallengeController.receivedPuzzleAnswer(
 		room.roomcode,
