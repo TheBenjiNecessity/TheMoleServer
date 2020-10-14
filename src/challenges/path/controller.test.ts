@@ -53,12 +53,12 @@ test('Checks "chooseChest" method', () => {
 	let { room, roomController, pathChallengeController } = getMockComponents();
 
 	pathChallengeController.chooseChest(room.roomcode, 'left');
-	let pathChallenge = roomController.getRoom(room.roomcode).currentEpisode.currentChallenge;
+	let pathChallenge = roomController.getRoom(room.roomcode).currentEpisode.currentChallenge as PathChallenge;
 
 	expect(pathChallenge.currentChoice).toBe('left');
 
 	pathChallengeController.chooseChest(room.roomcode, 'right');
-	pathChallenge = roomController.getRoom(room.roomcode).currentEpisode.currentChallenge;
+	pathChallenge = roomController.getRoom(room.roomcode).currentEpisode.currentChallenge as PathChallenge;
 
 	expect(pathChallenge.currentChoice).toBe('right');
 });
