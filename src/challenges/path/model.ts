@@ -38,6 +38,46 @@ interface Votes {
 	right: Player[];
 }
 
+export interface IWalkersGenerator {
+	getNewWalker(players: Player[]): Player;
+}
+
+class WalkersGenerator implements IWalkersGenerator {
+	constructor() {}
+
+	getNewWalker(players: Player[]): Player {
+		return players.getRandomElement();
+	}
+}
+
+export interface IChestsGenerator {
+	getChests(possibleValues: string[]): Chest[];
+}
+
+class ChestsGenerator implements IChestsGenerator {
+	constructor() {}
+
+	getChests(possibleValues: string[]): Chest[] {
+		let returnedChests: Chest[] = [];
+		possibleValues.shuffle();
+
+		for (let i = 0; i < MAX_CHESTS; i++) {
+			let value = possibleValues.pop();
+			let isLeftChest = Math.floor(Math.random() * 2);
+			let chestRow = { left: 'continue', right: 'continue' };
+
+			if (isLeftChest) {
+				chestRow.left = value;
+			} else {
+				chestRow.right = value;
+			}
+
+			returnedChests.push(chestRow);
+		}
+		return returnedChests;
+	}
+}
+
 export default class PathChallenge extends Challenge {
 	players: Player[];
 	walkers: Player[];
@@ -47,7 +87,17 @@ export default class PathChallenge extends Challenge {
 	currentChestIndex: number;
 	currentChoice: string;
 
-	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState) {
+	constructor(
+		players,
+		title,
+		description,
+		maxPlayers,
+		minPlayers,
+		questions,
+		initialState,
+		private walkerGenerator: IWalkersGenerator = new WalkersGenerator(),
+		private chestsGenerator: IChestsGenerator = new ChestsGenerator()
+	) {
 		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
 
 		this.players = players;
@@ -116,28 +166,12 @@ export default class PathChallenge extends Challenge {
 	setNewWalker() {
 		this.votes = { left: [], right: [] };
 		this.chests = [];
-		this.currentWalker = this.walkers.getRandomElement();
+		this.currentWalker = this.walkerGenerator.getNewWalker(this.walkers);
 		this.walkers.removeElementByValue(this.currentWalker);
 		this.currentChoice = null;
 		this.currentChestIndex = 0;
 		this.state = PATH_CHALLENGE_STATES.WALKER_CHOOSING;
-
-		let tempValues = JSON.parse(JSON.stringify(possibleValues));
-		tempValues.shuffle();
-
-		for (let i = 0; i < MAX_CHESTS; i++) {
-			let value = tempValues.pop();
-			let isLeftChest = Math.floor(Math.random() * 2);
-			let chestRow = { left: 'continue', right: 'continue' };
-
-			if (isLeftChest) {
-				chestRow.left = value;
-			} else {
-				chestRow.right = value;
-			}
-
-			this.chests.push(chestRow);
-		}
+		this.chests = this.chestsGenerator.getChests(possibleValues);
 	}
 
 	moveNext() {
