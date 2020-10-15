@@ -106,8 +106,12 @@ export default class PathChallenge extends Challenge {
 		this.setNewWalker();
 	}
 
+	get currentChest() {
+		return this.chests[this.currentChestIndex];
+	}
+
 	get contentsOfChosenChest() {
-		return this.chests[this.currentChestIndex][this.currentChoice];
+		return this.currentChest[this.currentChoice];
 	}
 
 	get walkerIsDone() {
@@ -124,6 +128,10 @@ export default class PathChallenge extends Challenge {
 
 	get challengeIsDone() {
 		return !this.walkers.length && !this.currentWalker;
+	}
+
+	get playersNotWalker() {
+		return this.players.filter((p) => p.name !== this.currentWalker.name);
 	}
 
 	chooseLeft() {
