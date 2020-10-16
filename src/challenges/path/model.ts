@@ -28,12 +28,12 @@ const possibleValues = [
 	'minus 5 points'
 ];
 
-interface Chest {
+export interface Chest {
 	left: string;
 	right: string;
 }
 
-interface Votes {
+export interface Votes {
 	left: Player[];
 	right: Player[];
 }
