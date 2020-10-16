@@ -114,6 +114,13 @@ export default class PathChallenge extends Challenge {
 		return this.currentChest[this.currentChoice];
 	}
 
+	get contentsOfVotedChest() {
+		if (this.majorityVote) {
+			return this.currentChest[this.majorityVote];
+		}
+		return null;
+	}
+
 	get walkerIsDone() {
 		return this.currentChestIndex >= this.chests.length;
 	}
@@ -124,6 +131,14 @@ export default class PathChallenge extends Challenge {
 			this.votes.left.length !== this.votes.right.length &&
 			(this.votes.left.length > majorityCount || this.votes.right.length > majorityCount)
 		);
+	}
+
+	get majorityVote() {
+		if (this.hasMajorityVote) {
+			return this.votes.left > this.votes.right ? 'left' : 'right';
+		}
+
+		return null;
 	}
 
 	get challengeIsDone() {
