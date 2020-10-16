@@ -2,6 +2,14 @@
 - Test whether it is necessary to reset room every time it is set
 - Add integration tests
 
+## Future Challenges
+
+- Train Stops 8-10:
+    Players are seperated into teams of two or three and each team starts at a different train station. 
+    Each station is located around a circular track. The task is for each player to end up at their correct
+    station based on a series of clues in a logic puzzle. When the train comes into the station at least
+    one player must switch with someone already on the train and the train can't be empty.
+
 
 /**
  * STATE
