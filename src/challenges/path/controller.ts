@@ -3,10 +3,11 @@ import PathChallenge, { PATH_CHALLENGE_EVENTS } from './model';
 import Controller from '../../interfaces/controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import Player from '../../models/player.model';
+import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
 
 const POINTS_FOR_CONTINUING = 7;
 
-export default class PathChallengeControllerInstance extends Controller {
+export default class PathChallengeController extends Controller {
 	constructor(protected roomController: RoomController, protected challengeController: ChallengeController) {
 		super(roomController);
 	}
@@ -17,6 +18,8 @@ export default class PathChallengeControllerInstance extends Controller {
 		return 'path-choose-chest';
 	}
 
+	// TODO: what happens when hasMajorityVote is already true when this function is called
+	// hasMajorityVote block of code called twice?
 	addVoteForChest(roomcode: string, player: Player, choice: string) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.ADD_LEFT_VOTE : PATH_CHALLENGE_EVENTS.ADD_RIGHT_VOTE;
 		let room = this.roomController.performEventOnChallenge(roomcode, event, player);
@@ -24,9 +27,9 @@ export default class PathChallengeControllerInstance extends Controller {
 
 		let pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
 		if (pathChallenge.hasMajorityVote) {
-			let { contentsOfChosenChest } = pathChallenge;
+			let { contentsOfVotedChest } = pathChallenge;
 
-			if (contentsOfChosenChest === 'continue') {
+			if (contentsOfVotedChest === 'continue') {
 				this.roomController.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.MOVE_TO_NEW_ROW, player);
 				message = 'walker-continued';
 
@@ -36,21 +39,26 @@ export default class PathChallengeControllerInstance extends Controller {
 					message = 'walker-done';
 				}
 			} else {
-				switch (contentsOfChosenChest) {
+				switch (contentsOfVotedChest) {
 					case 'exemption':
 					case 'black-exemption':
 					case 'joker':
-						this.roomController.giveObjectsToPlayer(roomcode, player.name, contentsOfChosenChest, 1);
-						message = 'walker-got-' + contentsOfChosenChest;
+						this.roomController.giveObjectsToPlayer(
+							roomcode,
+							pathChallenge.currentWalker.name,
+							contentsOfVotedChest,
+							1
+						);
+						message = 'walker-got-' + contentsOfVotedChest;
 						break;
 					case 'two jokers':
-						this.roomController.giveObjectsToPlayer(roomcode, player.name, 'joker', 2);
-						message = 'walker-got-' + contentsOfChosenChest;
+						this.roomController.giveObjectsToPlayer(roomcode, pathChallenge.currentWalker.name, 'joker', 2);
+						message = 'walker-got-' + contentsOfVotedChest;
 						message.replace(' ', '-');
 						break;
 					case 'three jokers':
-						this.roomController.giveObjectsToPlayer(roomcode, player.name, 'joker', 3);
-						message = 'walker-got-' + contentsOfChosenChest;
+						this.roomController.giveObjectsToPlayer(roomcode, pathChallenge.currentWalker.name, 'joker', 3);
+						message = 'walker-got-' + contentsOfVotedChest;
 						message.replace(' ', '-');
 						break;
 					case 'minus 3 points':
@@ -70,7 +78,7 @@ export default class PathChallengeControllerInstance extends Controller {
 		}
 
 		if (pathChallenge.challengeIsDone) {
-			this.roomController.moveNext(roomcode);
+			this.roomController.performEventOnChallenge(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
 		}
 
 		return message;
