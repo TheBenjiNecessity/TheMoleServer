@@ -12,11 +12,11 @@ export default class OutAndSafeChallengeSocketHandler extends SocketHandler {
 	) {
 		super(roomController, webSocketService, socket);
 
-		socket.on('test', this.test);
+		socket.on('select-card', this.selectCard);
 	}
 
-	test({ roomcode, playerName }) {
-		let message = this.outAndSafeChallengeController.test(roomcode, playerName);
+	selectCard({ roomcode, playerName, card }) {
+		let message = this.outAndSafeChallengeController.selectCard(roomcode, playerName, card);
 		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 }
