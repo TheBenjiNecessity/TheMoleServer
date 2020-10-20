@@ -1,25 +1,37 @@
 import Challenge from '../../models/challenge.model';
+import Player from '../../models/player.model';
 
 const type = 'platter';
 
 export default class PlatterChallenge extends Challenge {
-	exemptionWasTaken: boolean;
-	numMoneyTokens: number;
+	playerWhoTookExemption: Player;
+	playersWhoTookMoney: Player[];
 
 	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState) {
 		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
 
-		this.exemptionWasTaken = false;
-		this.numMoneyTokens = players.length;
+		this.playerWhoTookExemption = null;
+		this.playersWhoTookMoney = [];
 	}
 
-	takeExemption() {
-		this.exemptionWasTaken = true;
+	get allMoneyWasTaken(): boolean {
+		return this.playersWhoTookMoney.length === this.players.length;
 	}
 
-	takeMoney() {
-		if (this.numMoneyTokens > 0) {
-			this.numMoneyTokens--;
+	takeExemption(playerName: string) {
+		this.playerWhoTookExemption = this.players.find((p) => p.name === playerName);
+	}
+
+	takeMoney(playerName: string) {
+		let player = this.players.find((p) => p.name === playerName);
+		let foundPlayer = this.playersWhoTookMoney.find((p) => p.name === playerName);
+		if (!foundPlayer) {
+			this.playersWhoTookMoney.push(player);
 		}
+	}
+
+	playerTookMoney(playerName: string): boolean {
+		let foundPlayer = this.playersWhoTookMoney.find((p) => p.name === playerName);
+		return typeof foundPlayer !== 'undefined';
 	}
 }
