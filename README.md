@@ -1,6 +1,6 @@
 ## TODO
 - Test whether it is necessary to reset room every time it is set
-- Add integration tests
+- Turn "this.roomController.performEventOnChallenge(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);" into it's own method
 
 ## Future Challenges
 
