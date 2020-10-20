@@ -21,8 +21,8 @@ export default class PlatterChallengeSocketHandlerInstance extends SocketHandler
 		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 
-	chooseMoney({ roomcode }) {
-		let message = this.platterChallengeController.chooseMoney(roomcode);
+	chooseMoney({ roomcode, playerName }) {
+		let message = this.platterChallengeController.chooseMoney(roomcode, playerName);
 		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 }
