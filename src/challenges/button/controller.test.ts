@@ -4,26 +4,10 @@ import EpisodeSampleService from '../../models/samples/episode.sample';
 import RoomController from '../../controllers/room.controller';
 import ButtonChallengeController from './controller';
 import ButtonChallengeData from './data';
-import Room from '../../models/room.model';
-import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
+import { getMockRoomController } from '../../models/samples/room-controller.sample';
 
 const SAMPLE_RIDDLE_ANSWER = 'I am going to stop the mole';
-
-let rooms: { [id: string]: Room } = {};
-
-function getMockRoomController() {
-	rooms = {};
-	let webSocketService = new WebSocketService(null);
-	return new RoomController(
-		webSocketService,
-		[],
-		() => rooms,
-		(r) => {
-			rooms = r;
-		}
-	);
-}
 
 function getMockButtonChallengeController(roomController: RoomController) {
 	let challengeController = new ChallengeController(roomController);
