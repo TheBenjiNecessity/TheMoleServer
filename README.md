@@ -10,6 +10,23 @@
     station based on a series of clues in a logic puzzle. When the train comes into the station at least
     one player must switch with someone already on the train and the train can't be empty.
 
+- Push your Luck
+    Each player takes a turn flipping tiles on a board one at a time where the tiles have points printed on them.
+    They can flip a maximum of five tiles and the last tile flipped is the points they make for their turn.
+    When they flip a new tile, all other tiles are removed from the game and cannot be flipped by next players.
+
+- Pass Along
+    Starting with a random player, players must pass an object to each other player in turn based on a special sequence.
+
+- Word Path
+    Players nominate one other player to be the 'walker'. The walker is given a legend of words and what prize amounts those words are worth. The walker then starts at the center of a grid of random letters. The walker takes turns over and over until a word is spelled. At the beginning of each turn, he tells the others what direction he wants to walk in and then the others tell him how far to walk. If the walker lands on a desired letter then they can claim that letter and add it to the word. As soon as a word is spelled, the prize for that word is won. The time limit for this game is five minutes. If a word is not spelled before the end of five minutes then nothing is won. (Note: the walker is not allowed to tell the others what word is going for)
+
+- Symbols
+    Each player is given a set of symbols that they must describe to the other players. If a player sees that they have that symbol on their screen then they match it to the person describing it. Each set of symbols that are matched properly in this way wins the group X points.
+
+- Word list memory
+    One player is given a list of words that they must memorize. They then tell one other player the list of words, that player tells the next player, and so on until the last player memorizes the list. The last player then inputs the list and players win points for each word input correctly.
+
 
 /**
  * STATE
