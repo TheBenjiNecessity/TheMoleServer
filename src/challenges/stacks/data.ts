@@ -10,7 +10,7 @@ import ChallengeController from '../../controllers/challenge.controller';
 
 export default class StacksChallengeData extends ChallengeData {
 	constructor() {
-		super('stacks', 6, 6, 'game', {
+		super({
 			en: {
 				title: 'Stacks',
 				description: '',
@@ -33,14 +33,7 @@ export default class StacksChallengeData extends ChallengeData {
 		return new StacksChallengeSocketHandler(roomController, webSocketService, socket, stacksChallengeController);
 	}
 	getModel(players, lang): Challenge {
-		return new StacksChallenge(
-			players,
-			this.lang[lang].title,
-			this.lang[lang].description,
-			this.maxPlayers,
-			this.minPlayers,
-			this.lang[lang].questions,
-			this.initialState
-		);
+		let { title, description, questions } = this.lang[lang];
+		return new StacksChallenge(players, title, description, questions);
 	}
 }

@@ -10,7 +10,7 @@ import ChallengeController from '../../controllers/challenge.controller';
 
 export default class PlatterChallengeData extends ChallengeData {
 	constructor() {
-		super('platter', 6, 4, 'game', {
+		super({
 			en: {
 				title: 'The Platter',
 				description: '',
@@ -38,14 +38,7 @@ export default class PlatterChallengeData extends ChallengeData {
 		return new PlatterChallengeSocketHandler(roomController, webSocketService, socket, PlatterChallengeController);
 	}
 	getModel(players, lang): Challenge {
-		return new PlatterChallenge(
-			players,
-			this.lang[lang].title,
-			this.lang[lang].description,
-			this.maxPlayers,
-			this.minPlayers,
-			this.lang[lang].questions,
-			this.initialState
-		);
+		let { title, description, questions } = this.lang[lang];
+		return new PlatterChallenge(players, title, description, questions);
 	}
 }
