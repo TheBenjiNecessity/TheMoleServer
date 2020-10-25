@@ -25,11 +25,8 @@ export default class OutAndSafeChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(roomController: RoomController): ChallengeController {
-		return new OutAndSafeChallengeController(roomController);
-	}
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
-		let outAndSafeChallengeController = this.getController(roomController) as OutAndSafeChallengeController;
+		let outAndSafeChallengeController = new OutAndSafeChallengeController(roomController);
 		return new OutAndSafeChallengeSocketHandler(
 			roomController,
 			webSocketService,
@@ -37,6 +34,7 @@ export default class OutAndSafeChallengeData extends ChallengeData {
 			outAndSafeChallengeController
 		);
 	}
+
 	getModel(players, lang): Challenge {
 		let { title, description, questions } = this.lang[lang];
 		return new OutAndSafeChallenge(players, title, description, questions);

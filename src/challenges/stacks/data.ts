@@ -6,7 +6,6 @@ import StacksChallengeSocketHandler from './socket-handler';
 import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
-import ChallengeController from '../../controllers/challenge.controller';
 
 export default class StacksChallengeData extends ChallengeData {
 	constructor() {
@@ -25,13 +24,11 @@ export default class StacksChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(roomController: RoomController): ChallengeController {
-		return new StacksChallengeController(roomController);
-	}
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
-		let stacksChallengeController = this.getController(roomController) as StacksChallengeController;
+		let stacksChallengeController = new StacksChallengeController(roomController);
 		return new StacksChallengeSocketHandler(roomController, webSocketService, socket, stacksChallengeController);
 	}
+
 	getModel(players, lang): Challenge {
 		let { title, description, questions } = this.lang[lang];
 		return new StacksChallenge(players, title, description, questions);

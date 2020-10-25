@@ -35,13 +35,11 @@ export default class PathChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(roomController: RoomController): ChallengeController {
-		return new PathChallengeController(roomController);
-	}
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
-		let PathChallengeController = this.getController(roomController) as PathChallengeController;
-		return new PathChallengeSocketHandler(roomController, webSocketService, socket, PathChallengeController);
+		let pathChallengeController = new PathChallengeController(roomController);
+		return new PathChallengeSocketHandler(roomController, webSocketService, socket, pathChallengeController);
 	}
+
 	getModel(players, lang): Challenge {
 		let { title, description, questions } = this.lang[lang];
 		return new PathChallenge(players, title, description, questions);

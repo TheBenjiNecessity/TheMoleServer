@@ -15,7 +15,6 @@ interface LanguageData {
 export default abstract class ChallengeData {
 	constructor(public lang: { [code: string]: LanguageData }) {}
 
-	abstract getController(roomController: RoomController): ChallengeController;
 	abstract setupSocketHandler(
 		roomController: RoomController,
 		webSocketService: WebSocketService,

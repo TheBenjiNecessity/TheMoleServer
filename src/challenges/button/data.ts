@@ -25,13 +25,11 @@ export default class ButtonChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(roomController: RoomController): ChallengeController {
-		return new ButtonChallengeController(roomController);
-	}
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
-		let buttonChallengeController = this.getController(roomController) as ButtonChallengeController;
+		let buttonChallengeController = new ButtonChallengeController(roomController);
 		return new ButtonChallengeSocketHandler(roomController, webSocketService, socket, buttonChallengeController);
 	}
+
 	getModel(players, lang): Challenge {
 		let { title, description, questions } = this.lang[lang];
 		return new ButtonChallenge(players, title, description, questions);

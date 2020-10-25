@@ -30,13 +30,11 @@ export default class PlatterChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(roomController: RoomController): ChallengeController {
-		return new PlatterChallengeController(roomController);
-	}
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
-		let PlatterChallengeController = this.getController(roomController) as PlatterChallengeController;
-		return new PlatterChallengeSocketHandler(roomController, webSocketService, socket, PlatterChallengeController);
+		let platterChallengeController = new PlatterChallengeController(roomController);
+		return new PlatterChallengeSocketHandler(roomController, webSocketService, socket, platterChallengeController);
 	}
+
 	getModel(players, lang): Challenge {
 		let { title, description, questions } = this.lang[lang];
 		return new PlatterChallenge(players, title, description, questions);
