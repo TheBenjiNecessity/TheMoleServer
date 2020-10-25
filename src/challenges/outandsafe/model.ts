@@ -7,8 +7,8 @@ export default class OutAndSafeChallenge extends Challenge {
 	playerHands: { [id: string]: string[] } = {};
 	currentRound: number;
 
-	constructor(players, title, description, maxPlayers, minPlayers, questions, initialState) {
-		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
+	constructor(players, title, description, questions) {
+		super(players, title, description, 10, 5, questions, 'game', [], type);
 
 		this.currentRound = 1;
 

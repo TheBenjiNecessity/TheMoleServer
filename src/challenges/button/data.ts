@@ -10,7 +10,7 @@ import ChallengeController from '../../controllers/challenge.controller';
 
 export default class ButtonChallengeData extends ChallengeData {
 	constructor() {
-		super('button', 4, 4, 'game', {
+		super({
 			en: {
 				title: 'The Button',
 				description: '',
@@ -33,14 +33,7 @@ export default class ButtonChallengeData extends ChallengeData {
 		return new ButtonChallengeSocketHandler(roomController, webSocketService, socket, buttonChallengeController);
 	}
 	getModel(players, lang): Challenge {
-		return new ButtonChallenge(
-			players,
-			this.lang[lang].title,
-			this.lang[lang].description,
-			this.maxPlayers,
-			this.minPlayers,
-			this.lang[lang].questions,
-			this.initialState
-		);
+		let { title, description, questions } = this.lang[lang];
+		return new ButtonChallenge(players, title, description, questions);
 	}
 }

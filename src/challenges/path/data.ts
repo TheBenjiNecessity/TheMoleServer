@@ -10,7 +10,7 @@ import ChallengeController from '../../controllers/challenge.controller';
 
 export default class PathChallengeData extends ChallengeData {
 	constructor() {
-		super('path', 5, 5, 'walker', {
+		super({
 			en: {
 				title: 'The Path',
 				description: '',
@@ -43,14 +43,7 @@ export default class PathChallengeData extends ChallengeData {
 		return new PathChallengeSocketHandler(roomController, webSocketService, socket, PathChallengeController);
 	}
 	getModel(players, lang): Challenge {
-		return new PathChallenge(
-			players,
-			this.lang[lang].title,
-			this.lang[lang].description,
-			this.maxPlayers,
-			this.minPlayers,
-			this.lang[lang].questions,
-			this.initialState
-		);
+		let { title, description, questions } = this.lang[lang];
+		return new PathChallenge(players, title, description, questions);
 	}
 }

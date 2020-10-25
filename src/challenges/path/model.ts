@@ -91,14 +91,11 @@ export default class PathChallenge extends Challenge {
 		players,
 		title,
 		description,
-		maxPlayers,
-		minPlayers,
 		questions,
-		initialState,
 		private walkerGenerator: IWalkersGenerator = new WalkersGenerator(),
 		private chestsGenerator: IChestsGenerator = new ChestsGenerator()
 	) {
-		super(players, title, description, maxPlayers, minPlayers, questions, initialState, [], type);
+		super(players, title, description, 5, 5, questions, 'walker', [], type);
 
 		this.players = players;
 		this.walkers = JSON.parse(JSON.stringify(this.players));

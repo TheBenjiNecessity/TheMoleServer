@@ -10,9 +10,9 @@ import ChallengeController from '../../controllers/challenge.controller';
 
 export default class OutAndSafeChallengeData extends ChallengeData {
 	constructor() {
-		super('out-and-safe', 10, 5, 'game', {
+		super({
 			en: {
-				title: 'Out/Safe',
+				title: 'Out and Safe',
 				description: '',
 				questions: [
 					{
@@ -38,14 +38,7 @@ export default class OutAndSafeChallengeData extends ChallengeData {
 		);
 	}
 	getModel(players, lang): Challenge {
-		return new OutAndSafeChallenge(
-			players,
-			this.lang[lang].title,
-			this.lang[lang].description,
-			this.maxPlayers,
-			this.minPlayers,
-			this.lang[lang].questions,
-			this.initialState
-		);
+		let { title, description, questions } = this.lang[lang];
+		return new OutAndSafeChallenge(players, title, description, questions);
 	}
 }
