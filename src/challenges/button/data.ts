@@ -6,7 +6,6 @@ import ButtonChallengeSocketHandler from './socket-handler';
 import RoomController from '../../controllers/room.controller';
 import SocketHandler from '../../interfaces/socket-handler';
 import WebSocketService from '../../services/websocket.service';
-import ChallengeController from '../../controllers/challenge.controller';
 
 export default class ButtonChallengeData extends ChallengeData {
 	constructor() {

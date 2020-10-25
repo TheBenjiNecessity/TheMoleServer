@@ -6,7 +6,6 @@ import PlatterChallengeSocketHandler from './socket-handler';
 import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
-import ChallengeController from '../../controllers/challenge.controller';
 
 export default class PlatterChallengeData extends ChallengeData {
 	constructor() {
