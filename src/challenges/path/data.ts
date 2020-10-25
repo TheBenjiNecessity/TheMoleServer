@@ -4,7 +4,6 @@ import PathChallengeController from './controller';
 import PathChallenge from './model';
 import PathChallengeSocketHandler from './socket-handler';
 import SocketHandler from '../../interfaces/socket-handler';
-import Controller from '../../interfaces/controller';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
@@ -36,19 +35,11 @@ export default class PathChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(roomController: RoomController, challengeController: ChallengeController): Controller {
-		return new PathChallengeController(roomController, challengeController);
+	getController(roomController: RoomController): ChallengeController {
+		return new PathChallengeController(roomController);
 	}
-	setupSocketHandler(
-		roomController: RoomController,
-		webSocketService: WebSocketService,
-		socket: any,
-		challengeController: ChallengeController
-	): SocketHandler {
-		let PathChallengeController = this.getController(
-			roomController,
-			challengeController
-		) as PathChallengeController;
+	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
+		let PathChallengeController = this.getController(roomController) as PathChallengeController;
 		return new PathChallengeSocketHandler(roomController, webSocketService, socket, PathChallengeController);
 	}
 	getModel(players, lang): Challenge {

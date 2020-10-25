@@ -25,7 +25,7 @@ function getMockRoomController() {
 
 function getMockOutAndSafeChallengeController(roomController: RoomController) {
 	let challengeController = new ChallengeController(roomController);
-	return new OutAndSafeChallengeController(roomController, challengeController);
+	return new OutAndSafeChallengeController(roomController);
 }
 
 function getMockRoom() {

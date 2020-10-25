@@ -1,13 +1,10 @@
 import RoomController from './room.controller';
 import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
-import Controller from '../interfaces/controller';
 
 const MILLISECONDS_IN_SECOND = 1000;
 
-export default class ChallengeController extends Controller {
-	constructor(protected roomController: RoomController) {
-		super(roomController);
-	}
+export default class ChallengeController {
+	constructor(protected roomController: RoomController) {}
 
 	raiseHand(roomcode, player, role): string {
 		let room = this.roomController.getRoom(roomcode);
@@ -15,7 +12,7 @@ export default class ChallengeController extends Controller {
 			return null;
 		}
 
-		this.roomController.performEventOnChallenge(roomcode, CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, player, role);
+		this.performEvent(roomcode, CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, player, role);
 
 		return CHALLENGE_SOCKET_EVENTS.RAISE_HAND;
 	}
@@ -27,7 +24,7 @@ export default class ChallengeController extends Controller {
 			return;
 		}
 
-		this.roomController.performEventOnChallenge(roomcode, CHALLENGE_EVENTS.ADD_AGREED_PLAYER, player);
+		this.performEvent(roomcode, CHALLENGE_EVENTS.ADD_AGREED_PLAYER, player);
 
 		if (room.currentEpisode.currentChallenge.hasMajorityVoteForAgreedPlayers) {
 			room.currentEpisode.currentChallenge.moveNext();
@@ -39,32 +36,28 @@ export default class ChallengeController extends Controller {
 	}
 
 	addPlayerVote(roomcode, player): string {
-		let event = CHALLENGE_EVENTS.SET_VOTED_PLAYER;
-		this.roomController.performEventOnChallenge(roomcode, event, player);
+		this.performEvent(roomcode, CHALLENGE_EVENTS.SET_VOTED_PLAYER, player);
 		return CHALLENGE_SOCKET_EVENTS.VOTED_PLAYER;
 	}
 
 	removePlayerVote(roomcode, player): string {
-		let event = CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER;
-		this.roomController.performEventOnChallenge(roomcode, event, player);
+		this.performEvent(roomcode, CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER, player);
 		return CHALLENGE_SOCKET_EVENTS.REMOVE_VOTED_PLAYER;
 	}
 
-	startTimer(
-		roomcode,
-		milliseconds,
-		interval = MILLISECONDS_IN_SECOND,
-		timerTickCallback = (roomcode: string) => {},
-		timerDoneCallback = (roomcode: string) => {}
-	) {
-		this.roomController.performEventOnChallenge(
-			roomcode,
-			CHALLENGE_EVENTS.START_TIMER,
-			roomcode,
-			timerTickCallback,
-			timerDoneCallback,
-			milliseconds,
-			interval
-		);
+	startTimer(roomcode, milliseconds, interval = MILLISECONDS_IN_SECOND, tickCallback, doneCallBack) {
+		const tickCB = () => {
+			tickCallback();
+			this.roomController.sendTimerTick(roomcode);
+		};
+		const doneCB = () => {
+			doneCallBack();
+			this.roomController.sendTimerDone(roomcode);
+		};
+		this.performEvent(roomcode, CHALLENGE_EVENTS.START_TIMER, roomcode, tickCB, doneCB, milliseconds, interval);
+	}
+
+	performEvent(roomcode: string, event: string, ...args) {
+		return this.roomController.performEventOnChallenge(roomcode, event, ...args);
 	}
 }

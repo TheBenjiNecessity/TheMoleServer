@@ -4,7 +4,6 @@ import StacksChallengeController from './controller';
 import StacksChallenge from './model';
 import StacksChallengeSocketHandler from './socket-handler';
 import SocketHandler from '../../interfaces/socket-handler';
-import Controller from '../../interfaces/controller';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
@@ -26,20 +25,12 @@ export default class StacksChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(roomController: RoomController, challengeController: ChallengeController): Controller {
-		return new StacksChallengeController(roomController, challengeController);
+	getController(roomController: RoomController): ChallengeController {
+		return new StacksChallengeController(roomController);
 	}
-	setupSocketHandler(
-		roomController: RoomController,
-		webSocketService: WebSocketService,
-		socket: any,
-		challengeController: ChallengeController
-	): SocketHandler {
-		let StacksChallengeController = this.getController(
-			roomController,
-			challengeController
-		) as StacksChallengeController;
-		return new StacksChallengeSocketHandler(roomController, webSocketService, socket, StacksChallengeController);
+	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
+		let stacksChallengeController = this.getController(roomController) as StacksChallengeController;
+		return new StacksChallengeSocketHandler(roomController, webSocketService, socket, stacksChallengeController);
 	}
 	getModel(players, lang): Challenge {
 		return new StacksChallenge(

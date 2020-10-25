@@ -24,14 +24,14 @@ export default class PlatterChallenge extends Challenge {
 
 	takeMoney(playerName: string) {
 		let player = this.players.find((p) => p.name === playerName);
-		let foundPlayer = this.playersWhoTookMoney.find((p) => p.name === playerName);
+		let foundPlayer = this.playersWhoTookMoney.find((p) => p && p.name === playerName);
 		if (!foundPlayer) {
 			this.playersWhoTookMoney.push(player);
 		}
 	}
 
 	playerTookMoney(playerName: string): boolean {
-		let foundPlayer = this.playersWhoTookMoney.find((p) => p.name === playerName);
+		let foundPlayer = this.playersWhoTookMoney.find((p) => p && p.name === playerName);
 		return typeof foundPlayer !== 'undefined';
 	}
 }

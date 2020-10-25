@@ -6,9 +6,8 @@ let rooms: { [id: string]: Room } = {};
 
 export function getMockRoomController() {
 	rooms = {};
-	let webSocketService = new WebSocketService(null);
 	return new RoomController(
-		webSocketService,
+		new WebSocketService(null),
 		[],
 		() => rooms,
 		(r) => {

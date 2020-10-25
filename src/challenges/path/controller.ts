@@ -1,20 +1,19 @@
 import RoomController from '../../controllers/room.controller';
 import PathChallenge, { PATH_CHALLENGE_EVENTS } from './model';
-import Controller from '../../interfaces/controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import Player from '../../models/player.model';
 import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
 
 const POINTS_FOR_CONTINUING = 7;
 
-export default class PathChallengeController extends Controller {
-	constructor(protected roomController: RoomController, protected challengeController: ChallengeController) {
+export default class PathChallengeController extends ChallengeController {
+	constructor(protected roomController: RoomController) {
 		super(roomController);
 	}
 
 	chooseChest(roomcode: string, choice: string) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.CHOOSE_LEFT : PATH_CHALLENGE_EVENTS.CHOOSE_RIGHT;
-		this.roomController.performEventOnChallenge(roomcode, event);
+		this.performEvent(roomcode, event);
 		return 'path-choose-chest';
 	}
 
@@ -22,7 +21,7 @@ export default class PathChallengeController extends Controller {
 	// hasMajorityVote block of code called twice?
 	addVoteForChest(roomcode: string, player: Player, choice: string) {
 		let event = choice === 'left' ? PATH_CHALLENGE_EVENTS.ADD_LEFT_VOTE : PATH_CHALLENGE_EVENTS.ADD_RIGHT_VOTE;
-		let room = this.roomController.performEventOnChallenge(roomcode, event, player);
+		let room = this.performEvent(roomcode, event, player);
 		let message = 'path-vote-chest';
 
 		let pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
@@ -30,12 +29,12 @@ export default class PathChallengeController extends Controller {
 			let { contentsOfVotedChest } = pathChallenge;
 
 			if (contentsOfVotedChest === 'continue') {
-				this.roomController.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.MOVE_TO_NEW_ROW, player);
+				this.performEvent(roomcode, PATH_CHALLENGE_EVENTS.MOVE_TO_NEW_ROW, player);
 				message = 'walker-continued';
 
 				if (pathChallenge.walkerIsDone) {
 					this.roomController.addPoints(roomcode, POINTS_FOR_CONTINUING);
-					this.roomController.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.SET_NEW_WALKER);
+					this.performEvent(roomcode, PATH_CHALLENGE_EVENTS.SET_NEW_WALKER);
 					message = 'walker-done';
 				}
 			} else {
@@ -73,12 +72,12 @@ export default class PathChallengeController extends Controller {
 						break;
 				}
 
-				this.roomController.performEventOnChallenge(roomcode, PATH_CHALLENGE_EVENTS.SET_NEW_WALKER);
+				this.performEvent(roomcode, PATH_CHALLENGE_EVENTS.SET_NEW_WALKER);
 			}
 		}
 
 		if (pathChallenge.challengeIsDone) {
-			this.roomController.performEventOnChallenge(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+			this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
 		}
 
 		return message;

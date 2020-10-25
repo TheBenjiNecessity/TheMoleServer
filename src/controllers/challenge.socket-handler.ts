@@ -40,13 +40,7 @@ export default class ChallengeSocketHandler extends SocketHandler {
 		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 
-	startTimer(
-		roomcode,
-		milliseconds,
-		interval = MILLISECONDS_IN_SECOND,
-		timerTickCallback = (roomcode: string) => {},
-		timerDoneCallback = (roomcode: string) => {}
-	) {
-		this.challengeController.startTimer(roomcode, milliseconds, interval, timerTickCallback, timerDoneCallback);
-	}
+	// startTimer(roomcode, milliseconds, interval = MILLISECONDS_IN_SECOND, tickCallback, doneCallback) {
+	// 	this.challengeController.startTimer(roomcode, milliseconds, interval, () => {});
+	// }
 }

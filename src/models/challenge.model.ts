@@ -177,7 +177,13 @@ export default abstract class Challenge {
 		}
 	}
 
-	startTimerWithCallback(roomcode, duringCB, endCB, millisecondsFromNow, millisecondsInterval) {
+	startTimerWithCallback(
+		roomcode: string,
+		duringCB: Function,
+		endCB: Function,
+		millisecondsFromNow: number,
+		millisecondsInterval: number
+	) {
 		this.challengeStart = Date.now();
 		this.challengeCurrent = this.challengeStart;
 		this.challengeEnd = this.challengeStart + millisecondsFromNow;

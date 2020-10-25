@@ -24,12 +24,7 @@ export default class ButtonChallengeSocketHandlerInstance extends SocketHandler 
 	}
 
 	touchedButton({ roomcode, playerName }) {
-		let message = this.buttonChallengeController.touchedButton(
-			roomcode,
-			playerName,
-			(roomcode) => this.timerTickCallback(roomcode),
-			(roomcode) => this.timerDoneCallback(roomcode)
-		);
+		let message = this.buttonChallengeController.touchedButton(roomcode, playerName);
 		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 

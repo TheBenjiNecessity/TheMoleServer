@@ -3,10 +3,11 @@ import WebSocketService from '../services/websocket.service';
 import RoomService from '../services/room/room.service';
 import ChallengeData from '../interfaces/challenge-data';
 import Player from '../models/player.model';
+import { CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
 
 export default class RoomController {
 	constructor(
-		private websocketServiceInstance: WebSocketService,
+		private websocketService: WebSocketService,
 		private challengeData: ChallengeData[],
 		private roomGetter: () => { [id: string]: Room },
 		private roomSetter: (rooms: { [id: string]: Room }) => void
@@ -48,12 +49,12 @@ export default class RoomController {
 
 	addPlayerToRoom(roomcode: string, player: Player) {
 		this.rooms[roomcode].addPlayer(player);
-		return this.websocketServiceInstance.sendToRoom(roomcode, 'add-player');
+		return this.websocketService.sendToRoom(roomcode, 'add-player');
 	}
 
 	removePlayerFromRoom(roomcode: string, player: Player) {
 		this.rooms[roomcode].removePlayer(player.name);
-		return this.websocketServiceInstance.sendToRoom(roomcode, 'remove-player');
+		return this.websocketService.sendToRoom(roomcode, 'remove-player');
 	}
 
 	giveObjectsToPlayer(roomcode: string, playerName: string, obj: string, quantity: number) {
@@ -82,8 +83,17 @@ export default class RoomController {
 		return code;
 	}
 
+	getCurrentChallenge(roomcode: string) {
+		return this.rooms[roomcode].currentEpisode.currentChallenge;
+	}
+
+	/* ===================================== Challenge Events =====================================*/
+	endChallenge(roomcode: string) {
+		this.getCurrentChallenge(roomcode).endChallenge();
+	}
+
 	performEventOnChallenge(roomcode: string, event: string, ...args) {
-		this.rooms[roomcode].currentEpisode.currentChallenge[event](...args);
+		this.getCurrentChallenge(roomcode)[event](...args);
 		return this.rooms[roomcode];
 	}
 
@@ -105,5 +115,13 @@ export default class RoomController {
 		}
 
 		return message;
+	}
+
+	sendTimerTick(roomcode: string) {
+		return this.websocketService.sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
+	}
+
+	sendTimerDone(roomcode: string) {
+		return this.websocketService.sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
 	}
 }

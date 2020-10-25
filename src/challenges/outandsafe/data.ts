@@ -4,7 +4,6 @@ import OutAndSafeChallengeController from './controller';
 import OutAndSafeChallenge from './model';
 import OutAndSafeChallengeSocketHandler from './socket-handler';
 import SocketHandler from '../../interfaces/socket-handler';
-import Controller from '../../interfaces/controller';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
@@ -26,19 +25,11 @@ export default class OutAndSafeChallengeData extends ChallengeData {
 		});
 	}
 
-	getController(roomController: RoomController, challengeController: ChallengeController): Controller {
-		return new OutAndSafeChallengeController(roomController, challengeController);
+	getController(roomController: RoomController): ChallengeController {
+		return new OutAndSafeChallengeController(roomController);
 	}
-	setupSocketHandler(
-		roomController: RoomController,
-		webSocketService: WebSocketService,
-		socket: any,
-		challengeController: ChallengeController
-	): SocketHandler {
-		let outAndSafeChallengeController = this.getController(
-			roomController,
-			challengeController
-		) as OutAndSafeChallengeController;
+	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
+		let outAndSafeChallengeController = this.getController(roomController) as OutAndSafeChallengeController;
 		return new OutAndSafeChallengeSocketHandler(
 			roomController,
 			webSocketService,

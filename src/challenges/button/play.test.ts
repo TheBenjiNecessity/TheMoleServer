@@ -27,8 +27,7 @@ function getMockRoomController() {
 }
 
 function getMockButtonChallengeController(roomController: RoomController) {
-	let challengeController = new ChallengeController(roomController);
-	return new ButtonChallengeController(roomController, challengeController);
+	return new ButtonChallengeController(roomController);
 }
 
 function getMockRoom() {
@@ -88,10 +87,10 @@ test('Plays through an entire round until all players remove their fingers from 
 		throw new Error('The timer should not be able to complete');
 	};
 
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[0].name, tickCB, doneCB, 1, 10);
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[1].name, tickCB, doneCB, 1, 10);
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[2].name, tickCB, doneCB, 1, 10);
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[3].name, tickCB, doneCB, 1, 10);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[0].name, 1, 10, tickCB, doneCB);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[1].name, 1, 10, tickCB, doneCB);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[2].name, 1, 10, tickCB, doneCB);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[3].name, 1, 10, tickCB, doneCB);
 
 	jest.runAllTimers();
 
@@ -113,10 +112,10 @@ test('Plays through an entire round where everyone keeps their fingers on their 
 	let tickCB = () => {};
 	let doneCB = () => {};
 
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[0].name, tickCB, doneCB, 1, 10);
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[1].name, tickCB, doneCB, 1, 10);
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[2].name, tickCB, doneCB, 1, 10);
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[3].name, tickCB, doneCB, 1, 10);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[0].name, 1, 10, tickCB, doneCB);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[1].name, 1, 10, tickCB, doneCB);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[2].name, 1, 10, tickCB, doneCB);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[3].name, 1, 10, tickCB, doneCB);
 
 	jest.runAllTimers();
 
@@ -153,10 +152,10 @@ test('Plays through an entire round where one person solves the riddle', () => {
 		throw new Error('The timer should not be able to complete');
 	};
 
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[0].name, tickCB, doneCB, 1, 10);
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[1].name, tickCB, doneCB, 1, 10);
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[2].name, tickCB, doneCB, 1, 10);
-	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[3].name, tickCB, doneCB, 1, 10);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[0].name, 1, 10, tickCB, doneCB);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[1].name, 1, 10, tickCB, doneCB);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[2].name, 1, 10, tickCB, doneCB);
+	buttonChallengeController.touchedButton(roomcode, room.playersStillPlaying[3].name, 1, 10, tickCB, doneCB);
 
 	jest.runAllTimers();
 

@@ -1,20 +1,15 @@
-import ButtonChallenge from './model';
 import RoomSampleService from '../../models/samples/room.sample';
 import EpisodeSampleService from '../../models/samples/episode.sample';
 import RoomController from '../../controllers/room.controller';
-import ButtonChallengeData from './data';
-import ChallengeController from '../../controllers/challenge.controller';
 import { getMockRoomController } from '../../models/samples/room-controller.sample';
 import PlatterChallengeController from './controller';
 import PlatterChallengeData from './data';
 import PlatterChallenge from './model';
-import Player from '../../models/player.model';
 
 const SAMPLE_RIDDLE_ANSWER = 'I am going to stop the mole';
 
 function getMockPlatterChallengeController(roomController: RoomController) {
-	let challengeController = new ChallengeController(roomController);
-	return new PlatterChallengeController(roomController, challengeController);
+	return new PlatterChallengeController(roomController);
 }
 
 function getMockRoom() {
