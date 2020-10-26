@@ -14,6 +14,10 @@ interface LanguageData {
 export default abstract class ChallengeData {
 	constructor(public lang: { [code: string]: LanguageData }) {}
 
+	get type(): string {
+		return '';
+	}
+
 	get maxPlayers(): number {
 		return 10;
 	}

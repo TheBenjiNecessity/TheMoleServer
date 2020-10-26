@@ -24,6 +24,10 @@ export default class StacksChallengeData extends ChallengeData {
 		});
 	}
 
+	get type(): string {
+		return 'stacks';
+	}
+
 	get maxPlayers(): number {
 		return 6;
 	}

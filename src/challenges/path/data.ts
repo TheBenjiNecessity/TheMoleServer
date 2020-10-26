@@ -34,6 +34,10 @@ export default class PathChallengeData extends ChallengeData {
 		});
 	}
 
+	get type(): string {
+		return 'path';
+	}
+
 	get maxPlayers(): number {
 		return 5;
 	}

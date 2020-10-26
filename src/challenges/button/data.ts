@@ -24,6 +24,10 @@ export default class ButtonChallengeData extends ChallengeData {
 		});
 	}
 
+	get type(): string {
+		return 'button';
+	}
+
 	get maxPlayers(): number {
 		return 4;
 	}

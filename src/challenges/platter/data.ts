@@ -29,6 +29,10 @@ export default class PlatterChallengeData extends ChallengeData {
 		});
 	}
 
+	get type(): string {
+		return 'platter';
+	}
+
 	get maxPlayers(): number {
 		return 6;
 	}
