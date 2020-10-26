@@ -29,6 +29,14 @@ export default class PlatterChallengeData extends ChallengeData {
 		});
 	}
 
+	get maxPlayers(): number {
+		return 6;
+	}
+
+	get minPlayers(): number {
+		return 4;
+	}
+
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
 		let platterChallengeController = new PlatterChallengeController(roomController);
 		return new PlatterChallengeSocketHandler(roomController, webSocketService, socket, platterChallengeController);

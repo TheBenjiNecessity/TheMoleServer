@@ -24,6 +24,14 @@ export default class StacksChallengeData extends ChallengeData {
 		});
 	}
 
+	get maxPlayers(): number {
+		return 6;
+	}
+
+	get minPlayers(): number {
+		return 6;
+	}
+
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
 		let stacksChallengeController = new StacksChallengeController(roomController);
 		return new StacksChallengeSocketHandler(roomController, webSocketService, socket, stacksChallengeController);

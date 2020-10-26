@@ -24,6 +24,14 @@ export default class ButtonChallengeData extends ChallengeData {
 		});
 	}
 
+	get maxPlayers(): number {
+		return 4;
+	}
+
+	get minPlayers(): number {
+		return 4;
+	}
+
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
 		let buttonChallengeController = new ButtonChallengeController(roomController);
 		return new ButtonChallengeSocketHandler(roomController, webSocketService, socket, buttonChallengeController);

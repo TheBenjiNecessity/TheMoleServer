@@ -24,6 +24,10 @@ export default class OutAndSafeChallengeData extends ChallengeData {
 		});
 	}
 
+	get minPlayers(): number {
+		return 5;
+	}
+
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
 		let outAndSafeChallengeController = new OutAndSafeChallengeController(roomController);
 		return new OutAndSafeChallengeSocketHandler(

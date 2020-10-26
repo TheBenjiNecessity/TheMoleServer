@@ -4,7 +4,6 @@ import Question from '../models/quiz/question.model';
 import RoomController from '../controllers/room.controller';
 import WebSocketService from '../services/websocket.service';
 import SocketHandler from './socket-handler';
-import ChallengeController from '../controllers/challenge.controller';
 
 interface LanguageData {
 	title: string;
@@ -14,6 +13,14 @@ interface LanguageData {
 
 export default abstract class ChallengeData {
 	constructor(public lang: { [code: string]: LanguageData }) {}
+
+	get maxPlayers(): number {
+		return 10;
+	}
+
+	get minPlayers(): number {
+		return 3;
+	}
 
 	abstract setupSocketHandler(
 		roomController: RoomController,

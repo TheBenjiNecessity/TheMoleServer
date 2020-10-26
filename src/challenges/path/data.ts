@@ -34,6 +34,14 @@ export default class PathChallengeData extends ChallengeData {
 		});
 	}
 
+	get maxPlayers(): number {
+		return 5;
+	}
+
+	get minPlayers(): number {
+		return 5;
+	}
+
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
 		let pathChallengeController = new PathChallengeController(roomController);
 		return new PathChallengeSocketHandler(roomController, webSocketService, socket, pathChallengeController);
