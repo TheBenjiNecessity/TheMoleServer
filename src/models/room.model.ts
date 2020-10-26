@@ -8,25 +8,24 @@ import ChallengeData from '../interfaces/challenge-data';
 import Player from './player.model';
 
 export default class Room {
-	roomcode: string;
-	_state: string;
+	private _state: string;
+	private _currentEpisode: Episode;
+
 	players: Player[];
-	_currentEpisode: Episode;
 	unusedChallenges: ChallengeData[];
 	isInProgress: boolean;
 	points: number;
 	unaskedQuestions: any[];
-	language: string;
 
-	constructor(roomcode) {
-		this.roomcode = roomcode;
+	constructor(public roomcode: string, private language: string) {
 		this._state = ROOM_STATE.LOBBY;
+		this.unaskedQuestions = questionData;
+
 		this.players = [];
 		this._currentEpisode = null;
 		this.unusedChallenges = [];
 		this.isInProgress = false;
 		this.points = 0;
-		this.unaskedQuestions = questionData;
 	}
 
 	get isFull() {
