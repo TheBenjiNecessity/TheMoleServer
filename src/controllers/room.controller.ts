@@ -25,9 +25,9 @@ export default class RoomController {
 		return typeof this.rooms[roomcode] !== 'undefined';
 	}
 
-	addRoom() {
+	addRoom(language: string) {
 		var roomcode = this.generateRandomRoomCodeNotUsed();
-		this.rooms[roomcode] = new Room(roomcode);
+		this.rooms[roomcode] = new Room(roomcode, language);
 		return this.rooms[roomcode];
 	}
 
