@@ -1,7 +1,7 @@
 import Player from '../src/models/player.model';
 import RoomSampleService from '../src/models/samples/room.sample';
 import EpisodeSampleService from '../src/models/samples/episode.sample';
-import ButtonChallenge from '../src/challenges/button/model';
+import ChallengeSampleService from '../src/models/samples/challenge.sample';
 
 function getMockRoom(numPlayers) {
 	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
@@ -11,7 +11,7 @@ function getMockRoom(numPlayers) {
 
 function getMockComponents(numPlayers) {
 	let room = getMockRoom(numPlayers);
-	let challenge = new ButtonChallenge(room.playersStillPlaying, 'Path', '', []);
+	let challenge = ChallengeSampleService.getTestChallenge(room);
 
 	return { challenge };
 }
@@ -21,8 +21,8 @@ test('Checks "canSupportNumPlayers" method', () => {
 
 	expect(challenge.canSupportNumPlayers(1)).toBe(false);
 	expect(challenge.canSupportNumPlayers(2)).toBe(false);
-	expect(challenge.canSupportNumPlayers(3)).toBe(false);
-	expect(challenge.canSupportNumPlayers(4)).toBe(false);
+	expect(challenge.canSupportNumPlayers(3)).toBe(true);
+	expect(challenge.canSupportNumPlayers(4)).toBe(true);
 	expect(challenge.canSupportNumPlayers(5)).toBe(true);
 	expect(challenge.canSupportNumPlayers(6)).toBe(true);
 	expect(challenge.canSupportNumPlayers(7)).toBe(true);
