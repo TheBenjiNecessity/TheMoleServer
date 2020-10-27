@@ -30,6 +30,10 @@ export default class OutAndSafeChallengeData extends ChallengeData {
 		return 'outandsafe';
 	}
 
+	get maxPlayers(): number {
+		return 10;
+	}
+
 	get minPlayers(): number {
 		return 5;
 	}

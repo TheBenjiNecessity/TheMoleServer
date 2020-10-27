@@ -14,17 +14,9 @@ interface LanguageData {
 export default abstract class ChallengeData {
 	constructor(public lang: { [code: string]: LanguageData }) {}
 
-	get type(): string {
-		return '';
-	}
-
-	get maxPlayers(): number {
-		return 10;
-	}
-
-	get minPlayers(): number {
-		return 3;
-	}
+	abstract get type(): string;
+	abstract get maxPlayers(): number;
+	abstract get minPlayers(): number;
 
 	abstract setupSocketHandler(
 		roomController: RoomController,
