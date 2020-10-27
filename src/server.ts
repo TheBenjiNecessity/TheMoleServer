@@ -53,7 +53,7 @@ async function run() {
 		new ChallengeSocketHandler(roomController, webSocketService, socket, challengeController);
 
 		for (let challengeDatum of challengeData) {
-			challengeDatum.setupSocketHandler(roomController, webSocketService, socket, challengeController);
+			challengeDatum.setupSocketHandler(roomController, webSocketService, socket);
 		}
 	});
 
