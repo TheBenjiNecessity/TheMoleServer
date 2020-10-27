@@ -49,22 +49,11 @@ function getMockRoomController() {
 }
 
 function getMockPathChallengeController(roomController: RoomController) {
-	let challengeController = new ChallengeController(roomController);
-	return new PathChallengeController(roomController, challengeController);
+	return new PathChallengeController(roomController);
 }
 
 function getMockPathChallenge(players: Player[]): PathChallenge {
-	return new PathChallenge(
-		players,
-		'The Path',
-		'',
-		5,
-		5,
-		[],
-		'walker',
-		new WalkersGenerator(),
-		new ChestsGenerator()
-	);
+	return new PathChallenge(players, 'The Path', '', [], new WalkersGenerator(), new ChestsGenerator());
 }
 
 function getMockRoom() {
