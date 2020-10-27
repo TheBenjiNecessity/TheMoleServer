@@ -3,7 +3,7 @@ import Room from '../room.model';
 
 export default class RoomSampleService {
 	static getTestRoomWithTenPlayers() {
-		let room = new Room('TEST');
+		let room = new Room('TEST', 'en');
 
 		room.addPlayer(new Player('test1'));
 		room.addPlayer(new Player('test2'));
@@ -28,11 +28,11 @@ export default class RoomSampleService {
 	}
 
 	static getTestRoomWithNoPlayers() {
-		return new Room('TEST');
+		return new Room('TEST', 'en');
 	}
 
 	static getTestRoomForNumPlayers(numPlayers) {
-		let room = new Room('TEST');
+		let room = new Room('TEST', 'en');
 
 		for (let i = 1; i <= numPlayers; i++) {
 			room.addPlayer(new Player(`test${i}`));

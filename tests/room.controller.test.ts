@@ -62,7 +62,7 @@ test('Checks "addRoom" method', () => {
 
 	expect(Object.keys(roomController.rooms).length).toBe(0);
 
-	roomController.addRoom();
+	roomController.addRoom('en');
 
 	expect(Object.keys(roomController.rooms).length).toBe(1);
 

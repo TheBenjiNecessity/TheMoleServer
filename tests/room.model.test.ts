@@ -3,7 +3,7 @@ import Room from '../src/models/room.model';
 import RoomSampleService from '../src/models/samples/room.sample';
 
 test('Tests room init', () => {
-	let room = new Room('TEST');
+	let room = new Room('TEST', 'en');
 	expect(room.players.length).toBe(0);
 	expect(room.isFull).toBe(false);
 	expect(room.isInProgress).toBe(false);

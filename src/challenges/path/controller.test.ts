@@ -26,8 +26,7 @@ function getMockRoomController() {
 }
 
 function getMockPathChallengeController(roomController: RoomController) {
-	let challengeController = new ChallengeController(roomController);
-	return new PathChallengeController(roomController, challengeController);
+	return new PathChallengeController(roomController);
 }
 
 function getMockRoom() {
