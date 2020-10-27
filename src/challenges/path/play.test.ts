@@ -1,12 +1,10 @@
 import Room from '../../models/room.model';
 import WebSocketService from '../../services/websocket.service';
 import RoomController from '../../controllers/room.controller';
-import ChallengeController from '../../controllers/challenge.controller';
 import PathChallengeController from './controller';
 import EpisodeSampleService from '../../models/samples/episode.sample';
 import RoomSampleService from '../../models/samples/room.sample';
 import { CHALLENGE_STATES } from '../../contants/challenge.constants';
-import PathChallengeData from './data';
 import PathChallenge, { IWalkersGenerator, IChestsGenerator, Chest } from './model';
 import Player from '../../models/player.model';
 
