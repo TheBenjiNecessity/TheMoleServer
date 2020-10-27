@@ -1,5 +1,5 @@
-import '../src/extensions/date';
-import { DateWrapper } from '../src/extensions/date';
+import '../extensions/date';
+import { DateWrapper } from '../extensions/date';
 
 const MILLISECONDS_IN_SECOND = 1000;
 const SECONDS_IN_MINUTE = 60;

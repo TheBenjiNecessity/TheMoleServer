@@ -1,8 +1,8 @@
-import ChallengeService from '../src/services/game/challenge.service';
-import RoomSampleService from '../src/models/samples/room.sample';
-import questionData from '../src/models/quiz/question.data';
-import { MAX_NUM_QUESTIONS } from '../src/contants/quiz.constants';
-import QuizService from '../src/services/game/quiz.service';
+import ChallengeService from '../services/game/challenge.service';
+import RoomSampleService from '../models/samples/room.sample';
+import questionData from '../models/quiz/question.data';
+import { MAX_NUM_QUESTIONS } from '../contants/quiz.constants';
+import QuizService from '../services/game/quiz.service';
 
 test('Checks generateQuiz method', async () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();

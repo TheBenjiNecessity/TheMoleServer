@@ -1,4 +1,4 @@
-import Player from '../src/models/player.model';
+import Player from '../models/player.model';
 
 test('Checks player', () => {
 	let player = new Player('test');

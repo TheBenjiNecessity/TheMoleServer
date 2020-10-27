@@ -1,11 +1,11 @@
-import { ROOM_STATE } from '../src/contants/room.constants';
-import RoomController from '../src/controllers/room.controller';
-import Player from '../src/models/player.model';
-import Room from '../src/models/room.model';
-import RoomService from '../src/services/room/room.service';
-import RoomSampleService from '../src/models/samples/room.sample';
-import WebSocketService from '../src/services/websocket.service';
-import EpisodeSampleService from '../src/models/samples/episode.sample';
+import { ROOM_STATE } from '../contants/room.constants';
+import RoomController from '../controllers/room.controller';
+import Player from '../models/player.model';
+import Room from '../models/room.model';
+import RoomService from '../services/room/room.service';
+import RoomSampleService from '../models/samples/room.sample';
+import WebSocketService from '../services/websocket.service';
+import EpisodeSampleService from '../models/samples/episode.sample';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
 

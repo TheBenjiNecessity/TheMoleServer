@@ -1,10 +1,10 @@
-import ChallengeController from '../src/controllers/challenge.controller';
-import RoomSampleService from '../src/models/samples/room.sample';
-import EpisodeSampleService from '../src/models/samples/episode.sample';
-import RoomController from '../src/controllers/room.controller';
-import Room from '../src/models/room.model';
-import WebSocketService from '../src/services/websocket.service';
-import Challenge from '../src/models/challenge.model';
+import ChallengeController from '../controllers/challenge.controller';
+import RoomSampleService from '../models/samples/room.sample';
+import EpisodeSampleService from '../models/samples/episode.sample';
+import RoomController from '../controllers/room.controller';
+import Room from '../models/room.model';
+import WebSocketService from '../services/websocket.service';
+import Challenge from '../models/challenge.model';
 
 let rooms: { [id: string]: Room } = {};
 

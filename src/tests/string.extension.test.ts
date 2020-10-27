@@ -1,4 +1,4 @@
-import '../src/extensions/string';
+import '../extensions/string';
 
 test('Checks shuffle method', () => {
 	let unshuffledString = 'abcdef';

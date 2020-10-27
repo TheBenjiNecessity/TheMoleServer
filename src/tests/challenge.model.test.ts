@@ -1,7 +1,7 @@
-import Player from '../src/models/player.model';
-import RoomSampleService from '../src/models/samples/room.sample';
-import EpisodeSampleService from '../src/models/samples/episode.sample';
-import ChallengeSampleService from '../src/models/samples/challenge.sample';
+import Player from '../models/player.model';
+import RoomSampleService from '../models/samples/room.sample';
+import EpisodeSampleService from '../models/samples/episode.sample';
+import ChallengeSampleService from '../models/samples/challenge.sample';
 
 function getMockRoom(numPlayers) {
 	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);

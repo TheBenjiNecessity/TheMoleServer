@@ -1,4 +1,4 @@
-import '../src/extensions/array';
+import '../extensions/array';
 
 test('Checks shuffle method', () => {
 	let unshuffledArray = [ 1, 2, 3, 4, 5, 6 ];
