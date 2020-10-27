@@ -212,11 +212,12 @@ export default class Room {
 			);
 
 			if (numRestrictedChallenges.length <= 0) {
+				//TODO could cause episode to have fewer challenges than should
 				continue;
 			}
 
 			numRestrictedChallenges.shuffle();
-			challenges.push(numRestrictedChallenges[0]);
+			challenges.push(numRestrictedChallenges[0].getModel(this.playersStillPlaying, this.language));
 		}
 
 		this.currentEpisode = new Episode(this.playersStillPlaying, challenges, this.unaskedQuestions);
