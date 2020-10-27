@@ -7,21 +7,23 @@ import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 
+const language = {
+	en: {
+		title: 'Out and Safe',
+		description: '',
+		questions: [
+			{
+				text: 'During the "Out and Safe" challenge, did the mole play an out card?',
+				type: 'boolean',
+				choices: [ 'Yes', 'No' ]
+			}
+		]
+	}
+};
+
 export default class OutAndSafeChallengeData extends ChallengeData {
 	constructor() {
-		super({
-			en: {
-				title: 'Out and Safe',
-				description: '',
-				questions: [
-					{
-						text: 'During the "Out and Safe" challenge, did the mole play an out card?',
-						type: 'boolean',
-						choices: [ 'Yes', 'No' ]
-					}
-				]
-			}
-		});
+		super(language);
 	}
 
 	get type(): string {

@@ -7,26 +7,28 @@ import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 
+const language = {
+	en: {
+		title: 'The Platter',
+		description: '',
+		questions: [
+			{
+				text: 'In the "Platter" challenge, did the mole take the exemption?',
+				type: 'boolean',
+				choices: [ 'Yes', 'No' ]
+			},
+			{
+				text: 'In the "Platter" challenge, in what position did the mole take points?',
+				type: 'rank',
+				choices: [ 'The mole did not take points' ]
+			}
+		]
+	}
+};
+
 export default class PlatterChallengeData extends ChallengeData {
 	constructor() {
-		super({
-			en: {
-				title: 'The Platter',
-				description: '',
-				questions: [
-					{
-						text: 'In the "Platter" challenge, did the mole take the exemption?',
-						type: 'boolean',
-						choices: [ 'Yes', 'No' ]
-					},
-					{
-						text: 'In the "Platter" challenge, in what position did the mole take points?',
-						type: 'rank',
-						choices: [ 'The mole did not take points' ]
-					}
-				]
-			}
-		});
+		super(language);
 	}
 
 	get type(): string {

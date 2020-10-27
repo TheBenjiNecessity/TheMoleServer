@@ -7,21 +7,23 @@ import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 
+const language = {
+	en: {
+		title: 'Stacks',
+		description: '',
+		questions: [
+			{
+				text: "What was the amount of points on the mole's stack?",
+				type: 'choices',
+				choices: [ '-5', '-3', '-1', '1', '3', '5' ]
+			}
+		]
+	}
+};
+
 export default class StacksChallengeData extends ChallengeData {
 	constructor() {
-		super({
-			en: {
-				title: 'Stacks',
-				description: '',
-				questions: [
-					{
-						text: "What was the amount of points on the mole's stack?",
-						type: 'choices',
-						choices: [ '-5', '-3', '-1', '1', '3', '5' ]
-					}
-				]
-			}
-		});
+		super(language);
 	}
 
 	get type(): string {
