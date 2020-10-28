@@ -136,11 +136,11 @@ export default class Room {
 	}
 
 	addPoints(points = 1): void {
-		this.points += points;
+		this.points += Math.abs(points);
 	}
 
 	removePoints(points = 1): void {
-		this.points -= points;
+		this.points -= Math.abs(points);
 
 		if (this.points < 0) {
 			this.points = 0;
