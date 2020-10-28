@@ -1,8 +1,16 @@
-import challengeTypes from '../../challenges/challenge.data';
 import ChallengeData from '../../interfaces/challenge-data';
+import { readdirSync } from 'fs';
 
 export default class ChallengeService {
 	constructor() {}
+
+	static listChallengeTypes(): string[] {
+		const getDirectories = (source) =>
+			readdirSync(source, { withFileTypes: true })
+				.filter((dirent) => dirent.isDirectory())
+				.map((dirent) => dirent.name);
+		return getDirectories('dist/challenges');
+	}
 
 	static async getChallengeDataForType(type: string): Promise<ChallengeData> {
 		let challengeData = await import(`../../challenges/${type}/data`);
@@ -11,7 +19,8 @@ export default class ChallengeService {
 
 	static async listChallengeData(): Promise<ChallengeData[]> {
 		return new Promise((resolve, reject) => {
-			let promises = challengeTypes.map((type) => ChallengeService.getChallengeDataForType(type));
+			let types = ChallengeService.listChallengeTypes();
+			let promises = types.map((type) => ChallengeService.getChallengeDataForType(type));
 			Promise.all(promises).then((challenges) => resolve(challenges));
 		});
 	}
