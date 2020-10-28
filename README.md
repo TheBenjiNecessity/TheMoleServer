@@ -10,12 +10,12 @@
     station based on a series of clues in a logic puzzle. When the train comes into the station at least
     one player must switch with someone already on the train and the train can't be empty.
 
-- Push your Luck
+- Push your Luck 4 - 7 (Bigger board for more players, fewer flips for more players)
     Each player takes a turn flipping tiles on a board one at a time where the tiles have points printed on them.
     They can flip a maximum of five tiles and the last tile flipped is the points they make for their turn.
     When they flip a new tile, all other tiles are removed from the game and cannot be flipped by next players.
 
-- Pass Along
+- Pass Along 8 - 10
     Starting with a random player, players must pass an object to each other player in turn based on a special sequence.
 
 - Word Path
