@@ -12,15 +12,11 @@ export default class StacksChallengeSocketHandler extends SocketHandler {
 	) {
 		super(roomController, webSocketService, socket);
 
-		socket.on('test', this.test);
+		socket.on('stacks-select-amount', this.selectAmount);
 	}
 
-	test({ roomcode, playerName }) {
-		let message = this.stacksChallengeController.test(roomcode, playerName);
+	selectAmount({ roomcode, playerName, numSelected }) {
+		let message = this.stacksChallengeController.selectAmount(roomcode, playerName, numSelected);
 		return this.webSocketService.sendToRoom(roomcode, message);
-	}
-
-	setupSocket(socket) {
-		socket.on('test', this.test);
 	}
 }
