@@ -128,7 +128,7 @@ test('Plays through an entire game where all but one player makes it to the end'
 
 	expect(pathChallenge.state).toBe(CHALLENGE_STATES.CHALLENGE_END);
 	expect(room.points).toBe(28);
-	expect(room.players[4].numExemptions).toBe(1);
+	expect(room.playersStillPlaying[4].numExemptions).toBe(1);
 });
 
 test('Plays through an entire game where no players make it though', () => {

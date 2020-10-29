@@ -43,7 +43,7 @@ test.skip('Checks "raiseHand" method', () => {
 	let { roomcode } = room;
 	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 
-	let player = room.players[0];
+	let player = room.playersStillPlaying[0];
 
 	challengeController.raiseHand(roomcode, player, 'test');
 	let pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
@@ -63,7 +63,7 @@ test.skip('Checks "raiseHand" method', () => {
 test.skip('Checks "agreeToRoles" method', () => {
 	let { room, roomController, challengeController } = getMockComponents(10);
 	let { roomcode } = room;
-	let player = room.players[0];
+	let player = room.playersStillPlaying[0];
 
 	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 
@@ -83,7 +83,7 @@ test.skip('Checks "agreeToRoles" method', () => {
 test('Checks "addPlayerVote" method', () => {
 	let { room, roomController, challengeController } = getMockComponents(10);
 	let { roomcode } = room;
-	let player = room.players[0];
+	let player = room.playersStillPlaying[0];
 
 	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	roomController.setRoom(room);
@@ -97,7 +97,7 @@ test('Checks "addPlayerVote" method', () => {
 test('Checks "removePlayerVote" method', () => {
 	let { room, roomController, challengeController } = getMockComponents(10);
 	let { roomcode } = room;
-	let player = room.players[0];
+	let player = room.playersStillPlaying[0];
 
 	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	roomController.setRoom(room);

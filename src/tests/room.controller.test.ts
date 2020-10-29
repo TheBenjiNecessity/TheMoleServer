@@ -85,25 +85,25 @@ test('Checks "addPlayerToRoom" method', () => {
 	let { room, roomController } = getMockComponents(0);
 
 	// Init test
-	expect(roomController.getRoom('TEST').players.length).toBe(0);
+	expect(roomController.getRoom('TEST').playersStillPlaying.length).toBe(0);
 
 	// Test adding first player
 	roomController.addPlayerToRoom('TEST', new Player('test11'));
 
-	expect(roomController.getRoom('TEST').players.length).toBe(1);
-	expect(roomController.getRoom('TEST').players[0].name).toBe('test11');
+	expect(roomController.getRoom('TEST').playersStillPlaying.length).toBe(1);
+	expect(roomController.getRoom('TEST').playersStillPlaying[0].name).toBe('test11');
 
 	// Test trying to add the same player twice
 	roomController.addPlayerToRoom('TEST', new Player('test11'));
 
-	expect(roomController.getRoom('TEST').players.length).toBe(1);
-	expect(roomController.getRoom('TEST').players[0].name).toBe('test11');
+	expect(roomController.getRoom('TEST').playersStillPlaying.length).toBe(1);
+	expect(roomController.getRoom('TEST').playersStillPlaying[0].name).toBe('test11');
 
 	// Test adding second player
 	roomController.addPlayerToRoom('TEST', new Player('test12'));
 
-	expect(roomController.getRoom('TEST').players.length).toBe(2);
-	expect(roomController.getRoom('TEST').players[1].name).toBe('test12');
+	expect(roomController.getRoom('TEST').playersStillPlaying.length).toBe(2);
+	expect(roomController.getRoom('TEST').playersStillPlaying[1].name).toBe('test12');
 });
 
 test('Checks "removePlayerToRoom" method', () => {}); //TODO
@@ -115,37 +115,37 @@ test('Checks "giveObjectsToPlayer/removeObjectsFromPlayer" methods', () => {
 	let joker = 'joker';
 	let blackExemption = 'black-exemption';
 
-	let player = room.players[0];
+	let player = room.playersStillPlaying[0];
 
 	roomController.giveObjectsToPlayer(roomcode, player.name, exemption, 2);
-	expect(roomController.getRoom(roomcode).players[0].objects[exemption]).toBe(2);
-	expect(roomController.getRoom(roomcode).players[0].objects[joker]).toBe(0);
-	expect(roomController.getRoom(roomcode).players[0].objects[blackExemption]).toBe(0);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[exemption]).toBe(2);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[joker]).toBe(0);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[blackExemption]).toBe(0);
 
 	roomController.giveObjectsToPlayer(roomcode, player.name, joker, 2);
-	expect(roomController.getRoom(roomcode).players[0].objects[exemption]).toBe(2);
-	expect(roomController.getRoom(roomcode).players[0].objects[joker]).toBe(2);
-	expect(roomController.getRoom(roomcode).players[0].objects[blackExemption]).toBe(0);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[exemption]).toBe(2);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[joker]).toBe(2);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[blackExemption]).toBe(0);
 
 	roomController.giveObjectsToPlayer(roomcode, player.name, blackExemption, 2);
-	expect(roomController.getRoom(roomcode).players[0].objects[exemption]).toBe(2);
-	expect(roomController.getRoom(roomcode).players[0].objects[joker]).toBe(2);
-	expect(roomController.getRoom(roomcode).players[0].objects[blackExemption]).toBe(2);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[exemption]).toBe(2);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[joker]).toBe(2);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[blackExemption]).toBe(2);
 
 	roomController.removeObjectsFromPlayer(roomcode, player.name, exemption, 1);
-	expect(roomController.getRoom(roomcode).players[0].objects[exemption]).toBe(1);
-	expect(roomController.getRoom(roomcode).players[0].objects[joker]).toBe(2);
-	expect(roomController.getRoom(roomcode).players[0].objects[blackExemption]).toBe(2);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[exemption]).toBe(1);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[joker]).toBe(2);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[blackExemption]).toBe(2);
 
 	roomController.removeObjectsFromPlayer(roomcode, player.name, joker, 2);
-	expect(roomController.getRoom(roomcode).players[0].objects[exemption]).toBe(1);
-	expect(roomController.getRoom(roomcode).players[0].objects[joker]).toBe(0);
-	expect(roomController.getRoom(roomcode).players[0].objects[blackExemption]).toBe(2);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[exemption]).toBe(1);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[joker]).toBe(0);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[blackExemption]).toBe(2);
 
 	roomController.removeObjectsFromPlayer(roomcode, player.name, blackExemption, 3);
-	expect(roomController.getRoom(roomcode).players[0].objects[exemption]).toBe(1);
-	expect(roomController.getRoom(roomcode).players[0].objects[joker]).toBe(0);
-	expect(roomController.getRoom(roomcode).players[0].objects[blackExemption]).toBe(0);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[exemption]).toBe(1);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[joker]).toBe(0);
+	expect(roomController.getRoom(roomcode).playersStillPlaying[0].objects[blackExemption]).toBe(0);
 });
 
 test('Checks "addPoints/removePoints" methods', () => {

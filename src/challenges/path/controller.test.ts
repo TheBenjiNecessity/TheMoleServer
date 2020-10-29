@@ -65,7 +65,7 @@ test('Checks "chooseChest" method', () => {
 test('Checks "addVoteForChest" method', () => {
 	let { room, roomController, pathChallengeController } = getMockComponents();
 	let pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
-	let player = room.players.find((p) => p.name !== pathChallenge.currentWalker.name);
+	let player = room.playersStillPlaying.find((p) => p.name !== pathChallenge.currentWalker.name);
 
 	expect(typeof player !== 'undefined').toBe(true);
 

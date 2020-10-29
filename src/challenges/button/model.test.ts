@@ -4,7 +4,7 @@ import ButtonChallenge from './model';
 
 test('Checks initializing ButtonChallenge model', () => {
 	let room = RoomSampleService.getTestRoomWithFourPlayers();
-	let buttonChallenge = new ButtonChallengeData().getModel(room.players, 'en') as ButtonChallenge;
+	let buttonChallenge = new ButtonChallengeData().getModel(room.playersStillPlaying, 'en') as ButtonChallenge;
 
 	expect(buttonChallenge.riddleAnswer.length === buttonChallenge.riddle.length).toBe(true);
 	expect(buttonChallenge.riddleAnswer === buttonChallenge.riddle).toBe(false);
@@ -21,47 +21,47 @@ test('Checks initializing ButtonChallenge model', () => {
 
 test('Checks allButtonsReleased/allButtonsPressed getters', () => {
 	let room = RoomSampleService.getTestRoomWithFourPlayers();
-	let buttonChallenge = new ButtonChallengeData().getModel(room.players, 'en') as ButtonChallenge;
+	let buttonChallenge = new ButtonChallengeData().getModel(room.playersStillPlaying, 'en') as ButtonChallenge;
 
 	expect(buttonChallenge.allButtonsReleased).toBe(false);
 	expect(buttonChallenge.allButtonsPressed).toBe(true);
 
-	buttonChallenge.setPlayerReleasedButton(room.players[0].name);
+	buttonChallenge.setPlayerReleasedButton(room.playersStillPlaying[0].name);
 
 	expect(buttonChallenge.allButtonsReleased).toBe(false);
 	expect(buttonChallenge.allButtonsPressed).toBe(false);
 
-	buttonChallenge.setPlayerReleasedButton(room.players[1].name);
+	buttonChallenge.setPlayerReleasedButton(room.playersStillPlaying[1].name);
 
 	expect(buttonChallenge.allButtonsReleased).toBe(false);
 	expect(buttonChallenge.allButtonsPressed).toBe(false);
 
-	buttonChallenge.setPlayerReleasedButton(room.players[2].name);
+	buttonChallenge.setPlayerReleasedButton(room.playersStillPlaying[2].name);
 
 	expect(buttonChallenge.allButtonsReleased).toBe(false);
 	expect(buttonChallenge.allButtonsPressed).toBe(false);
 
-	buttonChallenge.setPlayerReleasedButton(room.players[3].name);
+	buttonChallenge.setPlayerReleasedButton(room.playersStillPlaying[3].name);
 
 	expect(buttonChallenge.allButtonsReleased).toBe(true);
 	expect(buttonChallenge.allButtonsPressed).toBe(false);
 
-	buttonChallenge.setPlayerPressedButton(room.players[0].name);
+	buttonChallenge.setPlayerPressedButton(room.playersStillPlaying[0].name);
 
 	expect(buttonChallenge.allButtonsReleased).toBe(false);
 	expect(buttonChallenge.allButtonsPressed).toBe(false);
 
-	buttonChallenge.setPlayerPressedButton(room.players[1].name);
+	buttonChallenge.setPlayerPressedButton(room.playersStillPlaying[1].name);
 
 	expect(buttonChallenge.allButtonsReleased).toBe(false);
 	expect(buttonChallenge.allButtonsPressed).toBe(false);
 
-	buttonChallenge.setPlayerPressedButton(room.players[2].name);
+	buttonChallenge.setPlayerPressedButton(room.playersStillPlaying[2].name);
 
 	expect(buttonChallenge.allButtonsReleased).toBe(false);
 	expect(buttonChallenge.allButtonsPressed).toBe(false);
 
-	buttonChallenge.setPlayerPressedButton(room.players[3].name);
+	buttonChallenge.setPlayerPressedButton(room.playersStillPlaying[3].name);
 
 	expect(buttonChallenge.allButtonsReleased).toBe(false);
 	expect(buttonChallenge.allButtonsPressed).toBe(true);
@@ -69,7 +69,7 @@ test('Checks allButtonsReleased/allButtonsPressed getters', () => {
 
 test('Checks isPlayerAnswerCorrect method', () => {
 	let room = RoomSampleService.getTestRoomWithFourPlayers();
-	let buttonChallenge = new ButtonChallengeData().getModel(room.players, 'en') as ButtonChallenge;
+	let buttonChallenge = new ButtonChallengeData().getModel(room.playersStillPlaying, 'en') as ButtonChallenge;
 
 	buttonChallenge.riddleAnswer = 'I am going to stop the mole';
 	buttonChallenge.riddle = buttonChallenge.riddleAnswer.randomCypherText();

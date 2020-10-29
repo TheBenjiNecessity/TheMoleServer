@@ -10,8 +10,8 @@ import Player from './player.model';
 export default class Room {
 	private _state: string;
 	private _currentEpisode: Episode;
+	private _players: Player[];
 
-	players: Player[];
 	unusedChallenges: ChallengeData[];
 	isInProgress: boolean;
 	points: number;
@@ -21,7 +21,7 @@ export default class Room {
 		this._state = ROOM_STATE.LOBBY;
 		this.unaskedQuestions = questionData;
 
-		this.players = [];
+		this._players = [];
 		this._currentEpisode = null;
 		this.unusedChallenges = [];
 		this.isInProgress = false;
@@ -29,11 +29,11 @@ export default class Room {
 	}
 
 	get isFull() {
-		return this.players.length === ROOM_MAX_PLAYERS;
+		return this._players.length === ROOM_MAX_PLAYERS;
 	}
 
 	get playersStillPlaying() {
-		return this.players.filter((p) => !p.eliminated);
+		return this._players.filter((p) => !p.eliminated);
 	}
 
 	get currentEpisode() {
@@ -53,7 +53,7 @@ export default class Room {
 	}
 
 	get molePlayer() {
-		return this.players.find((p) => p.isMole);
+		return this._players.find((p) => p.isMole);
 	}
 
 	get state() {
@@ -77,9 +77,9 @@ export default class Room {
 			case ROOM_STATE.EXECUTION:
 				let executedPlayer = this.currentEpisode.eliminatedPlayer;
 
-				for (let i = 0; i < this.players.length; i++) {
-					if (executedPlayer.name === this.players[i].name) {
-						this.players[i].eliminated = true;
+				for (let i = 0; i < this._players.length; i++) {
+					if (executedPlayer.name === this._players[i].name) {
+						this._players[i].eliminated = true;
 						break;
 					}
 				}
@@ -96,11 +96,11 @@ export default class Room {
 			return false;
 		}
 
-		if (this.players.find((p) => p.name === player.name)) {
+		if (this._players.find((p) => p.name === player.name)) {
 			return false;
 		}
 
-		this.players.push(player);
+		this._players.push(player);
 		return true;
 	}
 
@@ -109,27 +109,27 @@ export default class Room {
 			throw 'Cannot remove player from game in progress';
 		}
 
-		this.players = this.players.filter((p) => p.name === playerName);
+		this._players = this._players.filter((p) => p.name === playerName);
 	}
 
 	hasPlayer(playerName): boolean {
-		let roomPlayer = this.players.find((p) => p.name === playerName);
+		let roomPlayer = this._players.find((p) => p.name === playerName);
 		return typeof roomPlayer !== 'undefined';
 	}
 
 	giveObjectsToPlayer(playerName, object, quantity = 1): void {
-		for (let i = 0; i < this.players.length; i++) {
-			if (this.players[i].name === playerName) {
-				this.players[i].setObjects(object, quantity);
+		for (let i = 0; i < this._players.length; i++) {
+			if (this._players[i].name === playerName) {
+				this._players[i].setObjects(object, quantity);
 				break;
 			}
 		}
 	}
 
 	removeObjectsFromPlayer(playerName, object, quantity = 1): void {
-		for (let i = 0; i < this.players.length; i++) {
-			if (this.players[i].name === playerName) {
-				this.players[i].removeObjects(object, quantity);
+		for (let i = 0; i < this._players.length; i++) {
+			if (this._players[i].name === playerName) {
+				this._players[i].removeObjects(object, quantity);
 				break;
 			}
 		}
@@ -203,7 +203,7 @@ export default class Room {
 
 	generateCurrentEpisode() {
 		let challenges = [];
-		let numChallenges = EpisodeService.getNumChallenges(this.players.length);
+		let numChallenges = EpisodeService.getNumChallenges(this._players.length);
 		for (let i = 0; i < numChallenges; i++) {
 			let numRestrictedChallenges = ChallengeService.listChallengesForNumPlayers(
 				this.playersStillPlaying.length,
@@ -224,9 +224,9 @@ export default class Room {
 	}
 
 	chooseMole() {
-		for (let i = 0; i < this.players.length; i++) {
-			this.players[i].isMole = false;
+		for (let i = 0; i < this._players.length; i++) {
+			this._players[i].isMole = false;
 		}
-		this.players[this.players.randomIndex()].isMole = true;
+		this._players[this._players.randomIndex()].isMole = true;
 	}
 }
