@@ -35,6 +35,10 @@ export default class StacksChallenge extends Challenge {
 	}
 
 	get pointsForRound(): number {
+		if (!this.allStackAmountsSelected) {
+			return 0;
+		}
+
 		let result = 0;
 		let dict: { [id: string]: Pile[] } = {};
 
@@ -66,6 +70,8 @@ export default class StacksChallenge extends Challenge {
 	}
 
 	resetPiles() {
+		this.piles = {};
+
 		let tempAmounts = JSON.parse(JSON.stringify(AMOUNTS));
 		tempAmounts.shuffle();
 		for (let i = 0; i < this.players.length; i++) {
