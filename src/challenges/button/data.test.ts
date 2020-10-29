@@ -1,1 +1,0 @@
-test('Checks releasedButton method', () => {});
