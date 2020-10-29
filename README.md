@@ -27,6 +27,8 @@
 - Word list memory
     One player is given a list of words that they must memorize. They then tell one other player the list of words, that player tells the next player, and so on until the last player memorizes the list. The last player then inputs the list and players win points for each word input correctly.
 
+- Chest Run 5 - 7 players
+    Each player takes a turn moving a chest through a course. Along the way, they can pick up money (plus or minus) and add it to the chest. Each player has a set time limit to move the chest as far as possible (1min). The course is a series of locked rooms where the player must solve a series of riddles/math problems to proceed (unlock doors to new rooms)
 
 /**
  * STATE
