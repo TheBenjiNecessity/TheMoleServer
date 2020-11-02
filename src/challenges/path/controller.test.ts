@@ -1,12 +1,9 @@
 import PathChallengeController from './controller';
-import RoomControllerCreator from '../../controllers/room.controller';
 import RoomSampleService from '../../models/samples/room.sample';
 import EpisodeSampleService from '../../models/samples/episode.sample';
-import pathData from './data';
 import RoomController from '../../controllers/room.controller';
 import Room from '../../models/room.model';
 import WebSocketService from '../../services/websocket.service';
-import ChallengeController from '../../controllers/challenge.controller';
 import PathChallenge from './model';
 import PathChallengeData from './data';
 
