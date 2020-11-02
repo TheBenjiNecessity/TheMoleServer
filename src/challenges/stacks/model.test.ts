@@ -1,7 +1,6 @@
 import Player from '../../models/player.model';
 import Room from '../../models/room.model';
 import RoomSampleService from '../../models/samples/room.sample';
-import StacksChallengeData from './data';
 import StacksChallenge, { IPilesGenerator, Pile } from './model';
 
 class PilesGenerator implements IPilesGenerator {
