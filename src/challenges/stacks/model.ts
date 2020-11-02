@@ -6,17 +6,45 @@ const type = 'stacks';
 const MAX_ROUND = 3;
 const AMOUNTS = [ 5, 3, 1, -1, -3, -5 ];
 
-interface Pile {
+export interface Pile {
 	player: Player;
 	amount: number;
 	numSelected: number;
+}
+
+export interface IPilesGenerator {
+	generatePiles(players: Player[]): { [id: string]: Pile };
+}
+
+class PilesGenerator implements IPilesGenerator {
+	constructor() {}
+
+	generatePiles(players: Player[]): { [id: string]: Pile } {
+		let piles: { [id: string]: Pile } = {};
+		let tempAmounts = JSON.parse(JSON.stringify(AMOUNTS));
+
+		tempAmounts.shuffle();
+		for (let i = 0; i < players.length; i++) {
+			let player = players[i];
+			let pile = { player: players[i], amount: tempAmounts[i], numSelected: 0 };
+			piles[player.name] = pile;
+		}
+
+		return piles;
+	}
 }
 
 export default class StacksChallenge extends Challenge {
 	currentRound: number;
 	piles: { [id: string]: Pile };
 
-	constructor(players, title, description, questions) {
+	constructor(
+		players,
+		title,
+		description,
+		questions,
+		private pilesGenerator: IPilesGenerator = new PilesGenerator()
+	) {
 		super(players, title, description, 6, 6, questions, 'game', [], type);
 
 		this.currentRound = 1;
@@ -70,18 +98,16 @@ export default class StacksChallenge extends Challenge {
 	}
 
 	resetPiles() {
-		this.piles = {};
-
-		let tempAmounts = JSON.parse(JSON.stringify(AMOUNTS));
-		tempAmounts.shuffle();
-		for (let i = 0; i < this.players.length; i++) {
-			let player = this.players[i];
-			let pile = { player: this.players[i], amount: tempAmounts[i], numSelected: 0 };
-			this.piles[player.name] = pile;
-		}
+		this.piles = this.pilesGenerator.generatePiles(this.players);
 	}
 
 	selectNumberOfTilesForPlayer(playerName: string, numTilesSelected: number) {
+		if (numTilesSelected > 3) {
+			numTilesSelected = 3;
+		} else if (numTilesSelected < 1) {
+			numTilesSelected = 1;
+		}
+
 		this.piles[playerName].numSelected = numTilesSelected;
 	}
 }
