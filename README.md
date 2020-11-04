@@ -1,8 +1,16 @@
 ## TODO
 - Test whether it is necessary to reset room every time it is set
-- Turn "this.roomController.performEventOnChallenge(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);" into it's own method
+- Create a "riddle" model (question text (localized), answer (localized))
+- When the timer on a challenge is over, the challenge should not 'end' but rather the challenge will 'move next'
 
 ## Future Challenges
+
+Button = max: 4 / min: 4
+Out and Safe = max: 10 / min: 5
+Path = max: 5 / min: 5
+Platter = max: 6 / min: 4
+Stacks = max: 6 / min: 6
+Traders = max: 6 / min: 6
 
 - Train Stops 8-10:
     Players are seperated into teams of two or three and each team starts at a different train station. 
@@ -18,17 +26,50 @@
 - Pass Along 8 - 10
     Starting with a random player, players must pass an object to each other player in turn based on a special sequence.
 
-- Word Path
+- Word Path 5 - 10
     Players nominate one other player to be the 'walker'. The walker is given a legend of words and what prize amounts those words are worth. The walker then starts at the center of a grid of random letters. The walker takes turns over and over until a word is spelled. At the beginning of each turn, he tells the others what direction he wants to walk in and then the others tell him how far to walk. If the walker lands on a desired letter then they can claim that letter and add it to the word. As soon as a word is spelled, the prize for that word is won. The time limit for this game is five minutes. If a word is not spelled before the end of five minutes then nothing is won. (Note: the walker is not allowed to tell the others what word is going for)
 
-- Symbols
+- Symbols 4 - 6
     Each player is given a set of symbols that they must describe to the other players. If a player sees that they have that symbol on their screen then they match it to the person describing it. Each set of symbols that are matched properly in this way wins the group X points.
 
-- Word list memory
+- Word list memory 7 - 10
     One player is given a list of words that they must memorize. They then tell one other player the list of words, that player tells the next player, and so on until the last player memorizes the list. The last player then inputs the list and players win points for each word input correctly.
 
 - Chest Run 5 - 7 players
     Each player takes a turn moving a chest through a course. Along the way, they can pick up money (plus or minus) and add it to the chest. Each player has a set time limit to move the chest as far as possible (1min). The course is a series of locked rooms where the player must solve a series of riddles/math problems to proceed (unlock doors to new rooms)
+
+- Morse Code 8 - 10
+    Each player is assigned another player but doesn't know who that player is. By only using morse code, they must figure out who they are talking to and who is talking to them (in a chain). If they can do this correctly in 5 minutes then they win. (After 5 minutes is up, they must enter the chain into the computer)
+
+- Difuse a bomb
+
+- different answers
+    Everyone is asked a question at the same time that they must select an answer for. More than one answer is
+    possible. If more than one person gives the same response then that answer is not counted. Answers that are counted give points for the pot.
+
+- figure out a sentence
+    The players nominate one player to be the speaker. It is the speakers job to enter words into a text box.
+    With each word entered, a light will appear on the screen indicating which spot in a sentence that word will
+    appear. Once the players figure out the sentence, it will guide them to the answer to a riddle that they must answer. If they can answer the riddle in time then they win.
+
+- Flow Chart
+    Players are presented with a complicated flow chart where if they deposit money at the top then it will trickle down to the bottom and potentially double or triple or even be halved or negative. They a set time limit to figure out which starting spot the money should be before it is sent down.
+
+# Types of possible challenges
+- Move through a course and try to get to the end
+    Pick up money along the way
+    Find rewards at different spots along the course
+
+- Move a player or playing piece around a board (grid)
+
+- Last player to do something
+
+- Only responses that are unique are counted
+
+- Solve riddles
+
+- If everyone ends up in the right spot at the end of the challenge then money is won
+
 
 /**
  * STATE
