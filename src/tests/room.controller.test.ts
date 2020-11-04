@@ -6,6 +6,9 @@ import RoomService from '../services/room/room.service';
 import RoomSampleService from '../models/samples/room.sample';
 import WebSocketService from '../services/websocket.service';
 import EpisodeSampleService from '../models/samples/episode.sample';
+import QuizAnswers from '../models/quiz/quiz-answers.model';
+import Answer from '../models/quiz/quiz-answer.model';
+import Quiz from '../models/quiz/quiz.model';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
 
@@ -194,6 +197,21 @@ test('Checks "quizDone" method', () => {
 	let { room, roomController } = getMockComponents(10);
 	let { roomcode } = room;
 	let player1 = room.playersStillPlaying[0];
+
+	let question = {
+		text: 'Test question text?',
+		type: 'choice',
+		choices: ['Yes', 'No']
+	};
+	let quiz: Quiz = { questions: [] };
+
+	for (let i = 0; i < 20; i++) {
+		quiz.questions.push(question);
+	}
+	
+	let answers: Answer[] = quiz.questions.map(q => new Answer(q, 1));
+
+	let quizAnswers = new QuizAnswers(answers, 1);
 
 	roomController.quizDone(roomcode, player1.name, quizAnswers);
 }); //TODO
