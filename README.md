@@ -55,6 +55,9 @@ Traders = max: 6 / min: 6
 - Flow Chart
     Players are presented with a complicated flow chart where if they deposit money at the top then it will trickle down to the bottom and potentially double or triple or even be halved or negative. They a set time limit to figure out which starting spot the money should be before it is sent down.
 
+- Balconies
+    The players are presented with a 5x5 grid of spaces where each space represents a balcony on the fascade of a hotel. Each player starts at a random location on this grid and players have 5 minutes to move around the hotel and figure out where each player must be standing (on the grid) by figuring out a series of clues. Each clue can only be seen if a player is standing on the balcony where the clue is located.
+
 # Types of possible challenges
 - Move through a course and try to get to the end
     Pick up money along the way
