@@ -1,6 +1,7 @@
 import QuizService from '../services/game/quiz.service';
 import Challenge from './challenge.model';
 import Player from './player.model';
+import QuizAnswers from './quiz/quiz-answers.model';
 import Quiz from './quiz/quiz.model';
 
 /**
@@ -88,7 +89,7 @@ export default class Episode {
 		return playersWhoFinished.length === this.players.length;
 	}
 
-	setQuizResultsForPlayer(playerName, quizAnswers) {
+	setQuizResultsForPlayer(playerName: string, quizAnswers: QuizAnswers) {
 		for (let i = 0; i < this.players.length; i++) {
 			if (this.players[i].name === playerName) {
 				this.players[i].quizAnswers = quizAnswers;
