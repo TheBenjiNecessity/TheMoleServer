@@ -190,4 +190,22 @@ test('Checks "moveNext" method', () => {
 	expect(roomController.getRoom(roomcode).state).toBe(ROOM_STATE.WELCOME);
 });
 
-test('Checks "quizDone" method', () => {}); //TODO
+test('Checks "quizDone" method', () => {
+	let { room, roomController } = getMockComponents(10);
+	let { roomcode } = room;
+	let player1 = room.playersStillPlaying[0];
+
+	roomController.quizDone(roomcode, player1.name, quizAnswers);
+}); //TODO
+
+
+// quizDone(roomcode: string, playerName: string, quizAnswers) {
+// 	let message = null;
+// 	this.rooms[roomcode].currentEpisode.setQuizResultsForPlayer(playerName, quizAnswers);
+
+// 	if (this.rooms[roomcode].currentEpisode.allPlayersFinishedQuiz) {
+// 		message = this.moveNext(roomcode);
+// 	}
+
+// 	return message;
+// }
