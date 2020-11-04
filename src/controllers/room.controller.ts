@@ -4,6 +4,7 @@ import RoomService from '../services/room/room.service';
 import ChallengeData from '../interfaces/challenge-data';
 import Player from '../models/player.model';
 import { CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
+import QuizAnswers from '../models/quiz/quiz-answers.model';
 
 export default class RoomController {
 	constructor(
@@ -21,10 +22,26 @@ export default class RoomController {
 		this.roomSetter(rooms);
 	}
 
+	/* ======================================== Convenience methods ======================================== */
 	roomCodeAlreadyExists(roomcode: string) {
 		return typeof this.rooms[roomcode] !== 'undefined';
 	}
 
+	getCurrentChallenge(roomcode: string) {
+		return this.rooms[roomcode].currentEpisode.currentChallenge;
+	}
+
+	generateRandomRoomCodeNotUsed() {
+		let code = null;
+
+		do {
+			code = RoomService.generateRandomRoomcode();
+		} while (this.roomCodeAlreadyExists(code) || RoomService.roomCodeIsABadWord(code));
+
+		return code;
+	}
+
+	/* ======================================== Room manipulation methods ======================================== */
 	addRoom(language: string) {
 		var roomcode = this.generateRandomRoomCodeNotUsed();
 		this.rooms[roomcode] = new Room(roomcode, language);
@@ -73,20 +90,6 @@ export default class RoomController {
 		this.rooms[roomcode].removePoints(points);
 	}
 
-	generateRandomRoomCodeNotUsed() {
-		let code = null;
-
-		do {
-			code = RoomService.generateRandomRoomcode();
-		} while (this.roomCodeAlreadyExists(code) || RoomService.roomCodeIsABadWord(code));
-
-		return code;
-	}
-
-	getCurrentChallenge(roomcode: string) {
-		return this.rooms[roomcode].currentEpisode.currentChallenge;
-	}
-
 	/* ===================================== Challenge Events =====================================*/
 	endChallenge(roomcode: string) {
 		this.getCurrentChallenge(roomcode).endChallenge();
@@ -104,9 +107,7 @@ export default class RoomController {
 		return 'move-next';
 	}
 
-	// A player has finished their quiz and clicked on the last question
-	quizDone(roomcode: string, playerName: string, quizAnswers) {
-		// a player has finished answering questions in the quiz
+	quizDone(roomcode: string, playerName: string, quizAnswers: QuizAnswers) {
 		let message = null;
 		this.rooms[roomcode].currentEpisode.setQuizResultsForPlayer(playerName, quizAnswers);
 
