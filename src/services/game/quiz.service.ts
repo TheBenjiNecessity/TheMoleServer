@@ -12,6 +12,7 @@ export default class QuizService {
 	 * @param {*} room 
 	 */
 	static getFinalQuizQuestion(playersStillPlaying: Player[]): Question {
+		// TODO l10n
 		return QuizService.createQuestion('Who is the mole?', 'player', [], playersStillPlaying);
 	}
 
@@ -34,7 +35,7 @@ export default class QuizService {
 		}
 	}
 
-	static generateQuiz(playersStillPlaying, challengeQuestions, unusedGeneralQuestions): Quiz {
+	static generateQuiz(playersStillPlaying: Player[], challengeQuestions: Question[], unusedGeneralQuestions: Question[]): Quiz {
 		let questions = [];
 		challengeQuestions.shuffle();
 		unusedGeneralQuestions.shuffle();

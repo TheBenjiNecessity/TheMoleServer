@@ -1,15 +1,9 @@
 import Question from './question.model';
 
 export default class Answer {
-	question: Question;
-	answer: number;
-
-	constructor(question, answerIndex) {
-		this.question = question;
-		this.answer = answerIndex;
-	}
+	constructor(private question: Question, private answerIndex: number) { }
 
 	isCorrect(moleAnswer) {
-		return this.question.text === moleAnswer.question.text && this.answer === moleAnswer.answer;
+		return this.question.text === moleAnswer.question.text && this.answerIndex === moleAnswer.answer;
 	}
 }

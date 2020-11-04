@@ -1,6 +1,7 @@
 import QuizService from '../services/game/quiz.service';
 import Challenge from './challenge.model';
 import Player from './player.model';
+import Question from './quiz/question.model';
 import QuizAnswers from './quiz/quiz-answers.model';
 import Quiz from './quiz/quiz.model';
 
@@ -12,13 +13,15 @@ import Quiz from './quiz/quiz.model';
  * @property {Object} quiz the quiz at the end of this episode
  */
 export default class Episode {
+	private _eliminatedPlayer: Player;
+
 	currentChallengeIndex: number;
 	challenges: Challenge[];
 	players: Player[];
 	quiz: Quiz;
 	molePlayer: Player;
 
-	constructor(playersStillPlaying, challenges, unusedGeneralQuizQuestions) {
+	constructor(playersStillPlaying: Player[], challenges: Challenge[], unusedGeneralQuizQuestions: Question[]) {
 		this.currentChallengeIndex = 0;
 		this.challenges = challenges;
 		this.players = playersStillPlaying;
@@ -27,7 +30,7 @@ export default class Episode {
 		this.quiz = QuizService.generateQuiz(this.players, questionsArray, unusedGeneralQuizQuestions);
 	}
 
-	get currentChallenge() {
+	get currentChallenge(): Challenge {
 		if (this.episodeIsOver) {
 			return null;
 		}
@@ -35,11 +38,20 @@ export default class Episode {
 		return this.challenges[this.currentChallengeIndex];
 	}
 
-	get episodeIsOver() {
+	get episodeIsOver(): boolean {
 		return this.currentChallengeIndex >= this.challenges.length;
 	}
 
-	get eliminatedPlayer() {
+	get eliminatedPlayer(): Player {
+		if (!this.episodeIsOver) {
+			this._eliminatedPlayer = null;
+			return null;
+		}
+
+		if (this._eliminatedPlayer) {
+			return this._eliminatedPlayer;
+		}
+
 		let eliminatedPlayer = null;
 		let totalCorrectAll = 1000;
 		let timeAll = 0;
@@ -81,10 +93,11 @@ export default class Episode {
 			}
 		}
 
+		this._eliminatedPlayer = eliminatedPlayer;
 		return eliminatedPlayer;
 	}
 
-	get allPlayersFinishedQuiz() {
+	get allPlayersFinishedQuiz(): boolean {
 		let playersWhoFinished = this.players.filter((p) => p.quizAnswers.answers.length > 0 && p.quizAnswers.time > 0);
 		return playersWhoFinished.length === this.players.length;
 	}

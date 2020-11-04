@@ -1,3 +1,4 @@
+import { PlayerInventory } from '../player.model';
 import Answer from './quiz-answer.model';
 
 /**
@@ -7,15 +8,7 @@ import Answer from './quiz-answer.model';
  * @property {int} objectsUsed the objects like exemptions or jokers used during the quiz
  */
 export default class QuizAnswers {
-	answers: Answer[];
-	time: number;
-	objectsUsed: any;
-
-	constructor(answers = [], time = -1, objectsUsed = { exemption: 0, joker: 0, 'black-exemption': 0 }) {
-		this.answers = answers;
-		this.time = time;
-		this.objectsUsed = objectsUsed;
-	}
+	constructor(private answers: Answer[], private time: number, private objectsUsed: PlayerInventory = { exemption: 0, joker: 0, 'black-exemption': 0 }) {}
 
 	get usedExemption() {
 		return this.objectsUsed['exemption'] >= 1;

@@ -1,20 +1,24 @@
 import QuizAnswers from './quiz/quiz-answers.model';
 import Role from './role.model';
 
+export interface PlayerInventory {
+	exemption: number;
+	joker: number;
+	'black-exemption': number;
+}
+
 export default class Player {
-	name: string;
 	eliminated: boolean;
 	isMole: boolean;
 	currentRole: Role;
 	quizAnswers: QuizAnswers;
-	objects: { exemption: number; joker: number; 'black-exemption': number };
+	objects: PlayerInventory;
 
-	constructor(name) {
-		this.name = name;
+	constructor(public name: string) {
 		this.eliminated = false;
 		this.isMole = false;
 		this.currentRole = null;
-		this.quizAnswers = new QuizAnswers();
+		this.quizAnswers = null;
 		this.objects = {
 			exemption: 0,
 			joker: 0,
