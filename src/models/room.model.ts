@@ -224,9 +224,14 @@ export default class Room {
 	}
 
 	chooseMole() {
+		if (!this._players.length) {
+			return;
+		}
+
 		for (let i = 0; i < this._players.length; i++) {
 			this._players[i].isMole = false;
 		}
+		
 		this._players[this._players.randomIndex()].isMole = true;
 	}
 }
