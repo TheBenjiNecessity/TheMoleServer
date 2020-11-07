@@ -29,6 +29,7 @@ function getMockRoomController() {
 
 function getMockRoom(numPlayers) {
 	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
+	room.chooseMole();
 	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 	return room;
 }
