@@ -19,7 +19,6 @@ export default class Episode {
 	challenges: Challenge[];
 	players: Player[];
 	quiz: Quiz;
-	molePlayer: Player;
 
 	constructor(playersStillPlaying: Player[], challenges: Challenge[], unusedGeneralQuizQuestions: Question[]) {
 		this.currentChallengeIndex = 0;
@@ -40,6 +39,10 @@ export default class Episode {
 
 	get episodeIsOver(): boolean {
 		return this.currentChallengeIndex >= this.challenges.length;
+	}
+
+	get molePlayer(): Player {
+		return this.players.find(p => p.isMole);
 	}
 
 	get eliminatedPlayer(): Player {
@@ -98,7 +101,7 @@ export default class Episode {
 	}
 
 	get allPlayersFinishedQuiz(): boolean {
-		let playersWhoFinished = this.players.filter((p) => p.quizAnswers.answers.length > 0 && p.quizAnswers.time > 0);
+		let playersWhoFinished = this.players.filter((p) => p.quizAnswers && p.quizAnswers.answers.length > 0 && p.quizAnswers.time > 0);
 		return playersWhoFinished.length === this.players.length;
 	}
 
