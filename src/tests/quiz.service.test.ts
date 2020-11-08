@@ -37,7 +37,7 @@ test('Checks getFinalQuizQuestion method', () => {
 	expect(finalQuestion.choices[6]).toBe('test7');
 	expect(finalQuestion.choices[7]).toBe('test8');
 	expect(finalQuestion.choices[8]).toBe('test9');
-	expect(finalQuestion.choices[9]).toBe('test0');
+	expect(finalQuestion.choices[9]).toBe('test10');
 });
 
 test('Checks createQuestion method', () => {
@@ -58,7 +58,7 @@ test('Checks createQuestion method', () => {
 	expect(playerQuestion.choices[6]).toBe('test7');
 	expect(playerQuestion.choices[7]).toBe('test8');
 	expect(playerQuestion.choices[8]).toBe('test9');
-	expect(playerQuestion.choices[9]).toBe('test0');
+	expect(playerQuestion.choices[9]).toBe('test10');
 
 	//'rank'
 	let rankQuestion = QuizService.createQuestion('Test text', 'rank', [], room.playersStillPlaying);

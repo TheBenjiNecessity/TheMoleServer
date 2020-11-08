@@ -42,7 +42,7 @@ test('Tests full room', () => {
 	expect(room.playersStillPlaying[6].name).toBe('test7');
 	expect(room.playersStillPlaying[7].name).toBe('test8');
 	expect(room.playersStillPlaying[8].name).toBe('test9');
-	expect(room.playersStillPlaying[9].name).toBe('test0');
+	expect(room.playersStillPlaying[9].name).toBe('test10');
 	expect(room.isFull).toBe(true);
 	expect(room.isInProgress).toBe(false);
 });
