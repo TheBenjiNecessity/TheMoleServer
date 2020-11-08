@@ -8,7 +8,11 @@ import Answer from './quiz-answer.model';
  * @property {int} objectsUsed the objects like exemptions or jokers used during the quiz
  */
 export default class QuizAnswers {
-	constructor(public answers: Answer[], public time: number, public objectsUsed: PlayerInventory = { exemption: 0, joker: 0, 'black-exemption': 0 }) {}
+	constructor(
+		public answers: Answer[],
+		public time: number,
+		public objectsUsed: PlayerInventory = { exemption: 0, joker: 0, 'black-exemption': 0 }
+	) {}
 
 	get usedExemption() {
 		return this.objectsUsed['exemption'] >= 1;
