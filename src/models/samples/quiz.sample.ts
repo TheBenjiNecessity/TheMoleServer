@@ -28,6 +28,17 @@ export default class QuizSampleService {
 		return QuizSampleService.getQuizAnswers(quiz, quiz.questions.map((q) => 0));
 	}
 
+	static getPerfectQuizAnswers(moleQuizAnswers: QuizAnswers, time: number): QuizAnswers {
+		let indices: number[] = [];
+
+		for (let i = 0; i < moleQuizAnswers.answers.length; i++) {
+			let answer = moleQuizAnswers.answers[i];
+			indices.push(answer.answerIndex);
+		}
+
+		return new QuizAnswers(indices.map((i, index) => new Answer(moleQuizAnswers.answers[index].question, i)), time);
+	}
+
 	// Three quarter answers are correct
 	static getGreatQuizAnswers(moleQuizAnswers: QuizAnswers, time: number): QuizAnswers {
 		let indices: number[] = [];
