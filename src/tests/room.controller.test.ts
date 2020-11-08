@@ -9,6 +9,7 @@ import EpisodeSampleService from '../models/samples/episode.sample';
 import QuizAnswers from '../models/quiz/quiz-answers.model';
 import Answer from '../models/quiz/quiz-answer.model';
 import Quiz from '../models/quiz/quiz.model';
+import QuizSampleService from '../models/samples/quiz.sample';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
 
@@ -231,58 +232,26 @@ test('Runs scenario where all players have given in quiz answers and checks agai
 	room.currentEpisode.goToNextChallenge();
 	roomController.setRoom(room);
 
-	let question = {
-		text: 'Test question text?',
-		type: 'choice',
-		choices: [ 'Yes', 'No' ]
-	};
-	let quiz: Quiz = { questions: [] };
-	let moleQuiz: Quiz = { questions: [] };
+	let quiz = QuizSampleService.getTestQuiz();
+	let moleQuizAnswers = QuizSampleService.getMoleQuizAnswers(quiz);
+	let perfectAnswers = QuizSampleService.getPerfectQuizAnswers(moleQuizAnswers, 1);
+	let goodAnswers = QuizSampleService.getGoodQuizAnswers(moleQuizAnswers, 1);
+	let losingAnswers = QuizSampleService.getLoserQuizAnswers(moleQuizAnswers, 1);
 
-	for (let i = 0; i < 20; i++) {
-		quiz.questions.push(question);
-		moleQuiz.questions.push(question);
-	}
+	expect(room.currentEpisode.allPlayersFinishedQuiz).toBeFalsy();
 
-	let perfectAnswers: Answer[] = quiz.questions.map((q) => new Answer(q, 1));
-	let goodAnswers: Answer[] = quiz.questions.map((q, i) => {
-		if (i % 2 === 0) {
-			return new Answer(q, 1);
-		} else {
-			return new Answer(q, 0);
-		}
-	});
-	let badAnswers: Answer[] = quiz.questions.map((q) => new Answer(q, 0));
-	let moleAnswers: Answer[] = moleQuiz.questions.map((q) => new Answer(q, 1));
+	roomController.quizDone(roomcode, room.playersStillPlaying[0].name, moleQuizAnswers);
+	roomController.quizDone(roomcode, room.playersStillPlaying[1].name, perfectAnswers);
+	roomController.quizDone(roomcode, room.playersStillPlaying[2].name, goodAnswers);
+	roomController.quizDone(roomcode, room.playersStillPlaying[3].name, losingAnswers);
 
-	let badQuizAnswers = new QuizAnswers(badAnswers, 1);
-
-	let quizAnswers = [ new QuizAnswers(perfectAnswers, 1), new QuizAnswers(goodAnswers, 1), badQuizAnswers ];
-	let moleQuizAnswers = new QuizAnswers(moleAnswers, 1);
-	let losingPlayer = null;
-
-	expect(room.currentEpisode.allPlayersFinishedQuiz).toBe(false);
-
-	for (let i = 0; i < room.playersStillPlaying.length; i++) {
-		let player = room.playersStillPlaying[i];
-		if (player.isMole) {
-			roomController.quizDone(roomcode, player.name, moleQuizAnswers);
-		} else {
-			let answers = quizAnswers.pop();
-			if (answers === badQuizAnswers) {
-				losingPlayer = player;
-			}
-			roomController.quizDone(roomcode, player.name, answers);
-		}
-	}
-
-	expect(room.currentEpisode.allPlayersFinishedQuiz).toBe(true);
+	expect(room.currentEpisode.allPlayersFinishedQuiz).toBeTruthy();
 
 	let eliminatedPlayer = room.currentEpisode.eliminatedPlayer;
-	let molePlayer = room.playersStillPlaying.find((p) => p.isMole);
+	let molePlayer = room.playersStillPlaying[0];
 
 	expect(eliminatedPlayer).toBeTruthy();
 	expect(molePlayer).toBeTruthy();
 	expect(molePlayer.name !== eliminatedPlayer.name).toBeTruthy();
-	expect(losingPlayer.name === eliminatedPlayer.name).toBeTruthy();
+	expect(room.playersStillPlaying[3].name === eliminatedPlayer.name).toBeTruthy();
 });
