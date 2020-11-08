@@ -7,6 +7,18 @@ import '../extensions/array';
 import ChallengeData from '../interfaces/challenge-data';
 import Player from './player.model';
 
+export interface IMoleChooser {
+	getMoleIndex(players: Player[]);
+}
+
+class MoleChooser implements IMoleChooser {
+	constructor() {}
+
+	getMoleIndex(players: Player[]) {
+		return players.randomIndex();
+	}
+}
+
 export default class Room {
 	private _state: string;
 	private _currentEpisode: Episode;
@@ -17,7 +29,11 @@ export default class Room {
 	points: number;
 	unaskedQuestions: any[];
 
-	constructor(public roomcode: string, private language: string) {
+	constructor(
+		public roomcode: string,
+		private language: string,
+		private moleChooser: IMoleChooser = new MoleChooser()
+	) {
 		this._state = ROOM_STATE.LOBBY;
 		this.unaskedQuestions = questionData;
 
@@ -231,7 +247,7 @@ export default class Room {
 		for (let i = 0; i < this._players.length; i++) {
 			this._players[i].isMole = false;
 		}
-		
-		this._players[this._players.randomIndex()].isMole = true;
+
+		this._players[this.moleChooser.getMoleIndex(this._players)].isMole = true;
 	}
 }
