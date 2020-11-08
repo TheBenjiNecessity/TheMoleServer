@@ -42,7 +42,7 @@ export default class Episode {
 	}
 
 	get molePlayer(): Player {
-		return this.players.find(p => p.isMole);
+		return this.players.find((p) => p.isMole);
 	}
 
 	get eliminatedPlayer(): Player {
@@ -56,35 +56,25 @@ export default class Episode {
 		}
 
 		let eliminatedPlayer = null;
-		let totalCorrectAll = 1000;
+		let totalCorrectAll = 1000; // Keep track of the score for the worst test
 		let timeAll = 0;
 		let correctAnswers = this.molePlayer.quizAnswers.answers;
 		let playersConsidered = this.players.filter((p) => !p.isMole);
-		let blackExemptionPlayed = false;
-		for (let player of this.players) {
-			if (player.quizAnswers.usedBlackExemption) {
-				blackExemptionPlayed = true;
-				break;
-			}
-		}
+		let blackExemptionPlayed = typeof this.players.find((p) => p.quizAnswers.usedBlackExemption) !== 'undefined';
 
 		if (!blackExemptionPlayed) {
+			// Remove players from list of considered players to be eliminated if that player played
+			// an exemption
 			playersConsidered = playersConsidered.filter((p) => !p.quizAnswers.usedExemption);
 		}
 
 		for (let player of playersConsidered) {
 			let { quizAnswers } = player;
-			let numCorrect = 0;
+			let numCorrect = quizAnswers.getScore(correctAnswers);
 
-			for (let i = 0; i < correctAnswers.length; i++) {
-				let correctAnswer = correctAnswers[i];
-				let chosenAnswer = quizAnswers.answers[i];
-				if (correctAnswer === chosenAnswer) {
-					numCorrect++;
-				}
+			if (!blackExemptionPlayed) {
+				numCorrect += player.quizAnswers.numJokersUsed;
 			}
-
-			numCorrect += player.quizAnswers.numJokersUsed;
 
 			if (!eliminatedPlayer || numCorrect < totalCorrectAll) {
 				eliminatedPlayer = player;
@@ -101,7 +91,9 @@ export default class Episode {
 	}
 
 	get allPlayersFinishedQuiz(): boolean {
-		let playersWhoFinished = this.players.filter((p) => p.quizAnswers && p.quizAnswers.answers.length > 0 && p.quizAnswers.time > 0);
+		let playersWhoFinished = this.players.filter(
+			(p) => p.quizAnswers && p.quizAnswers.answers.length > 0 && p.quizAnswers.time > 0
+		);
 		return playersWhoFinished.length === this.players.length;
 	}
 
