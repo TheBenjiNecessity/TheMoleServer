@@ -1,22 +1,17 @@
 import Player from '../player.model';
-import Room from '../room.model';
+import Room, { IMoleChooser } from '../room.model';
+
+class MoleChooser implements IMoleChooser {
+	constructor() {}
+
+	getMoleIndex(players: Player[]) {
+		return 0;
+	}
+}
 
 export default class RoomSampleService {
 	static getTestRoomWithTenPlayers() {
-		let room = new Room('TEST', 'en');
-
-		room.addPlayer(new Player('test1'));
-		room.addPlayer(new Player('test2'));
-		room.addPlayer(new Player('test3'));
-		room.addPlayer(new Player('test4'));
-		room.addPlayer(new Player('test5'));
-		room.addPlayer(new Player('test6'));
-		room.addPlayer(new Player('test7'));
-		room.addPlayer(new Player('test8'));
-		room.addPlayer(new Player('test9'));
-		room.addPlayer(new Player('test0'));
-
-		return room;
+		return RoomSampleService.getTestRoomForNumPlayers(10);
 	}
 
 	static getTestRoomWithFivePlayers() {
@@ -32,11 +27,13 @@ export default class RoomSampleService {
 	}
 
 	static getTestRoomForNumPlayers(numPlayers) {
-		let room = new Room('TEST', 'en');
+		let room = new Room('TEST', 'en', new MoleChooser());
 
 		for (let i = 1; i <= numPlayers; i++) {
 			room.addPlayer(new Player(`test${i}`));
 		}
+
+		room.chooseMole();
 
 		return room;
 	}
