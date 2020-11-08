@@ -202,15 +202,15 @@ test('Checks "quizDone" method', () => {
 	let question = {
 		text: 'Test question text?',
 		type: 'choice',
-		choices: ['Yes', 'No']
+		choices: [ 'Yes', 'No' ]
 	};
 	let quiz: Quiz = { questions: [] };
 
 	for (let i = 0; i < 20; i++) {
 		quiz.questions.push(question);
 	}
-	
-	let answers: Answer[] = quiz.questions.map(q => new Answer(q, 1));
+
+	let answers: Answer[] = quiz.questions.map((q) => new Answer(q, 1));
 
 	let quizAnswers = new QuizAnswers(answers, 1);
 
@@ -219,7 +219,7 @@ test('Checks "quizDone" method', () => {
 
 	expect(room.currentEpisode.allPlayersFinishedQuiz).toBe(false);
 
-	let episodePlayer = room.currentEpisode.players.find(p => p.name === player1.name);
+	let episodePlayer = room.currentEpisode.players.find((p) => p.name === player1.name);
 	expect(episodePlayer).toBeTruthy();
 	expect(episodePlayer.quizAnswers).toEqual(quizAnswers);
 });
@@ -234,7 +234,7 @@ test('Runs scenario where all players have given in quiz answers and checks agai
 	let question = {
 		text: 'Test question text?',
 		type: 'choice',
-		choices: ['Yes', 'No']
+		choices: [ 'Yes', 'No' ]
 	};
 	let quiz: Quiz = { questions: [] };
 	let moleQuiz: Quiz = { questions: [] };
@@ -244,7 +244,7 @@ test('Runs scenario where all players have given in quiz answers and checks agai
 		moleQuiz.questions.push(question);
 	}
 
-	let perfectAnswers: Answer[] = quiz.questions.map(q => new Answer(q, 1));
+	let perfectAnswers: Answer[] = quiz.questions.map((q) => new Answer(q, 1));
 	let goodAnswers: Answer[] = quiz.questions.map((q, i) => {
 		if (i % 2 === 0) {
 			return new Answer(q, 1);
@@ -252,11 +252,14 @@ test('Runs scenario where all players have given in quiz answers and checks agai
 			return new Answer(q, 0);
 		}
 	});
-	let badAnswers: Answer[] = quiz.questions.map(q => new Answer(q, 0));
-	let moleAnswers: Answer[] = moleQuiz.questions.map(q => new Answer(q, 1));
+	let badAnswers: Answer[] = quiz.questions.map((q) => new Answer(q, 0));
+	let moleAnswers: Answer[] = moleQuiz.questions.map((q) => new Answer(q, 1));
 
-	let quizAnswers = [new QuizAnswers(perfectAnswers, 1), new QuizAnswers(goodAnswers, 1), new QuizAnswers(badAnswers, 1)];
+	let badQuizAnswers = new QuizAnswers(badAnswers, 1);
+
+	let quizAnswers = [ new QuizAnswers(perfectAnswers, 1), new QuizAnswers(goodAnswers, 1), badQuizAnswers ];
 	let moleQuizAnswers = new QuizAnswers(moleAnswers, 1);
+	let losingPlayer = null;
 
 	expect(room.currentEpisode.allPlayersFinishedQuiz).toBe(false);
 
@@ -265,16 +268,21 @@ test('Runs scenario where all players have given in quiz answers and checks agai
 		if (player.isMole) {
 			roomController.quizDone(roomcode, player.name, moleQuizAnswers);
 		} else {
-			roomController.quizDone(roomcode, player.name, quizAnswers.pop());
+			let answers = quizAnswers.pop();
+			if (answers === badQuizAnswers) {
+				losingPlayer = player;
+			}
+			roomController.quizDone(roomcode, player.name, answers);
 		}
 	}
 
 	expect(room.currentEpisode.allPlayersFinishedQuiz).toBe(true);
 
 	let eliminatedPlayer = room.currentEpisode.eliminatedPlayer;
-	let molePlayer = room.playersStillPlaying.find(p => p.isMole);
+	let molePlayer = room.playersStillPlaying.find((p) => p.isMole);
 
 	expect(eliminatedPlayer).toBeTruthy();
 	expect(molePlayer).toBeTruthy();
 	expect(molePlayer.name !== eliminatedPlayer.name).toBeTruthy();
+	expect(losingPlayer.name === eliminatedPlayer.name).toBeTruthy();
 });
