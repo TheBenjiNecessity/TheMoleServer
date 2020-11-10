@@ -58,6 +58,17 @@ Traders = max: 6 / min: 6
 - Balconies
     The players are presented with a 5x5 grid of spaces where each space represents a balcony on the fascade of a hotel. Each player starts at a random location on this grid and players have 5 minutes to move around the hotel and figure out where each player must be standing (on the grid) by figuring out a series of clues. Each clue can only be seen if a player is standing on the balcony where the clue is located.
 
+- See no evil, speak no evil, hear no evil - 6 players
+    Players are separated into three roles (see, hear, and speak) and have 5 minutes to get a message across from one group to another. The see no evil players should position themselves so that they can't see the other players (turn their backs).
+    (The speak no evil group are the starting group and they can't say anything during the challenge and must rely on charades)
+    (The hear no evil group is in the middle and is watching the speak no evil group do charades)
+    (The hear no evil group then must speak to the see no evil group about what the speak no evil group are charading)
+    (The see no evil group then solves a riddle based on the clues given)
+    (SpNE shown a riddle)
+    (HNE shown nothing)
+    (SNE shown an input)
+    (Everyone can answer the riddle but the speak no evil people can't talk and only the see no evil can enter anything)
+
 # Types of possible challenges
 - Move through a course and try to get to the end
     Pick up money along the way
