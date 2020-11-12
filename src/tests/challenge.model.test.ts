@@ -16,21 +16,6 @@ function getMockComponents(numPlayers) {
 	return { challenge };
 }
 
-test('Checks "canSupportNumPlayers" method', () => {
-	let { challenge } = getMockComponents(10);
-
-	expect(challenge.canSupportNumPlayers(1)).toBe(false);
-	expect(challenge.canSupportNumPlayers(2)).toBe(false);
-	expect(challenge.canSupportNumPlayers(3)).toBe(true);
-	expect(challenge.canSupportNumPlayers(4)).toBe(true);
-	expect(challenge.canSupportNumPlayers(5)).toBe(true);
-	expect(challenge.canSupportNumPlayers(6)).toBe(true);
-	expect(challenge.canSupportNumPlayers(7)).toBe(true);
-	expect(challenge.canSupportNumPlayers(8)).toBe(true);
-	expect(challenge.canSupportNumPlayers(9)).toBe(true);
-	expect(challenge.canSupportNumPlayers(10)).toBe(true);
-});
-
 test('Checks "addAgreedPlayer" method', () => {
 	let { challenge } = getMockComponents(10);
 	let player = new Player('test');
