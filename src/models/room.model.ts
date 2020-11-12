@@ -31,7 +31,7 @@ export default class Room {
 
 	constructor(
 		public roomcode: string,
-		private language: string,
+		public language: string,
 		private moleChooser: IMoleChooser = new MoleChooser()
 	) {
 		this._state = ROOM_STATE.LOBBY;
