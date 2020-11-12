@@ -15,7 +15,7 @@ export default class ButtonChallenge extends Challenge {
 	exemptionWasTaken: boolean;
 
 	constructor(players, title, description, questions) {
-		super(players, title, description, 4, 4, questions, 'game', [], type);
+		super(players, title, description, questions, 'game', [], type);
 
 		let shuffledRiddles = JSON.parse(JSON.stringify(riddles['en'])); // TODO lang
 		shuffledRiddles.shuffle();

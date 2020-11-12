@@ -15,8 +15,6 @@ export default abstract class Challenge {
 	title: string;
 	type: string;
 	description: string;
-	maxPlayers: number;
-	minPlayers: number;
 	roles: Role[];
 	questions: Question[];
 
@@ -34,29 +32,15 @@ export default abstract class Challenge {
 		players: Player[],
 		title: string,
 		description: string,
-		maxPlayers: number,
-		minPlayers: number,
 		questions: Question[],
 		initialState: string,
 		roles: Role[],
 		type: string
 	) {
-		if (
-			maxPlayers > ROOM_MAX_PLAYERS ||
-			minPlayers > ROOM_MAX_PLAYERS ||
-			maxPlayers < 1 ||
-			minPlayers < 1 ||
-			maxPlayers < minPlayers
-		) {
-			throw 'Min/Max players out of acceptable range';
-		}
-
 		this.players = players;
 		this.title = title;
 		this.type = type;
 		this.description = description;
-		this.maxPlayers = maxPlayers;
-		this.minPlayers = minPlayers;
 		this.roles = roles;
 		this.questions = questions;
 		this._state = initialState;
@@ -106,10 +90,6 @@ export default abstract class Challenge {
 
 	get challengeDiff() {
 		return this.challengeCurrent - this.challengeStart;
-	}
-
-	canSupportNumPlayers(numPlayers) {
-		return numPlayers >= this.minPlayers && numPlayers <= this.maxPlayers;
 	}
 
 	addAgreedPlayer(player) {

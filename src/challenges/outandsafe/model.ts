@@ -8,7 +8,7 @@ export default class OutAndSafeChallenge extends Challenge {
 	currentRound: number;
 
 	constructor(players, title, description, questions) {
-		super(players, title, description, 10, 5, questions, 'game', [], type);
+		super(players, title, description, questions, 'game', [], type);
 
 		this.currentRound = 1;
 
@@ -32,7 +32,7 @@ export default class OutAndSafeChallenge extends Challenge {
 
 	get currentSelectedCardsAsArray() {
 		let result = [];
-		for (let playerName of Object.keys(this.currentSelectedCards)) {
+		for (let playerName in this.currentSelectedCards) {
 			result.push(this.currentSelectedCards[playerName]);
 		}
 		return result;

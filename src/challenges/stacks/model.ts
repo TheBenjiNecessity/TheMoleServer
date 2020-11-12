@@ -45,7 +45,7 @@ export default class StacksChallenge extends Challenge {
 		questions,
 		private pilesGenerator: IPilesGenerator = new PilesGenerator()
 	) {
-		super(players, title, description, 6, 6, questions, 'game', [], type);
+		super(players, title, description, questions, 'game', [], type);
 
 		this.currentRound = 1;
 
@@ -79,7 +79,7 @@ export default class StacksChallenge extends Challenge {
 			dict[pile.numSelected.toString()].push(pile);
 		}
 
-		for (let key of Object.keys(dict)) {
+		for (let key in dict) {
 			if (dict[key].length === 1) {
 				result += dict[key][0].amount;
 			}

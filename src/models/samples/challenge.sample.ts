@@ -3,7 +3,7 @@ import Player from '../player.model';
 
 class SampleChallenge extends Challenge {
 	constructor(players: Player[]) {
-		super(players, 'Test title', 'Test description', 10, 3, [], 'game', [], 'Test type');
+		super(players, 'Test title', 'Test description', [], 'game', [], 'Test type');
 	}
 }
 
