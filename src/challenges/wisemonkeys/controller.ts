@@ -10,8 +10,6 @@ export default class WiseMonkeysChallengeController extends ChallengeController 
 		super(roomController);
 	}
 
-	// start timer? ask for roles?
-
 	enterRiddleAnswer(roomcode: string, playerName: string, answerText: string) {
 		let room = this.roomController.getRoom(roomcode);
 		let wiseMonkeysChallenge = room.currentEpisode.currentChallenge as WiseMonkeysChallenge;

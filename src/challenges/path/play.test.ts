@@ -4,9 +4,9 @@ import RoomController from '../../controllers/room.controller';
 import PathChallengeController from './controller';
 import EpisodeSampleService from '../../models/samples/episode.sample';
 import RoomSampleService from '../../models/samples/room.sample';
-import { CHALLENGE_STATES } from '../../contants/challenge.constants';
 import PathChallenge, { IWalkersGenerator, IChestsGenerator, Chest } from './model';
 import Player from '../../models/player.model';
+import Challenge from '../../models/challenge.model';
 
 let rooms: { [id: string]: Room } = {};
 
@@ -92,7 +92,7 @@ test('Plays through an entire game where all players make it to the end', () => 
 	room = roomController.getRoom(roomcode);
 	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge as PathChallenge;
 
-	expect(pathChallenge.state).toBe(CHALLENGE_STATES.CHALLENGE_END);
+	expect(pathChallenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
 	expect(room.points).toBe(35);
 });
 
@@ -126,7 +126,7 @@ test('Plays through an entire game where all but one player makes it to the end'
 	room = roomController.getRoom(roomcode);
 	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge as PathChallenge;
 
-	expect(pathChallenge.state).toBe(CHALLENGE_STATES.CHALLENGE_END);
+	expect(pathChallenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
 	expect(room.points).toBe(28);
 	expect(room.playersStillPlaying[4].numExemptions).toBe(1);
 });
@@ -150,7 +150,7 @@ test('Plays through an entire game where no players make it though', () => {
 	room = roomController.getRoom(roomcode);
 	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge as PathChallenge;
 
-	expect(pathChallenge.state).toBe(CHALLENGE_STATES.CHALLENGE_END);
+	expect(pathChallenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
 	expect(room.points).toBe(0);
 	for (let player of room.playersStillPlaying) {
 		expect(player.numExemptions).toBe(1);

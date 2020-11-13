@@ -1,13 +1,12 @@
 import Room from '../../models/room.model';
 import WebSocketService from '../../services/websocket.service';
 import RoomController from '../../controllers/room.controller';
-import ChallengeController from '../../controllers/challenge.controller';
 import ButtonChallengeController from './controller';
 import EpisodeSampleService from '../../models/samples/episode.sample';
 import RoomSampleService from '../../models/samples/room.sample';
 import ButtonChallengeData from './data';
 import ButtonChallenge from './model';
-import { CHALLENGE_STATES } from '../../contants/challenge.constants';
+import Challenge from '../../models/challenge.model';
 
 jest.useFakeTimers();
 
@@ -97,7 +96,7 @@ test('Plays through an entire round until all players remove their fingers from 
 	room = roomController.getRoom(roomcode);
 	let buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
 
-	expect(buttonChallenge.state).toBe(CHALLENGE_STATES.CHALLENGE_END);
+	expect(buttonChallenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
 	for (let player of room.playersStillPlaying) {
 		expect(player.numExemptions).toBe(0);
 	}
@@ -122,7 +121,7 @@ test('Plays through an entire round where everyone keeps their fingers on their 
 	room = roomController.getRoom(roomcode);
 	let buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
 
-	expect(buttonChallenge.state).toBe(CHALLENGE_STATES.CHALLENGE_END);
+	expect(buttonChallenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
 	for (let player of room.playersStillPlaying) {
 		expect(player.numExemptions).toBe(0);
 	}
@@ -162,7 +161,7 @@ test('Plays through an entire round where one person solves the riddle', () => {
 	room = roomController.getRoom(roomcode);
 	let buttonChallenge = room.currentEpisode.currentChallenge as ButtonChallenge;
 
-	expect(buttonChallenge.state).toBe(CHALLENGE_STATES.CHALLENGE_END);
+	expect(buttonChallenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
 
 	expect(room.playersStillPlaying[0].numExemptions).toBe(0);
 	expect(room.playersStillPlaying[1].numExemptions).toBe(0);

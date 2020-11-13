@@ -1,5 +1,6 @@
 import RoomController from './room.controller';
-import { CHALLENGE_EVENTS, CHALLENGE_STATES, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
+import { CHALLENGE_EVENTS, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
+import Challenge from '../models/challenge.model';
 
 const MILLISECONDS_IN_SECOND = 1000;
 
@@ -8,7 +9,7 @@ export default class ChallengeController {
 
 	raiseHand(roomcode, player, role): string {
 		let room = this.roomController.getRoom(roomcode);
-		if (room.currentEpisode.currentChallenge.state !== CHALLENGE_STATES.ROLE_SELECTION) {
+		if (room.currentEpisode.currentChallenge.state !== Challenge.CHALLENGE_STATES.ROLE_SELECTION) {
 			return null;
 		}
 
@@ -20,7 +21,10 @@ export default class ChallengeController {
 	agreeToRoles(roomcode, player): string {
 		let room = this.roomController.getRoom(roomcode);
 		let { currentChallenge } = room.currentEpisode;
-		if (currentChallenge.state !== CHALLENGE_STATES.ROLE_SELECTION || !currentChallenge.raisedHandsAreValid) {
+		if (
+			currentChallenge.state !== Challenge.CHALLENGE_STATES.ROLE_SELECTION ||
+			!currentChallenge.raisedHandsAreValid
+		) {
 			return;
 		}
 

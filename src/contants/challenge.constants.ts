@@ -17,9 +17,9 @@ export const CHALLENGE_EVENTS = {
 	START_TIMER: 'startTimerWithCallback'
 };
 
-export const CHALLENGE_STATES = {
-	CHALLENGE_EXPLANATION: 'challenge-explanation',
-	ROLE_SELECTION: 'role-selection',
-	IN_GAME: 'game',
-	CHALLENGE_END: 'end'
-};
+// export const CHALLENGE_STATES = {
+// 	CHALLENGE_EXPLANATION: 'challenge-explanation',
+// 	ROLE_SELECTION: 'role-selection',
+// 	IN_GAME: 'game',
+// 	CHALLENGE_END: 'end'
+// };

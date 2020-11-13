@@ -39,8 +39,4 @@ export default class ChallengeSocketHandler extends SocketHandler {
 		let message = this.challengeController.removePlayerVote(roomcode, player);
 		return this.webSocketService.sendToRoom(roomcode, message);
 	}
-
-	// startTimer(roomcode, milliseconds, interval = MILLISECONDS_IN_SECOND, tickCallback, doneCallback) {
-	// 	this.challengeController.startTimer(roomcode, milliseconds, interval, () => {});
-	// }
 }

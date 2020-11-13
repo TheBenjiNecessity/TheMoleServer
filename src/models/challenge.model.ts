@@ -1,14 +1,18 @@
 import RaisedHand from './raisedHand.model';
 import Role from './role.model';
 import Question from './quiz/question.model';
-
-import { ROOM_MAX_PLAYERS } from '../contants/room.constants';
-import { CHALLENGE_STATES } from '../contants/challenge.constants';
 import Player from './player.model';
 
 import '../extensions/date';
 
 export default abstract class Challenge {
+	static CHALLENGE_STATES = {
+		CHALLENGE_EXPLANATION: 'challenge-explanation',
+		ROLE_SELECTION: 'role-selection',
+		IN_GAME: 'game',
+		CHALLENGE_END: 'end'
+	};
+
 	private _state: string;
 
 	players: Player[];
@@ -76,10 +80,10 @@ export default abstract class Challenge {
 		this._state = newState;
 
 		switch (this.state) {
-			case CHALLENGE_STATES.IN_GAME:
+			case Challenge.CHALLENGE_STATES.IN_GAME:
 				this.setRoles();
 				break;
-			case CHALLENGE_STATES.CHALLENGE_END:
+			case Challenge.CHALLENGE_STATES.CHALLENGE_END:
 				clearInterval(this.timer);
 				this.isChallengeRunning = false;
 				break;
@@ -146,11 +150,11 @@ export default abstract class Challenge {
 
 	moveNext() {
 		switch (this.state) {
-			case CHALLENGE_STATES.ROLE_SELECTION:
-				this.state = CHALLENGE_STATES.IN_GAME;
+			case Challenge.CHALLENGE_STATES.ROLE_SELECTION:
+				this.state = Challenge.CHALLENGE_STATES.IN_GAME;
 				break;
-			case CHALLENGE_STATES.IN_GAME:
-				this.state = CHALLENGE_STATES.CHALLENGE_END;
+			case Challenge.CHALLENGE_STATES.IN_GAME:
+				this.state = Challenge.CHALLENGE_STATES.CHALLENGE_END;
 				break;
 			default:
 				break;
@@ -181,6 +185,6 @@ export default abstract class Challenge {
 	}
 
 	endChallenge() {
-		this.state = CHALLENGE_STATES.CHALLENGE_END;
+		this.state = Challenge.CHALLENGE_STATES.CHALLENGE_END;
 	}
 }

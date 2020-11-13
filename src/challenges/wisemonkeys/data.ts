@@ -9,7 +9,7 @@ import WebSocketService from '../../services/websocket.service';
 
 const language = {
 	en: {
-		title: 'The WiseMonkeys',
+		title: 'Wise Monkeys',
 		description: '',
 		questions: [
 			{
