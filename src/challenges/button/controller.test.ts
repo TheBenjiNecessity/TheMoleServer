@@ -4,7 +4,6 @@ import EpisodeSampleService from '../../models/samples/episode.sample';
 import RoomController from '../../controllers/room.controller';
 import ButtonChallengeController from './controller';
 import ButtonChallengeData from './data';
-import ChallengeController from '../../controllers/challenge.controller';
 import { getMockRoomController } from '../../models/samples/room-controller.sample';
 
 const SAMPLE_RIDDLE_ANSWER = 'I am going to stop the mole';

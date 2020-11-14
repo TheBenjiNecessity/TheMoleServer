@@ -4,23 +4,15 @@ import Question from './quiz/question.model';
 import Player from './player.model';
 
 import '../extensions/date';
+import StateObject from './stateObject.interface';
 
-export default abstract class Challenge {
+export default abstract class Challenge extends StateObject {
 	static CHALLENGE_STATES = {
 		CHALLENGE_EXPLANATION: 'challenge-explanation',
 		ROLE_SELECTION: 'role-selection',
 		IN_GAME: 'game',
 		CHALLENGE_END: 'end'
 	};
-
-	private _state: string;
-
-	players: Player[];
-	title: string;
-	type: string;
-	description: string;
-	roles: Role[];
-	questions: Question[];
 
 	agreedPlayers: Player[];
 	raisedHands: RaisedHand[];
@@ -33,21 +25,22 @@ export default abstract class Challenge {
 	currentTime: number;
 
 	constructor(
-		players: Player[],
-		title: string,
-		description: string,
-		questions: Question[],
+		public players: Player[],
+		public title: string,
+		public description: string,
+		public questions: Question[],
 		initialState: string,
-		roles: Role[],
-		type: string
+		public roles: Role[],
+		public type: string
 	) {
+		super(initialState);
+
 		this.players = players;
 		this.title = title;
 		this.type = type;
 		this.description = description;
 		this.roles = roles;
 		this.questions = questions;
-		this._state = initialState;
 		this.agreedPlayers = [];
 		this.raisedHands = [];
 		this.votedPlayers = {};

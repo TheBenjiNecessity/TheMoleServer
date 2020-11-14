@@ -6,6 +6,7 @@ import Episode from './episode.model';
 import '../extensions/array';
 import ChallengeData from '../interfaces/challenge-data';
 import Player from './player.model';
+import StateObject from './stateObject.interface';
 
 export interface IMoleChooser {
 	getMoleIndex(players: Player[]);
@@ -19,8 +20,7 @@ class MoleChooser implements IMoleChooser {
 	}
 }
 
-export default class Room {
-	private _state: string;
+export default class Room extends StateObject {
 	private _currentEpisode: Episode;
 	private _players: Player[];
 
@@ -34,7 +34,8 @@ export default class Room {
 		public language: string,
 		private moleChooser: IMoleChooser = new MoleChooser()
 	) {
-		this._state = ROOM_STATE.LOBBY;
+		super(ROOM_STATE.LOBBY);
+
 		this.unaskedQuestions = questionData;
 
 		this._players = [];
@@ -76,7 +77,7 @@ export default class Room {
 		return this._state;
 	}
 
-	set state(newState) {
+	set state(newState: string) {
 		this._state = newState;
 
 		switch (this.state) {
