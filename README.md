@@ -85,7 +85,7 @@ Traders = max: 6 / min: 6
 - If everyone ends up in the right spot at the end of the challenge then money is won
 
 
-/**
+
  * STATE
  * 		page: what shows on the page
  * 		action: what does the page do in the background
@@ -101,7 +101,7 @@ Traders = max: 6 / min: 6
  * EPISODE_START
  * 		page: text describing how many players there are and what happened in the previous episode
  * 		actions: episode is created and first challenge is selected
- * 		move next: one player in the room clicks "start"
+ * 		move next: one player in the room clicks "start" (not clickable until episode created)
  * IN_CHALLENGE
  * 		page:
  * 			If challenge has a role page then show role selection.
@@ -141,4 +141,6 @@ Traders = max: 6 / min: 6
  * 		move next: one player in the room clicks "start"
  * EPISODE_START...
  * TODO: what about final episode/mole reveal?
- */
+ 
+
+ Lobby => Welcome => episode start => in challenge => challenge intermission => ... => in challenge => challenge intermission => pre quiz intermission => in quiz => post quiz intermission => execution => execution wrap up => episode start => ...
