@@ -40,7 +40,7 @@ export default class QuizService {
 		challengeQuestions.shuffle();
 		unusedGeneralQuestions.shuffle();
 
-		challengeQuestions = challengeQuestions.slice(0, MAX_CHALLENGE_QUESTIONS);
+		challengeQuestions = challengeQuestions.slice(0, Room.MAX_CHALLENGE_QUESTIONS);
 		questions = challengeQuestions;
 		unusedGeneralQuestions = unusedGeneralQuestions.slice(0, MAX_NUM_QUESTIONS - questions.length - 1);
 		questions = questions.concat(unusedGeneralQuestions);

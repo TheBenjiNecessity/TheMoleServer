@@ -1,7 +1,6 @@
 import questionData from './quiz/question.data';
 import EpisodeService from '../services/game/episode.service';
 import ChallengeService from '../services/game/challenge.service';
-import { ROOM_MAX_PLAYERS, ROOM_STATE } from '../contants/room.constants';
 import Episode from './episode.model';
 import '../extensions/array';
 import ChallengeData from '../interfaces/challenge-data';
@@ -21,6 +20,21 @@ class MoleChooser implements IMoleChooser {
 }
 
 export default class Room extends StateObject {
+	static MAX_CHALLENGE_QUESTIONS = 5;
+	static MAX_PLAYERS = 10;
+	static ROOM_STATES = {
+		LOBBY: 'lobby',
+		WELCOME: 'game-welcome',
+		EPISODE_START: 'episode-start',
+		CHALLENGE_INTERMISSION: 'challenge-intermission',
+		IN_CHALLENGE: 'in-episode',
+		PRE_QUIZ_INTERMISSION: 'pre-quiz-intermission',
+		IN_QUIZ: 'in-episode',
+		POST_QUIZ_INTERMISSION: 'post-quiz-intermission',
+		EXECUTION: 'execution',
+		EXECUTION_WRAPUP: 'execution-wrapup'
+	};
+
 	private _currentEpisode: Episode;
 	private _players: Player[];
 
@@ -34,7 +48,7 @@ export default class Room extends StateObject {
 		public language: string,
 		private moleChooser: IMoleChooser = new MoleChooser()
 	) {
-		super(ROOM_STATE.LOBBY);
+		super(Room.ROOM_STATES.LOBBY);
 
 		this.unaskedQuestions = questionData;
 
@@ -46,7 +60,7 @@ export default class Room extends StateObject {
 	}
 
 	get isFull() {
-		return this._players.length === ROOM_MAX_PLAYERS;
+		return this._players.length === Room.MAX_PLAYERS;
 	}
 
 	get playersStillPlaying() {
@@ -81,17 +95,17 @@ export default class Room extends StateObject {
 		this._state = newState;
 
 		switch (this.state) {
-			case ROOM_STATE.WELCOME:
+			case Room.ROOM_STATES.WELCOME:
 				this.isInProgress = true;
 				this.chooseMole();
 				break;
-			case ROOM_STATE.EPISODE_START:
+			case Room.ROOM_STATES.EPISODE_START:
 				this.generateCurrentEpisode();
 				break;
-			case ROOM_STATE.CHALLENGE_INTERMISSION:
+			case Room.ROOM_STATES.CHALLENGE_INTERMISSION:
 				this.currentEpisode.goToNextChallenge();
 				break;
-			case ROOM_STATE.EXECUTION:
+			case Room.ROOM_STATES.EXECUTION:
 				let executedPlayer = this.currentEpisode.eliminatedPlayer;
 
 				for (let i = 0; i < this._players.length; i++) {
@@ -101,7 +115,7 @@ export default class Room extends StateObject {
 					}
 				}
 				break;
-			case ROOM_STATE.EPISODE_START:
+			case Room.ROOM_STATES.EPISODE_START:
 				break;
 			default:
 				break;
@@ -178,39 +192,39 @@ export default class Room extends StateObject {
 
 	moveNext(): boolean {
 		switch (this.state) {
-			case ROOM_STATE.LOBBY:
-				this.state = ROOM_STATE.WELCOME;
+			case Room.ROOM_STATES.LOBBY:
+				this.state = Room.ROOM_STATES.WELCOME;
 				break;
-			case ROOM_STATE.WELCOME:
-				this.state = ROOM_STATE.EPISODE_START;
+			case Room.ROOM_STATES.WELCOME:
+				this.state = Room.ROOM_STATES.EPISODE_START;
 				break;
-			case ROOM_STATE.EPISODE_START:
-				this.state = ROOM_STATE.IN_CHALLENGE;
+			case Room.ROOM_STATES.EPISODE_START:
+				this.state = Room.ROOM_STATES.IN_CHALLENGE;
 				break;
-			case ROOM_STATE.IN_CHALLENGE:
-				this.state = ROOM_STATE.CHALLENGE_INTERMISSION;
+			case Room.ROOM_STATES.IN_CHALLENGE:
+				this.state = Room.ROOM_STATES.CHALLENGE_INTERMISSION;
 				break;
-			case ROOM_STATE.CHALLENGE_INTERMISSION:
+			case Room.ROOM_STATES.CHALLENGE_INTERMISSION:
 				if (this.currentEpisode.episodeIsOver) {
-					this.state = ROOM_STATE.PRE_QUIZ_INTERMISSION;
+					this.state = Room.ROOM_STATES.PRE_QUIZ_INTERMISSION;
 				} else {
-					this.state = ROOM_STATE.IN_CHALLENGE;
+					this.state = Room.ROOM_STATES.IN_CHALLENGE;
 				}
 				break;
-			case ROOM_STATE.PRE_QUIZ_INTERMISSION:
-				this.state = ROOM_STATE.IN_QUIZ;
+			case Room.ROOM_STATES.PRE_QUIZ_INTERMISSION:
+				this.state = Room.ROOM_STATES.IN_QUIZ;
 				break;
-			case ROOM_STATE.IN_QUIZ:
-				this.state = ROOM_STATE.POST_QUIZ_INTERMISSION;
+			case Room.ROOM_STATES.IN_QUIZ:
+				this.state = Room.ROOM_STATES.POST_QUIZ_INTERMISSION;
 				break;
-			case ROOM_STATE.POST_QUIZ_INTERMISSION:
-				this.state = ROOM_STATE.EXECUTION;
+			case Room.ROOM_STATES.POST_QUIZ_INTERMISSION:
+				this.state = Room.ROOM_STATES.EXECUTION;
 				break;
-			case ROOM_STATE.EXECUTION:
-				this.state = ROOM_STATE.EXECUTION_WRAPUP;
+			case Room.ROOM_STATES.EXECUTION:
+				this.state = Room.ROOM_STATES.EXECUTION_WRAPUP;
 				break;
-			case ROOM_STATE.EXECUTION_WRAPUP:
-				this.state = ROOM_STATE.EPISODE_START;
+			case Room.ROOM_STATES.EXECUTION_WRAPUP:
+				this.state = Room.ROOM_STATES.EPISODE_START;
 				break;
 			default:
 				return false;

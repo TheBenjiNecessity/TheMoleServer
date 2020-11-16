@@ -1,4 +1,3 @@
-import { ROOM_STATE } from '../contants/room.constants';
 import RoomController from '../controllers/room.controller';
 import Player from '../models/player.model';
 import Room from '../models/room.model';
@@ -188,11 +187,11 @@ test('Checks "moveNext" method', () => {
 	let { room, roomController } = getMockComponents(10);
 	let { roomcode } = room;
 
-	expect(roomController.getRoom(roomcode).state).toBe(ROOM_STATE.LOBBY);
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.LOBBY);
 
 	roomController.moveNext(roomcode);
 
-	expect(roomController.getRoom(roomcode).state).toBe(ROOM_STATE.WELCOME);
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.WELCOME);
 });
 
 test('Checks "quizDone" method', () => {
