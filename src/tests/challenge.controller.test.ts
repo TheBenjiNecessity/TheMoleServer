@@ -45,19 +45,19 @@ test.skip('Checks "raiseHand" method', () => {
 
 	let player = room.playersStillPlaying[0];
 
-	challengeController.raiseHand(roomcode, player, 'test');
+	challengeController.raiseHand(roomcode, player.name, 'test');
 	let pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
 	expect(pathChallenge.raisedHands.length).toBe(1);
-	expect(pathChallenge.raisedHands[0].role).toBe('test');
-	expect(pathChallenge.raisedHands[0].player.name).toBe('test1');
+	expect(pathChallenge.raisedHands[0].roleName).toBe('test');
+	expect(pathChallenge.raisedHands[0].playerName).toBe('test1');
 
-	challengeController.raiseHand(roomcode, player, 'test2');
+	challengeController.raiseHand(roomcode, player.name, 'test2');
 	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
 	expect(pathChallenge.raisedHands.length).toBe(1);
-	expect(pathChallenge.raisedHands[0].role).toBe('test2');
-	expect(pathChallenge.raisedHands[0].player.name).toBe('test1');
+	expect(pathChallenge.raisedHands[0].roleName).toBe('test2');
+	expect(pathChallenge.raisedHands[0].playerName).toBe('test1');
 });
 
 test.skip('Checks "agreeToRoles" method', () => {
@@ -67,17 +67,17 @@ test.skip('Checks "agreeToRoles" method', () => {
 
 	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
 
-	challengeController.agreeToRoles(roomcode, player);
+	challengeController.agreeToRoles(roomcode, player.name);
 	let pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
-	expect(pathChallenge.agreedPlayers.length).toBe(1);
-	expect(pathChallenge.agreedPlayers[0].name).toBe('test1');
+	expect(pathChallenge.agreedPlayerNames.length).toBe(1);
+	expect(pathChallenge.agreedPlayerNames[0]).toBe('test1');
 
-	challengeController.agreeToRoles(roomcode, player);
+	challengeController.agreeToRoles(roomcode, player.name);
 	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge;
 
-	expect(pathChallenge.agreedPlayers.length).toBe(1);
-	expect(pathChallenge.agreedPlayers[0].name).toBe('test1');
+	expect(pathChallenge.agreedPlayerNames.length).toBe(1);
+	expect(pathChallenge.agreedPlayerNames[0]).toBe('test1');
 });
 
 test('Checks "addPlayerVote" method', () => {

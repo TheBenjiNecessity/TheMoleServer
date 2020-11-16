@@ -19,42 +19,42 @@ function getMockComponents(numPlayers) {
 test('Checks "addAgreedPlayer" method', () => {
 	let { challenge } = getMockComponents(10);
 	let player = new Player('test');
-	challenge.addAgreedPlayer(player);
+	challenge.addAgreedPlayer(player.name);
 
-	expect(challenge.agreedPlayers.length).toBe(1);
-	expect(challenge.agreedPlayers[0].name).toBe('test');
+	expect(challenge.agreedPlayerNames.length).toBe(1);
+	expect(challenge.agreedPlayerNames[0]).toBe('test');
 
-	challenge.addAgreedPlayer(player);
+	challenge.addAgreedPlayer(player.name);
 
-	expect(challenge.agreedPlayers.length).toBe(1);
-	expect(challenge.agreedPlayers[0].name).toBe('test');
+	expect(challenge.agreedPlayerNames.length).toBe(1);
+	expect(challenge.agreedPlayerNames[0]).toBe('test');
 });
 
 test('Checks "raiseHandForPlayer" method', () => {
 	let { challenge } = getMockComponents(10);
-	challenge.raiseHandForPlayer(new Player('test'), 'test');
+	challenge.raiseHandForPlayer('test', 'test');
 
 	expect(challenge.raisedHands.length).toBe(1);
-	expect(challenge.raisedHands[0].role).toBe('test');
-	expect(challenge.raisedHands[0].player.name).toBe('test');
+	expect(challenge.raisedHands[0].roleName).toBe('test');
+	expect(challenge.raisedHands[0].playerName).toBe('test');
 
-	challenge.raiseHandForPlayer(new Player('test'), 'test');
+	challenge.raiseHandForPlayer('test', 'test');
 
 	expect(challenge.raisedHands.length).toBe(1);
-	expect(challenge.raisedHands[0].role).toBe('test');
-	expect(challenge.raisedHands[0].player.name).toBe('test');
+	expect(challenge.raisedHands[0].roleName).toBe('test');
+	expect(challenge.raisedHands[0].playerName).toBe('test');
 
-	challenge.raiseHandForPlayer(new Player('test2'), 'test2');
-
-	expect(challenge.raisedHands.length).toBe(2);
-	expect(challenge.raisedHands[1].role).toBe('test2');
-	expect(challenge.raisedHands[1].player.name).toBe('test2');
-
-	challenge.raiseHandForPlayer(new Player('test'), 'test3');
+	challenge.raiseHandForPlayer('test2', 'test2');
 
 	expect(challenge.raisedHands.length).toBe(2);
-	expect(challenge.raisedHands[0].role).toBe('test3');
-	expect(challenge.raisedHands[0].player.name).toBe('test');
+	expect(challenge.raisedHands[1].roleName).toBe('test2');
+	expect(challenge.raisedHands[1].playerName).toBe('test2');
+
+	challenge.raiseHandForPlayer('test', 'test3');
+
+	expect(challenge.raisedHands.length).toBe(2);
+	expect(challenge.raisedHands[0].roleName).toBe('test3');
+	expect(challenge.raisedHands[0].playerName).toBe('test');
 });
 
 test('Checks "setVotedPlayer" method', () => {
