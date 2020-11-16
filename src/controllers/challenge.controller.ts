@@ -7,18 +7,18 @@ const MILLISECONDS_IN_SECOND = 1000;
 export default class ChallengeController {
 	constructor(protected roomController: RoomController) {}
 
-	raiseHand(roomcode, player, role): string {
+	raiseHand(roomcode: string, playerName: string, roleName: string): string {
 		let room = this.roomController.getRoom(roomcode);
 		if (room.currentEpisode.currentChallenge.state !== Challenge.CHALLENGE_STATES.ROLE_SELECTION) {
 			return null;
 		}
 
-		this.performEvent(roomcode, CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, player, role);
+		this.performEvent(roomcode, CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, playerName, roleName);
 
 		return CHALLENGE_SOCKET_EVENTS.RAISE_HAND;
 	}
 
-	agreeToRoles(roomcode, player): string {
+	agreeToRoles(roomcode: string, playerName: string): string {
 		let room = this.roomController.getRoom(roomcode);
 		let { currentChallenge } = room.currentEpisode;
 		if (
@@ -28,7 +28,7 @@ export default class ChallengeController {
 			return;
 		}
 
-		this.performEvent(roomcode, CHALLENGE_EVENTS.ADD_AGREED_PLAYER, player);
+		this.performEvent(roomcode, CHALLENGE_EVENTS.ADD_AGREED_PLAYER, playerName);
 
 		if (room.currentEpisode.currentChallenge.hasMajorityVoteForAgreedPlayers) {
 			room.currentEpisode.currentChallenge.moveNext();
@@ -39,17 +39,23 @@ export default class ChallengeController {
 		}
 	}
 
-	addPlayerVote(roomcode, player): string {
-		this.performEvent(roomcode, CHALLENGE_EVENTS.SET_VOTED_PLAYER, player);
+	addPlayerVote(roomcode: string, playerName: string): string {
+		this.performEvent(roomcode, CHALLENGE_EVENTS.SET_VOTED_PLAYER, playerName);
 		return CHALLENGE_SOCKET_EVENTS.VOTED_PLAYER;
 	}
 
-	removePlayerVote(roomcode, player): string {
-		this.performEvent(roomcode, CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER, player);
+	removePlayerVote(roomcode: string, playerName: string): string {
+		this.performEvent(roomcode, CHALLENGE_EVENTS.REMOVE_VOTED_PLAYER, playerName);
 		return CHALLENGE_SOCKET_EVENTS.REMOVE_VOTED_PLAYER;
 	}
 
-	startTimer(roomcode, milliseconds, interval = MILLISECONDS_IN_SECOND, tickCallback, doneCallBack) {
+	startTimer(
+		roomcode: string,
+		milliseconds: number,
+		interval: number = MILLISECONDS_IN_SECOND,
+		tickCallback,
+		doneCallBack
+	) {
 		const tickCB = () => {
 			tickCallback();
 			this.roomController.sendTimerTick(roomcode);

@@ -10,14 +10,14 @@ export interface PlayerInventory {
 export default class Player {
 	eliminated: boolean;
 	isMole: boolean;
-	currentRole: Role;
+	currentRoleName: string;
 	quizAnswers: QuizAnswers;
 	objects: PlayerInventory;
 
 	constructor(public name: string) {
 		this.eliminated = false;
 		this.isMole = false;
-		this.currentRole = null;
+		this.currentRoleName = null;
 		this.quizAnswers = null;
 		this.objects = {
 			exemption: 0,

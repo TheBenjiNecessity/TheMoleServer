@@ -14,7 +14,7 @@ export default abstract class Challenge extends StateObject {
 		CHALLENGE_END: 'end'
 	};
 
-	agreedPlayers: Player[];
+	agreedPlayerNames: string[];
 	raisedHands: RaisedHand[];
 	votedPlayers: any;
 	challengeStart: number;
@@ -41,7 +41,7 @@ export default abstract class Challenge extends StateObject {
 		this.description = description;
 		this.roles = roles;
 		this.questions = questions;
-		this.agreedPlayers = [];
+		this.agreedPlayerNames = [];
 		this.raisedHands = [];
 		this.votedPlayers = {};
 		this.challengeStart = -1;
@@ -52,12 +52,12 @@ export default abstract class Challenge extends StateObject {
 	}
 
 	get hasMajorityVoteForAgreedPlayers() {
-		return this.agreedPlayers.length >= this.players.length / 2;
+		return this.agreedPlayerNames.length >= this.players.length / 2;
 	}
 
 	get raisedHandsAreValid() {
 		for (let role of this.roles) {
-			let raisedHandsOfRole = this.raisedHands.filter((rh) => rh.role.name === role.name);
+			let raisedHandsOfRole = this.raisedHands.filter((rh) => rh.roleName === role.name);
 			if (raisedHandsOfRole.length !== role.numPlayers) {
 				return false;
 			}
@@ -69,7 +69,7 @@ export default abstract class Challenge extends StateObject {
 		return this._state;
 	}
 
-	set state(newState) {
+	set state(newState: string) {
 		this._state = newState;
 
 		switch (this.state) {
@@ -89,24 +89,24 @@ export default abstract class Challenge extends StateObject {
 		return this.challengeCurrent - this.challengeStart;
 	}
 
-	addAgreedPlayer(player) {
-		let foundPlayer = this.agreedPlayers.find((p) => p.name === player.name);
+	addAgreedPlayer(playerName: string) {
+		let foundPlayer = this.agreedPlayerNames.find((name) => name === playerName);
 		if (!foundPlayer) {
-			this.agreedPlayers.push(player);
+			this.agreedPlayerNames.push(playerName);
 		}
 	}
 
-	raiseHandForPlayer(player, role) {
-		let foundRaisedHand = this.raisedHands.find((r) => r.player.name === player.name);
+	raiseHandForPlayer(playerName: string, roleName: string) {
+		let foundRaisedHand = this.raisedHands.find((r) => r.playerName === playerName);
 
 		if (foundRaisedHand) {
 			let indexOfRaisedHand = this.raisedHands.indexOf(foundRaisedHand);
-			this.raisedHands[indexOfRaisedHand].role = role;
+			this.raisedHands[indexOfRaisedHand].roleName = roleName;
 		} else {
-			this.raisedHands.push({ player, role });
+			this.raisedHands.push({ playerName, roleName });
 		}
 
-		this.agreedPlayers = [];
+		this.agreedPlayerNames = [];
 	}
 
 	setVotedPlayer(playerName: string) {
@@ -133,10 +133,10 @@ export default abstract class Challenge extends StateObject {
 		}
 
 		for (let i = 0; i < this.players.length; i++) {
-			this.players[i].currentRole = null;
-			let raisedHand = this.raisedHands.find((rh) => rh.player.name === this.players[i].name);
+			this.players[i].currentRoleName = null;
+			let raisedHand = this.raisedHands.find((rh) => rh.playerName === this.players[i].name);
 			if (raisedHand) {
-				this.players[i].currentRole = raisedHand.role;
+				this.players[i].currentRoleName = raisedHand.roleName;
 			}
 		}
 	}

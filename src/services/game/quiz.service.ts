@@ -1,8 +1,8 @@
 import Question from '../../models/quiz/question.model';
 import Quiz from '../../models/quiz/quiz.model';
-import { MAX_CHALLENGE_QUESTIONS } from '../../contants/room.constants';
 import { MAX_NUM_QUESTIONS, RANKS } from '../../contants/quiz.constants';
 import Player from '../../models/player.model';
+import Room from '../../models/room.model';
 
 export default class QuizService {
 	constructor() {}
