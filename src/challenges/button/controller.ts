@@ -38,7 +38,10 @@ export default class ButtonChallengeController extends ChallengeController {
 
 		// If it is the start of the game and everyone touches their button then the game begins
 		if (buttonChallenge.allButtonsPressed && !buttonChallenge.isChallengeRunning) {
-			this.startTimer(roomcode, timerLength, interval, tickCB, doneCB);
+			this.startTimer(roomcode, timerLength, interval, tickCB, () => {
+				doneCB();
+				this.roomController.endChallenge(roomcode);
+			});
 			message = 'challenge-start';
 		}
 

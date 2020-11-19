@@ -170,7 +170,7 @@ export default abstract class Challenge extends StateObject {
 			this.challengeCurrent += millisecondsInterval;
 			if (this.challengeCurrent >= this.challengeEnd) {
 				endCB(roomcode);
-				this.endChallenge();
+				clearInterval(this.timer);
 			} else {
 				duringCB(roomcode);
 			}
