@@ -93,6 +93,7 @@ export default class RoomController {
 	/* ===================================== Challenge Events =====================================*/
 	endChallenge(roomcode: string) {
 		this.getCurrentChallenge(roomcode).endChallenge();
+		this.moveNext(roomcode);
 	}
 
 	performEventOnChallenge(roomcode: string, event: string, ...args) {
