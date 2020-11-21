@@ -9,7 +9,7 @@ export default class EpisodeSampleService {
 		return new Episode(
 			room.playersStillPlaying,
 			[ currentChallenge ],
-			questionData.map((q) => {
+			questionData['en'].map((q) => {
 				return { text: q.text, type: q.type, choices: q.choices };
 			})
 		);
@@ -19,7 +19,7 @@ export default class EpisodeSampleService {
 		return new Episode(
 			room.playersStillPlaying,
 			[ currentChallenge ],
-			questionData.map((q) => {
+			questionData['en'].map((q) => {
 				return { text: q.text, type: q.type, choices: q.choices };
 			})
 		);
