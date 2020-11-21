@@ -1,6 +1,10 @@
 export {};
 
 declare global {
+	interface ArrayConstructor {
+		range(start: number, end: number): number[];
+	}
+
 	interface Array<T> {
 		randomIndex(): number;
 		removeElementAtIndex(index: number): Array<T>;
@@ -8,6 +12,7 @@ declare global {
 		shuffle(): void;
 		getRandomElement(): T;
 		removeRandomElement(): Array<T>;
+		range(start: number, end: number): number[];
 	}
 }
 
@@ -53,4 +58,8 @@ Array.prototype.removeRandomElement = function<T>(): T[] {
 	}
 
 	return this.removeElementAtIndex(this.randomIndex());
+};
+
+Array.range = function(start: number, end: number) {
+	return new Array(end + 1 - start).fill(null).map((n, i) => i + start);
 };
