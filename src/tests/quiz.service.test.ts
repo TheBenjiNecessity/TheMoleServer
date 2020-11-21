@@ -11,7 +11,7 @@ test('Checks generateQuiz method', async () => {
 	let challengeQuestions = [].concat(...questions).map((q) => {
 		return { text: q.text, type: q.type, choices: q.choices };
 	});
-	let unusedGeneralQuestions = questionData.map((q) => {
+	let unusedGeneralQuestions = questionData['en'].map((q) => {
 		return { text: q.text, type: q.type, choices: q.choices };
 	});
 	let quiz = QuizService.generateQuiz(room.playersStillPlaying, challengeQuestions, unusedGeneralQuestions);

@@ -19,7 +19,7 @@ function getMockChallenge(room) {
 }
 
 function getMockEpisode(room: Room, challenge: Challenge) {
-	return new Episode(room.playersStillPlaying, [ challenge ], questionData);
+	return new Episode(room.playersStillPlaying, [ challenge ], questionData['en']);
 }
 
 function getMockComponents() {
