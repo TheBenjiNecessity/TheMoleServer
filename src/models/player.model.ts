@@ -1,4 +1,5 @@
 import QuizAnswers from './quiz/quiz-answers.model';
+import Quiz from './quiz/quiz.model';
 import Role from './role.model';
 
 export interface PlayerInventory {
@@ -8,17 +9,18 @@ export interface PlayerInventory {
 }
 
 export default class Player {
+	private _quizAnswers: QuizAnswers;
+
 	eliminated: boolean;
 	isMole: boolean;
 	currentRoleName: string;
-	quizAnswers: QuizAnswers;
 	objects: PlayerInventory;
 
 	constructor(public name: string) {
 		this.eliminated = false;
 		this.isMole = false;
 		this.currentRoleName = null;
-		this.quizAnswers = null;
+		this._quizAnswers = null;
 		this.objects = {
 			exemption: 0,
 			joker: 0,
@@ -36,6 +38,19 @@ export default class Player {
 
 	get numJoker(): number {
 		return this.objects.joker;
+	}
+
+	get quizAnswers() {
+		return this._quizAnswers;
+	}
+
+	set quizAnswers(value: QuizAnswers) {
+		this._quizAnswers = value;
+		if (this.objects && value) {
+			this.objects.exemption -= value.usedExemption ? 1 : 0;
+			this.objects['black-exemption'] -= value.usedBlackExemption ? 1 : 0;
+			this.objects.joker -= value.numJokersUsed;
+		}
 	}
 
 	setObjects(object, quantity = 1) {
