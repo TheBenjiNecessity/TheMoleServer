@@ -6,6 +6,7 @@ import '../extensions/array';
 import ChallengeData from '../interfaces/challenge-data';
 import Player from './player.model';
 import StateObject from './stateObject.interface';
+import Question from './quiz/question.model';
 
 export interface IMoleChooser {
 	getMoleIndex(players: Player[]);
@@ -19,6 +20,47 @@ class MoleChooser implements IMoleChooser {
 	}
 }
 
+export interface IEpisodeGenerator {
+	generateCurrentEpisode(
+		numChallenges: number,
+		playersStillPlaying: Player[],
+		unusedChallenges: ChallengeData[],
+		unaskedQuestions: Question[],
+		language: string
+	): Episode;
+}
+
+class EpisodeGenerator implements IEpisodeGenerator {
+	constructor() {}
+
+	generateCurrentEpisode(
+		numChallenges: number,
+		playersStillPlaying: Player[],
+		unusedChallenges: ChallengeData[],
+		unaskedQuestions: Question[],
+		language: string
+	): Episode {
+		let challenges = [];
+		for (let i = 0; i < numChallenges; i++) {
+			let numRestrictedChallenges = ChallengeService.listChallengesForNumPlayers(
+				playersStillPlaying.length,
+				unusedChallenges,
+				challenges
+			);
+
+			if (numRestrictedChallenges.length <= 0) {
+				//TODO could cause episode to have fewer challenges than should
+				continue;
+			}
+
+			numRestrictedChallenges.shuffle();
+			challenges.push(numRestrictedChallenges[0].getModel(playersStillPlaying, language));
+		}
+
+		return new Episode(playersStillPlaying, challenges, unaskedQuestions);
+	}
+}
+
 export default class Room extends StateObject {
 	static MAX_CHALLENGE_QUESTIONS = 5;
 	static MAX_PLAYERS = 10;
@@ -29,7 +71,7 @@ export default class Room extends StateObject {
 		CHALLENGE_INTERMISSION: 'challenge-intermission',
 		IN_CHALLENGE: 'in-challenge',
 		PRE_QUIZ_INTERMISSION: 'pre-quiz-intermission',
-		IN_QUIZ: 'in-episode',
+		IN_QUIZ: 'in-quiz',
 		POST_QUIZ_INTERMISSION: 'post-quiz-intermission',
 		EXECUTION: 'execution',
 		EXECUTION_WRAPUP: 'execution-wrapup'
@@ -46,11 +88,12 @@ export default class Room extends StateObject {
 	constructor(
 		public roomcode: string,
 		public language: string,
-		private moleChooser: IMoleChooser = new MoleChooser()
+		private moleChooser: IMoleChooser = new MoleChooser(),
+		private episodeGenerator: IEpisodeGenerator = new EpisodeGenerator()
 	) {
 		super(Room.ROOM_STATES.LOBBY);
 
-		this.unaskedQuestions = questionData;
+		this.unaskedQuestions = questionData[language];
 
 		this._players = [];
 		this._currentEpisode = null;
@@ -233,25 +276,14 @@ export default class Room extends StateObject {
 	}
 
 	generateCurrentEpisode() {
-		let challenges = [];
 		let numChallenges = EpisodeService.getNumChallenges(this._players.length);
-		for (let i = 0; i < numChallenges; i++) {
-			let numRestrictedChallenges = ChallengeService.listChallengesForNumPlayers(
-				this.playersStillPlaying.length,
-				this.unusedChallenges,
-				challenges
-			);
-
-			if (numRestrictedChallenges.length <= 0) {
-				//TODO could cause episode to have fewer challenges than should
-				continue;
-			}
-
-			numRestrictedChallenges.shuffle();
-			challenges.push(numRestrictedChallenges[0].getModel(this.playersStillPlaying, this.language));
-		}
-
-		this.currentEpisode = new Episode(this.playersStillPlaying, challenges, this.unaskedQuestions);
+		this.currentEpisode = this.episodeGenerator.generateCurrentEpisode(
+			numChallenges,
+			this.playersStillPlaying,
+			this.unusedChallenges,
+			this.unaskedQuestions,
+			this.language
+		);
 	}
 
 	chooseMole() {
