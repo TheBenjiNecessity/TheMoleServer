@@ -60,7 +60,11 @@ test('Checks removeRandomElement method', () => {
 });
 
 test('Checks range method', () => {
-	let rangeArray = Array.range(0, 5);
+	let rangeArray = Array.range(5, 1);
+	expect(rangeArray.length).toBe(5);
+	expect(rangeArray).toEqual([ 1, 2, 3, 4, 5 ]);
+
+	rangeArray = Array.range(5);
 	expect(rangeArray.length).toBe(6);
 	expect(rangeArray).toEqual([ 0, 1, 2, 3, 4, 5 ]);
 });
