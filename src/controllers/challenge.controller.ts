@@ -28,11 +28,10 @@ export default class ChallengeController {
 			return;
 		}
 
-		this.performEvent(roomcode, CHALLENGE_EVENTS.ADD_AGREED_PLAYER, playerName);
+		room = this.performEvent(roomcode, CHALLENGE_EVENTS.ADD_AGREED_PLAYER, playerName);
 
 		if (room.currentEpisode.currentChallenge.hasMajorityVoteForAgreedPlayers) {
-			room.currentEpisode.currentChallenge.moveNext();
-			this.roomController.setRoom(room);
+			this.moveNext(roomcode);
 			return CHALLENGE_SOCKET_EVENTS.MOVE_NEXT;
 		} else {
 			return CHALLENGE_SOCKET_EVENTS.AGREE_TO_ROLES;
@@ -69,5 +68,13 @@ export default class ChallengeController {
 
 	performEvent(roomcode: string, event: string, ...args) {
 		return this.roomController.performEventOnChallenge(roomcode, event, ...args);
+	}
+
+	moveNext(roomcode) {
+		let room = this.roomController.getRoom(roomcode);
+		this.performEvent(roomcode, 'moveNext');
+		if (room.currentEpisode.currentChallenge.state === Challenge.CHALLENGE_STATES.IN_GAME) {
+			this.startChallenge(roomcode);
+		}
 	}
 }
