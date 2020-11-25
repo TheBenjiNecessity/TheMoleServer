@@ -4,7 +4,7 @@ import Challenge from '../models/challenge.model';
 
 const MILLISECONDS_IN_SECOND = 1000;
 
-export default class ChallengeController {
+export default abstract class ChallengeController {
 	constructor(protected roomController: RoomController) {}
 
 	raiseHand(roomcode: string, playerName: string, roleName: string): string {
@@ -77,4 +77,6 @@ export default class ChallengeController {
 			this.startChallenge(roomcode);
 		}
 	}
+
+	abstract startChallenge(roomcode: string);
 }
