@@ -43,7 +43,7 @@ export default class RoomController {
 
 	/* ======================================== Room manipulation methods ======================================== */
 	addRoom(language: string) {
-		var roomcode = this.generateRandomRoomCodeNotUsed();
+		const roomcode = this.generateRandomRoomCodeNotUsed();
 		this.rooms[roomcode] = new Room(roomcode, language);
 		return this.rooms[roomcode];
 	}
