@@ -158,8 +158,6 @@ export default class Room extends StateObject {
 					}
 				}
 				break;
-			case Room.ROOM_STATES.EPISODE_START:
-				break;
 			default:
 				break;
 		}
