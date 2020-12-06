@@ -97,7 +97,17 @@ export default class RoomController {
 	}
 
 	performEventOnChallenge(roomcode: string, event: string, ...args) {
+		const previousChallengeState = this.getCurrentChallenge(roomcode).state;
 		this.getCurrentChallenge(roomcode)[event](...args);
+		const newChallengeState = this.getCurrentChallenge(roomcode).state;
+
+		if (previousChallengeState !== newChallengeState) {
+			//perform life cycle event
+			this.rooms[roomcode].currentEpisode
+				.getCurrentChallengeController(this)
+				.stateDidChange(roomcode, previousChallengeState, newChallengeState);
+		}
+
 		return this.rooms[roomcode];
 	}
 
