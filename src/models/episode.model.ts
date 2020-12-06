@@ -1,3 +1,6 @@
+import ChallengeController from '../controllers/challenge.controller';
+import RoomController from '../controllers/room.controller';
+import ChallengeData from '../interfaces/challenge-data';
 import QuizService from '../services/game/quiz.service';
 import Challenge from './challenge.model';
 import Player from './player.model';
@@ -16,16 +19,18 @@ export default class Episode {
 	private _eliminatedPlayer: Player;
 
 	currentChallengeIndex: number;
-	challenges: Challenge[];
 	players: Player[];
 	quiz: Quiz;
 
-	constructor(playersStillPlaying: Player[], challenges: Challenge[], unusedGeneralQuizQuestions: Question[]) {
+	constructor(
+		playersStillPlaying: Player[],
+		private challengeData: ChallengeData[],
+		unusedGeneralQuizQuestions: Question[]
+	) {
 		this.currentChallengeIndex = 0;
-		this.challenges = challenges;
 		this.players = playersStillPlaying;
 
-		let questionsArray = [].concat(...this.challenges.map((c) => c.questions));
+		let questionsArray = [].concat(...this.challengeData.map((c) => c.model.questions));
 		this.quiz = QuizService.generateQuiz(this.players, questionsArray, unusedGeneralQuizQuestions);
 	}
 
@@ -34,11 +39,11 @@ export default class Episode {
 			return null;
 		}
 
-		return this.challenges[this.currentChallengeIndex];
+		return this.challengeData[this.currentChallengeIndex].model;
 	}
 
 	get episodeIsOver(): boolean {
-		return this.currentChallengeIndex >= this.challenges.length;
+		return this.currentChallengeIndex >= this.challengeData.length;
 	}
 
 	get molePlayer(): Player {
@@ -97,6 +102,10 @@ export default class Episode {
 		return playersWhoFinished.length === this.players.length;
 	}
 
+	get challengeTypes(): string[] {
+		return this.challengeData.map((cd) => cd.type);
+	}
+
 	setQuizResultsForPlayer(playerName: string, quizAnswers: QuizAnswers) {
 		for (let i = 0; i < this.players.length; i++) {
 			if (this.players[i].name === playerName) {
@@ -108,5 +117,13 @@ export default class Episode {
 
 	goToNextChallenge() {
 		this.currentChallengeIndex++;
+	}
+
+	getCurrentChallengeController(roomController: RoomController): ChallengeController {
+		if (this.episodeIsOver) {
+			return null;
+		}
+
+		return this.challengeData[this.currentChallengeIndex].getController(roomController);
 	}
 }

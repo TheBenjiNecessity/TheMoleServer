@@ -54,7 +54,9 @@ class EpisodeGenerator implements IEpisodeGenerator {
 			}
 
 			numRestrictedChallenges.shuffle();
-			challenges.push(numRestrictedChallenges[0].getModel(playersStillPlaying, language));
+			const randomChallenge = numRestrictedChallenges[0];
+			randomChallenge.initModel(playersStillPlaying, language);
+			challenges.push(randomChallenge.model);
 		}
 
 		return new Episode(playersStillPlaying, challenges, unaskedQuestions);
@@ -116,8 +118,8 @@ export default class Room extends StateObject {
 
 	set currentEpisode(episode) {
 		this._currentEpisode = episode;
-		for (let challenge of episode.challenges) {
-			this.removeUnusedChallenge(challenge.type);
+		for (let type of episode.challengeTypes) {
+			this.removeUnusedChallenge(type);
 		}
 	}
 
@@ -227,7 +229,7 @@ export default class Room extends StateObject {
 		this.unusedChallenges = this.unusedChallenges.filter((c) => c.type !== type);
 	}
 
-	addChallengeData(challengeData): void {
+	addChallengeData(challengeData: ChallengeData[]): void {
 		this.unusedChallenges = challengeData;
 	}
 
