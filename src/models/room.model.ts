@@ -86,6 +86,10 @@ export default class Room extends StateObject {
 	isInProgress: boolean;
 	points: number;
 	unaskedQuestions: any[];
+	challengeStart: number;
+	challengeCurrent: number;
+	challengeEnd: number;
+	timer: any;
 
 	constructor(
 		public roomcode: string,
@@ -296,5 +300,28 @@ export default class Room extends StateObject {
 		}
 
 		this._players[this.moleChooser.getMoleIndex(this._players)].isMole = true;
+	}
+
+	startTimerWithCallback(
+		millisecondsFromNow: number,
+		millisecondsInterval: number,
+		timerTickCB = () => {},
+		timerDoneCB = () => {}
+	) {
+		this.challengeStart = Date.now();
+		this.challengeCurrent = this.challengeStart;
+		this.challengeEnd = this.challengeStart + millisecondsFromNow;
+
+		this.timer = setInterval(() => {
+			this.challengeCurrent += millisecondsInterval;
+			if (this.challengeCurrent >= this.challengeEnd) {
+				this.currentEpisode.currentChallenge.timerEnded();
+				timerTickCB();
+				clearInterval(this.timer);
+			} else {
+				this.currentEpisode.currentChallenge.timerTicked();
+				timerDoneCB();
+			}
+		}, millisecondsInterval);
 	}
 }

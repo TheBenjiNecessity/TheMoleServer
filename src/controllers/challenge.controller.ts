@@ -48,35 +48,13 @@ export default abstract class ChallengeController {
 		return CHALLENGE_SOCKET_EVENTS.REMOVE_VOTED_PLAYER;
 	}
 
-	startTimer(
-		roomcode: string,
-		milliseconds: number,
-		interval: number = MILLISECONDS_IN_SECOND,
-		tickCallback,
-		doneCallBack
-	) {
-		const tickCB = () => {
-			tickCallback();
-			this.roomController.sendTimerTick(roomcode);
-		};
-		const doneCB = () => {
-			doneCallBack();
-			this.roomController.sendTimerDone(roomcode);
-		};
-		this.performEvent(roomcode, CHALLENGE_EVENTS.START_TIMER, roomcode, tickCB, doneCB, milliseconds, interval);
-	}
-
 	performEvent(roomcode: string, event: string, ...args) {
 		return this.roomController.performEventOnChallenge(roomcode, event, ...args);
 	}
 
 	moveNext(roomcode) {
-		let room = this.roomController.getRoom(roomcode);
 		this.performEvent(roomcode, 'moveNext');
-		if (room.currentEpisode.currentChallenge.state === Challenge.CHALLENGE_STATES.IN_GAME) {
-			this.startChallenge(roomcode);
-		}
 	}
 
-	abstract startChallenge(roomcode: string);
+	abstract stateDidChange(roomcode: string, previousState: string, newState: string);
 }

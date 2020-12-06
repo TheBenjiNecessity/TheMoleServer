@@ -154,30 +154,11 @@ export default abstract class Challenge extends StateObject {
 		}
 	}
 
-	startTimerWithCallback(
-		roomcode: string,
-		duringCB: Function,
-		endCB: Function,
-		millisecondsFromNow: number,
-		millisecondsInterval: number
-	) {
-		this.challengeStart = Date.now();
-		this.challengeCurrent = this.challengeStart;
-		this.challengeEnd = this.challengeStart + millisecondsFromNow;
-
-		this.isChallengeRunning = true;
-		this.timer = setInterval(() => {
-			this.challengeCurrent += millisecondsInterval;
-			if (this.challengeCurrent >= this.challengeEnd) {
-				endCB(roomcode);
-				clearInterval(this.timer);
-			} else {
-				duringCB(roomcode);
-			}
-		}, millisecondsInterval);
-	}
-
 	endChallenge() {
 		this.state = Challenge.CHALLENGE_STATES.CHALLENGE_END;
 	}
+
+	abstract timerEnded();
+
+	abstract timerTicked();
 }

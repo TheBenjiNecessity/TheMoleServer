@@ -126,4 +126,13 @@ export default class RoomController {
 	sendTimerDone(roomcode: string) {
 		return this.websocketService.sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
 	}
+
+	startTimer(roomcode: string, millisecondsFromNow: number, millisecondsInterval: number) {
+		this.rooms[roomcode].startTimerWithCallback(
+			millisecondsFromNow,
+			millisecondsInterval,
+			() => this.sendTimerTick(roomcode),
+			() => this.sendTimerDone(roomcode)
+		);
+	}
 }
