@@ -1,11 +1,11 @@
 import ChallengeData from '../../interfaces/challenge-data';
-import Challenge from '../../models/challenge.model';
 import WiseMonkeysChallengeController from './controller';
 import WiseMonkeysChallenge from './model';
 import WiseMonkeysChallengeSocketHandler from './socket-handler';
 import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
+import ChallengeController from '../../controllers/challenge.controller';
 
 const language = {
 	en: {
@@ -39,17 +39,16 @@ export default class WiseMonkeysChallengeData extends ChallengeData {
 	}
 
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
-		let wiseMonkeysChallengeController = new WiseMonkeysChallengeController(roomController);
-		return new WiseMonkeysChallengeSocketHandler(
-			roomController,
-			webSocketService,
-			socket,
-			wiseMonkeysChallengeController
-		);
+		const challengeController = this.getController(roomController) as WiseMonkeysChallengeController;
+		return new WiseMonkeysChallengeSocketHandler(roomController, webSocketService, socket, challengeController);
 	}
 
-	getModel(players, lang): Challenge {
+	getController(roomController: RoomController): ChallengeController {
+		return new WiseMonkeysChallengeController(roomController);
+	}
+
+	initModel(players, lang) {
 		let { title, description, questions } = this.lang[lang];
-		return new WiseMonkeysChallenge(players, title, description, questions);
+		this.model = new WiseMonkeysChallenge(players, title, description, questions);
 	}
 }

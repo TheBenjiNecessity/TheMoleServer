@@ -2,6 +2,7 @@ import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
 import WiseMonkeysChallenge from './model';
+import Challenge from '../../models/challenge.model';
 
 const POINTS = 10;
 
@@ -27,5 +28,11 @@ export default class WiseMonkeysChallengeController extends ChallengeController 
 		}
 
 		return 'entered-riddle';
+	}
+
+	stateDidChange(roomcode: string, previousState: string, newState: string) {
+		if (newState === Challenge.CHALLENGE_STATES.IN_GAME) {
+			this.roomController.startTimer(roomcode, 1000 * 60 * 5, 1000);
+		}
 	}
 }

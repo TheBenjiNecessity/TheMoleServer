@@ -34,4 +34,12 @@ export default class WiseMonkeysChallenge extends Challenge {
 	isAnswerCorrect(answerText: string, language: string): boolean {
 		return this.currentRiddle.isInputCorrent(answerText, language);
 	}
+
+	moveNext() {
+		super.moveNext();
+	}
+
+	timerEnded() {}
+
+	timerTicked() {}
 }
