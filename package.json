@@ -37,8 +37,6 @@
 	},
 	"jest": {
 		"verbose": true,
-		"modulePathIgnorePatterns": [
-			"/lib/"
-		]
+		"modulePathIgnorePatterns": [ "/lib/" ]
 	}
 }
