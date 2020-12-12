@@ -6,6 +6,7 @@ import PathChallengeSocketHandler from './socket-handler';
 import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
+import ChallengeController from '../../controllers/challenge.controller';
 
 const language = {
 	en: {
@@ -49,12 +50,16 @@ export default class PathChallengeData extends ChallengeData {
 	}
 
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
-		let pathChallengeController = new PathChallengeController(roomController);
+		let pathChallengeController = this.getController(roomController) as PathChallengeController;
 		return new PathChallengeSocketHandler(roomController, webSocketService, socket, pathChallengeController);
 	}
 
-	getModel(players, lang): Challenge {
+	getController(roomController): ChallengeController {
+		return new PathChallengeController(roomController);
+	}
+
+	initModel(players, lang) {
 		let { title, description, questions } = this.lang[lang];
-		return new PathChallenge(players, title, description, questions);
+		this.model = new PathChallenge(players, title, description, questions);
 	}
 }

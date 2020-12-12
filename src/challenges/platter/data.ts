@@ -6,6 +6,7 @@ import PlatterChallengeSocketHandler from './socket-handler';
 import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
+import ChallengeController from '../../controllers/challenge.controller';
 
 const language = {
 	en: {
@@ -44,12 +45,16 @@ export default class PlatterChallengeData extends ChallengeData {
 	}
 
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
-		let platterChallengeController = new PlatterChallengeController(roomController);
+		let platterChallengeController = this.getController(roomController) as PlatterChallengeController;
 		return new PlatterChallengeSocketHandler(roomController, webSocketService, socket, platterChallengeController);
 	}
 
-	getModel(players, lang): Challenge {
+	getController(roomController): ChallengeController {
+		return new PlatterChallengeController(roomController);
+	}
+
+	initModel(players, lang) {
 		let { title, description, questions } = this.lang[lang];
-		return new PlatterChallenge(players, title, description, questions);
+		this.model = new PlatterChallenge(players, title, description, questions);
 	}
 }

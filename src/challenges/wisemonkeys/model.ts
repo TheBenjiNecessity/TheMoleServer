@@ -38,8 +38,4 @@ export default class WiseMonkeysChallenge extends Challenge {
 	moveNext() {
 		super.moveNext();
 	}
-
-	timerEnded() {}
-
-	timerTicked() {}
 }

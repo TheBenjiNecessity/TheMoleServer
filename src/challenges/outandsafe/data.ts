@@ -6,6 +6,7 @@ import OutAndSafeChallengeSocketHandler from './socket-handler';
 import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
+import ChallengeController from '../../controllers/challenge.controller';
 
 const language = {
 	en: {
@@ -39,7 +40,7 @@ export default class OutAndSafeChallengeData extends ChallengeData {
 	}
 
 	setupSocketHandler(roomController: RoomController, webSocketService: WebSocketService, socket: any): SocketHandler {
-		let outAndSafeChallengeController = new OutAndSafeChallengeController(roomController);
+		let outAndSafeChallengeController = this.getController(roomController) as OutAndSafeChallengeController;
 		return new OutAndSafeChallengeSocketHandler(
 			roomController,
 			webSocketService,
@@ -48,8 +49,12 @@ export default class OutAndSafeChallengeData extends ChallengeData {
 		);
 	}
 
-	getModel(players, lang): Challenge {
+	getController(roomController): ChallengeController {
+		return new OutAndSafeChallengeController(roomController);
+	}
+
+	initModel(players, lang) {
 		let { title, description, questions } = this.lang[lang];
-		return new OutAndSafeChallenge(players, title, description, questions);
+		this.model = new OutAndSafeChallenge(players, title, description, questions);
 	}
 }

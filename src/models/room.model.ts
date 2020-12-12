@@ -56,7 +56,7 @@ class EpisodeGenerator implements IEpisodeGenerator {
 			numRestrictedChallenges.shuffle();
 			const randomChallenge = numRestrictedChallenges[0];
 			randomChallenge.initModel(playersStillPlaying, language);
-			challenges.push(randomChallenge.model);
+			challenges.push(randomChallenge);
 		}
 
 		return new Episode(playersStillPlaying, challenges, unaskedQuestions);

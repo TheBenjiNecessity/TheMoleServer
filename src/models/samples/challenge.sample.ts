@@ -68,21 +68,28 @@ class SampleChallengeData extends ChallengeData {
 		return new SampleSocketHandler(roomController, webSocketService, socket);
 	}
 
-	getModel(players, lang): Challenge {
-		return new SampleRoleChallenge(players);
+	getController(roomController: RoomController) {
+		return new SampleChallengeController(roomController);
+	}
+
+	initModel(players, lang) {
+		this.model = new SampleRoleChallenge(players);
 	}
 }
 
 export default class ChallengeSampleService {
 	static getTestChallenge(room) {
-		return new SampleChallenge(room.playersStillPlaying);
+		return this.getTestChallengeData(room).model;
 	}
 
 	static getTestChallengeWithRoles(room) {
-		return new SampleRoleChallenge(room.playersStillPlaying);
+		//TODO
+		return this.getTestChallengeData(room).model;
 	}
 
-	static getTestChallengeData() {
-		return new SampleChallengeData();
+	static getTestChallengeData(room) {
+		const sampleChallengeData = new SampleChallengeData();
+		sampleChallengeData.initModel(room.playersStillPlaying, 'en');
+		return sampleChallengeData;
 	}
 }

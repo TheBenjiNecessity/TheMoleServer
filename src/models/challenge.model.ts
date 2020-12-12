@@ -157,8 +157,4 @@ export default abstract class Challenge extends StateObject {
 	endChallenge() {
 		this.state = Challenge.CHALLENGE_STATES.CHALLENGE_END;
 	}
-
-	abstract timerEnded();
-
-	abstract timerTicked();
 }
