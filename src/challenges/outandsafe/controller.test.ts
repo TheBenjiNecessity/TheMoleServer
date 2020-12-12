@@ -29,8 +29,9 @@ function getMockOutAndSafeChallengeController(roomController: RoomController) {
 
 function getMockRoom() {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let buttonChallenge = new OutAndSafeChallengeData().getModel(room.playersStillPlaying, 'en') as OutAndSafeChallenge;
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, buttonChallenge);
+	const outAndSafeChallengeData = new OutAndSafeChallengeData();
+	outAndSafeChallengeData.initModel(room.playersStillPlaying, 'en');
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, outAndSafeChallengeData);
 	return room;
 }
 

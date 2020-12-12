@@ -1,11 +1,12 @@
-import RoomController from "../../controllers/room.controller";
-import Player from "../../models/player.model";
-import Room from "../../models/room.model";
-import EpisodeSampleService from "../../models/samples/episode.sample";
-import RoomSampleService from "../../models/samples/room.sample";
-import WebSocketService from "../../services/websocket.service";
-import StacksChallengeController from "./controller";
-import StacksChallenge, { IPilesGenerator, Pile } from "./model";
+import RoomController from '../../controllers/room.controller';
+import Player from '../../models/player.model';
+import Room from '../../models/room.model';
+import EpisodeSampleService from '../../models/samples/episode.sample';
+import RoomSampleService from '../../models/samples/room.sample';
+import WebSocketService from '../../services/websocket.service';
+import StacksChallengeController from './controller';
+import StacksChallengeData from './data';
+import StacksChallenge, { IPilesGenerator, Pile } from './model';
 
 let rooms: { [id: string]: Room } = {};
 
@@ -44,9 +45,11 @@ function getMockStacksChallengeController(roomController: RoomController): Stack
 }
 
 function getMockRoom(): Room {
-    let room = RoomSampleService.getTestRoomForNumPlayers(6);
-    let stacksChallenge = new StacksChallenge(room.playersStillPlaying, '', '', [], new PilesGenerator());
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, stacksChallenge);
+	let room = RoomSampleService.getTestRoomForNumPlayers(6);
+	const stacksChallengeData = new StacksChallengeData();
+	stacksChallengeData.initModel(room.playersStillPlaying, 'en');
+	stacksChallengeData.model = new StacksChallenge(room.playersStillPlaying, '', '', [], new PilesGenerator());
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, stacksChallengeData);
 
 	return room;
 }
@@ -62,51 +65,50 @@ function getMockComponents() {
 }
 
 test('Checks selectAmount', () => {
-    let { room, roomController, stacksChallengeController } = getMockComponents();
-    let { roomcode } = room;
-    let players = room.playersStillPlaying;
-    let stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
+	let { room, roomController, stacksChallengeController } = getMockComponents();
+	let { roomcode } = room;
+	let players = room.playersStillPlaying;
+	let stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
 
-    expect(stacksChallenge.currentRound).toBe(1);
-    expect(stacksChallenge.isChallengeOver).toBe(false);
+	expect(stacksChallenge.currentRound).toBe(1);
+	expect(stacksChallenge.isChallengeOver).toBe(false);
 
-    stacksChallengeController.selectAmount(roomcode, players[0].name, 1);
-    stacksChallengeController.selectAmount(roomcode, players[1].name, 1);
-    stacksChallengeController.selectAmount(roomcode, players[2].name, 1);
-    stacksChallengeController.selectAmount(roomcode, players[3].name, 1);
-    stacksChallengeController.selectAmount(roomcode, players[4].name, 1);
-    stacksChallengeController.selectAmount(roomcode, players[5].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[0].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[1].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[2].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[3].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[4].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[5].name, 1);
 
-    stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
-    room = roomController.getRoom(roomcode);
-    expect(room.points).toBe(0);
-    expect(stacksChallenge.currentRound).toBe(2);
-    expect(stacksChallenge.isChallengeOver).toBe(false);
+	stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
+	room = roomController.getRoom(roomcode);
+	expect(room.points).toBe(0);
+	expect(stacksChallenge.currentRound).toBe(2);
+	expect(stacksChallenge.isChallengeOver).toBe(false);
 
-    stacksChallengeController.selectAmount(roomcode, players[0].name, 1);
-    stacksChallengeController.selectAmount(roomcode, players[1].name, 1);
-    stacksChallengeController.selectAmount(roomcode, players[2].name, 2);
-    stacksChallengeController.selectAmount(roomcode, players[3].name, 2);
-    stacksChallengeController.selectAmount(roomcode, players[4].name, 3);
-    stacksChallengeController.selectAmount(roomcode, players[5].name, 3);
+	stacksChallengeController.selectAmount(roomcode, players[0].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[1].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[2].name, 2);
+	stacksChallengeController.selectAmount(roomcode, players[3].name, 2);
+	stacksChallengeController.selectAmount(roomcode, players[4].name, 3);
+	stacksChallengeController.selectAmount(roomcode, players[5].name, 3);
 
-    stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
-    room = roomController.getRoom(roomcode);
-    expect(room.points).toBe(0);
-    expect(stacksChallenge.currentRound).toBe(3);
-    expect(stacksChallenge.isChallengeOver).toBe(false);
+	stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
+	room = roomController.getRoom(roomcode);
+	expect(room.points).toBe(0);
+	expect(stacksChallenge.currentRound).toBe(3);
+	expect(stacksChallenge.isChallengeOver).toBe(false);
 
-    stacksChallengeController.selectAmount(roomcode, players[0].name, 1);
-    stacksChallengeController.selectAmount(roomcode, players[1].name, 1);
-    stacksChallengeController.selectAmount(roomcode, players[2].name, 2);
-    stacksChallengeController.selectAmount(roomcode, players[3].name, 2);
-    stacksChallengeController.selectAmount(roomcode, players[4].name, 2);
-    stacksChallengeController.selectAmount(roomcode, players[5].name, 3);
+	stacksChallengeController.selectAmount(roomcode, players[0].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[1].name, 1);
+	stacksChallengeController.selectAmount(roomcode, players[2].name, 2);
+	stacksChallengeController.selectAmount(roomcode, players[3].name, 2);
+	stacksChallengeController.selectAmount(roomcode, players[4].name, 2);
+	stacksChallengeController.selectAmount(roomcode, players[5].name, 3);
 
-    stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
-    room = roomController.getRoom(roomcode);
-    expect(room.points).toBe(5);
-    expect(stacksChallenge.currentRound).toBe(4);
-    expect(stacksChallenge.isChallengeOver).toBe(true);
+	stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
+	room = roomController.getRoom(roomcode);
+	expect(room.points).toBe(5);
+	expect(stacksChallenge.currentRound).toBe(4);
+	expect(stacksChallenge.isChallengeOver).toBe(true);
 });
-   

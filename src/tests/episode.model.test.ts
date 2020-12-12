@@ -7,6 +7,8 @@ import EpisodeSampleService from '../models/samples/episode.sample';
 import RoomSampleService from '../models/samples/room.sample';
 import questionData from '../models/quiz/question.data';
 import QuizSampleService from '../models/samples/quiz.sample';
+import ChallengeData from '../interfaces/challenge-data';
+import ButtonChallengeData from '../challenges/button/data';
 
 const NUMBER_OF_PLAYERS = 5;
 
@@ -15,34 +17,35 @@ function getMockRoom() {
 }
 
 function getMockChallenge(room) {
-	return new ButtonChallenge(room.playersStillPlaying, '', '', []);
+	const buttonChallengeData = new ButtonChallengeData();
+	buttonChallengeData.initModel(room.playersStillPlaying, 'en');
+	return buttonChallengeData;
 }
 
-function getMockEpisode(room: Room, challenge: Challenge) {
-	return new Episode(room.playersStillPlaying, [ challenge ], questionData['en']);
+function getMockEpisode(room: Room, challengeData: ChallengeData) {
+	return new Episode(room.playersStillPlaying, [ challengeData ], questionData['en']);
 }
 
 function getMockComponents() {
 	let room = getMockRoom();
-	let challenge = getMockChallenge(room);
-	let episode = getMockEpisode(room, challenge);
+	let challengeData = getMockChallenge(room);
+	let episode = getMockEpisode(room, challengeData);
 	room.currentEpisode = episode;
 
-	return { room, challenge, episode };
+	return { room, challengeData, episode };
 }
 
 test('Tests episode init', () => {
 	let { episode } = getMockComponents();
 
 	expect(episode.currentChallengeIndex).toBe(0);
-	expect(episode.challenges.length).toEqual(1);
 	expect(episode.players.length).toEqual(NUMBER_OF_PLAYERS);
 });
 
 test('Tests getter and setters', () => {
-	let { challenge, episode } = getMockComponents();
+	let { challengeData, episode } = getMockComponents();
 
-	expect(episode.currentChallenge).toEqual(challenge);
+	expect(episode.currentChallenge).toEqual(challengeData.model);
 	expect(episode.episodeIsOver).toEqual(false);
 	expect(episode.molePlayer.isMole).toBeTruthy();
 	expect(episode.eliminatedPlayer).toBeFalsy();

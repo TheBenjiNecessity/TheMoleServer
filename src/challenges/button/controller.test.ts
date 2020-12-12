@@ -14,10 +14,13 @@ function getMockButtonChallengeController(roomController: RoomController) {
 
 function getMockRoom() {
 	let room = RoomSampleService.getTestRoomForNumPlayers(4);
-	let buttonChallenge = new ButtonChallengeData().getModel(room.playersStillPlaying, 'en') as ButtonChallenge;
+	let buttonChallengeData = new ButtonChallengeData();
+	buttonChallengeData.initModel(room.playersStillPlaying, 'en');
+	const buttonChallenge = buttonChallengeData.model as ButtonChallenge;
 	buttonChallenge.riddleAnswer = SAMPLE_RIDDLE_ANSWER;
 	buttonChallenge.riddle = buttonChallenge.riddleAnswer.randomCypherText();
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, buttonChallenge);
+	buttonChallengeData.model = buttonChallenge;
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, buttonChallengeData);
 	return room;
 }
 

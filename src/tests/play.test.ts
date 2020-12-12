@@ -1,3 +1,4 @@
+import ButtonChallengeController from '../challenges/button/controller';
 import ChallengeController from '../controllers/challenge.controller';
 import RoomController from '../controllers/room.controller';
 import ChallengeData from '../interfaces/challenge-data';
@@ -16,19 +17,24 @@ import ChallengeService from '../services/game/challenge.service';
 jest.useFakeTimers();
 
 function getMockChallengeController(roomController: RoomController) {
-	return new ChallengeController(roomController);
+	return new ButtonChallengeController(roomController);
 }
 
 function getMockComponents() {
+	const room = new Room('TEST', 'en', new MoleChooser(), new EpisodeGenerator());
 	let challengeData = [];
 	for (let i = 0; i < 30; i++) {
-		challengeData.push(ChallengeSampleService.getTestChallengeData());
+		const challengeDatum = ChallengeSampleService.getTestChallengeData(room);
+		challengeDatum._type = 'test ' + i;
+		challengeData.push(challengeDatum);
 	}
 
 	let roomController = getMockRoomController(challengeData);
 	let challengeController = getMockChallengeController(roomController);
 
-	return { roomController, challengeController };
+	roomController.setRoom(room);
+
+	return { room, roomController, challengeController };
 }
 
 class MoleChooser implements IMoleChooser {
@@ -73,7 +79,9 @@ class EpisodeGenerator implements IEpisodeGenerator {
 			}
 
 			numRestrictedChallenges.shuffle();
-			challenges.push(numRestrictedChallenges[0].getModel(playersStillPlaying, language));
+			const tempChallengeData = numRestrictedChallenges[0];
+			tempChallengeData.initModel(playersStillPlaying, 'en');
+			challenges.push(tempChallengeData);
 		}
 
 		return new Episode(playersStillPlaying, challenges, testQuestions);
@@ -81,12 +89,8 @@ class EpisodeGenerator implements IEpisodeGenerator {
 }
 
 test('Plays through the entire game', () => {
-	let { roomController, challengeController } = getMockComponents();
-	let room = roomController.addRoom('en');
-	let { roomcode } = room;
-
-	room = new Room(roomcode, 'en', new MoleChooser(), new EpisodeGenerator());
-	roomController.setRoom(room);
+	let { room, roomController, challengeController } = getMockComponents();
+	const { roomcode } = room;
 
 	// Room created
 	roomController.setChallengeDataForRoom(roomcode);
@@ -162,7 +166,7 @@ test('Plays through the entire game', () => {
 		roomController.endChallenge(roomcode);
 	};
 
-	challengeController.startTimer(roomcode, 10, 1, () => {}, doneCB);
+	roomController.startTimer(roomcode, 10, 1, () => {}, doneCB);
 
 	jest.runAllTimers();
 

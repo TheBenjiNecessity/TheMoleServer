@@ -1,14 +1,18 @@
+import Room from '../../models/room.model';
 import RoomSampleService from '../../models/samples/room.sample';
 import OutAndSafeChallengeData from './data';
 import OutAndSafeChallenge from './model';
 
+function getOutAndSafeChallenge(room: Room): OutAndSafeChallenge {
+	const outAndSafeChallengeData = new OutAndSafeChallengeData();
+	outAndSafeChallengeData.initModel(room.playersStillPlaying, 'en');
+	return outAndSafeChallengeData.model as OutAndSafeChallenge;
+}
+
 test('Checks initializing of model', () => {
 	let numPlayers = 5;
 	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
 
 	expect(outAndSafeChallenge.currentRound).toBe(1);
 	expect(Object.keys(outAndSafeChallenge.playerHands).length).toBe(numPlayers);
@@ -22,10 +26,8 @@ test('Checks initializing of model', () => {
 
 test("Checks removing of 'safe' card from player's hand", () => {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
+
 	let firstPlayerName = room.playersStillPlaying[0].name;
 	outAndSafeChallenge.removeCardFromHand(firstPlayerName, 'safe');
 
@@ -43,10 +45,8 @@ test("Checks removing of 'safe' card from player's hand", () => {
 
 test("Checks removing of 'out' card from player's hand", () => {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
+
 	let firstPlayerName = room.playersStillPlaying[0].name;
 	outAndSafeChallenge.removeCardFromHand(firstPlayerName, 'out');
 
@@ -64,10 +64,7 @@ test("Checks removing of 'out' card from player's hand", () => {
 
 test('Checks increaseRoundNumber method', () => {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
 
 	expect(outAndSafeChallenge.currentRound).toBe(1);
 	outAndSafeChallenge.increaseRoundNumber();
@@ -76,10 +73,8 @@ test('Checks increaseRoundNumber method', () => {
 
 test('Checks clearSelectedCards method', () => {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
+
 	outAndSafeChallenge.currentSelectedCards[room.playersStillPlaying[0].name] = 'safe';
 	outAndSafeChallenge.currentSelectedCards[room.playersStillPlaying[1].name] = 'safe';
 	outAndSafeChallenge.currentSelectedCards[room.playersStillPlaying[2].name] = 'safe';
@@ -92,10 +87,8 @@ test('Checks clearSelectedCards method', () => {
 
 test('Checks selectCard method', () => {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
+
 	let player1Name = room.playersStillPlaying[0].name;
 	let player2Name = room.playersStillPlaying[1].name;
 
@@ -126,10 +119,7 @@ test('Checks selectCard method', () => {
 
 test('Checks allCardsPlayed getter', () => {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
 
 	expect(outAndSafeChallenge.allCardsPlayed).toBe(false);
 	outAndSafeChallenge.currentSelectedCards[room.playersStillPlaying[0].name] = 'safe';
@@ -146,10 +136,7 @@ test('Checks allCardsPlayed getter', () => {
 
 test('Checks numOutCards getter', () => {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
 
 	expect(outAndSafeChallenge.numOutCards).toBe(0);
 	outAndSafeChallenge.currentSelectedCards[room.playersStillPlaying[0].name] = 'out';
@@ -166,10 +153,7 @@ test('Checks numOutCards getter', () => {
 
 test('Checks allCardsAreSafe getter', () => {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
 
 	outAndSafeChallenge.currentSelectedCards[room.playersStillPlaying[0].name] = 'safe';
 	expect(outAndSafeChallenge.allCardsAreSafe).toBe(false);
@@ -185,10 +169,8 @@ test('Checks allCardsAreSafe getter', () => {
 
 test('Checks currentSelectedCardsAsArray getter', () => {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let outAndSafeChallenge = new OutAndSafeChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as OutAndSafeChallenge;
+	let outAndSafeChallenge = getOutAndSafeChallenge(room);
+
 	outAndSafeChallenge.currentSelectedCards[room.playersStillPlaying[0].name] = 'safe';
 	outAndSafeChallenge.currentSelectedCards[room.playersStillPlaying[1].name] = 'safe';
 	outAndSafeChallenge.currentSelectedCards[room.playersStillPlaying[2].name] = 'safe';

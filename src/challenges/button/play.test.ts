@@ -31,10 +31,9 @@ function getMockButtonChallengeController(roomController: RoomController) {
 
 function getMockRoom() {
 	let room = RoomSampleService.getTestRoomForNumPlayers(4);
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, new ButtonChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as ButtonChallenge);
+	const buttonChallengeData = new ButtonChallengeData();
+	buttonChallengeData.initModel(room.playersStillPlaying, 'en');
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, buttonChallengeData);
 	return room;
 }
 
@@ -79,6 +78,10 @@ test('Plays through an entire round until all players remove their fingers from 
 		}
 
 		currentTick++;
+
+		if (currentTick > 10) {
+			throw new Error('The challenge should have ended before getting here');
+		}
 	};
 
 	let doneCB = () => {
@@ -101,7 +104,7 @@ test('Plays through an entire round until all players remove their fingers from 
 		expect(player.numExemptions).toBe(0);
 	}
 
-	expect(buttonChallenge.getPointsForTime(1, 1)).toBe(16);
+	expect(room.getPointsForTime(1, 1)).toBe(16);
 });
 
 test('Plays through an entire round where everyone keeps their fingers on their buttons', () => {
@@ -126,7 +129,7 @@ test('Plays through an entire round where everyone keeps their fingers on their 
 		expect(player.numExemptions).toBe(0);
 	}
 
-	expect(buttonChallenge.getPointsForTime(1, 1)).toBe(20);
+	expect(room.getPointsForTime(1, 1)).toBe(20);
 });
 
 test('Plays through an entire round where one person solves the riddle', () => {
@@ -168,5 +171,5 @@ test('Plays through an entire round where one person solves the riddle', () => {
 	expect(room.playersStillPlaying[2].numExemptions).toBe(1);
 	expect(room.playersStillPlaying[3].numExemptions).toBe(0);
 
-	expect(buttonChallenge.getPointsForTime(1, 1)).toBe(8);
+	expect(room.getPointsForTime(1, 1)).toBe(8);
 });

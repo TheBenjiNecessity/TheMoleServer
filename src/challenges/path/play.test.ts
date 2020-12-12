@@ -7,6 +7,7 @@ import RoomSampleService from '../../models/samples/room.sample';
 import PathChallenge, { IWalkersGenerator, IChestsGenerator, Chest } from './model';
 import Player from '../../models/player.model';
 import Challenge from '../../models/challenge.model';
+import PathChallengeData from './data';
 
 let rooms: { [id: string]: Room } = {};
 
@@ -50,14 +51,19 @@ function getMockPathChallengeController(roomController: RoomController) {
 	return new PathChallengeController(roomController);
 }
 
-function getMockPathChallenge(players: Player[]): PathChallenge {
-	return new PathChallenge(players, 'The Path', '', [], new WalkersGenerator(), new ChestsGenerator());
-}
-
 function getMockRoom() {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let pathChallenge = getMockPathChallenge(room.playersStillPlaying);
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, pathChallenge);
+	const pathChallengeData = new PathChallengeData();
+	pathChallengeData.initModel(room.playersStillPlaying, 'en');
+	pathChallengeData.model = new PathChallenge(
+		room.playersStillPlaying,
+		'',
+		'',
+		[],
+		new WalkersGenerator(),
+		new ChestsGenerator()
+	);
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, pathChallengeData);
 	return room;
 }
 

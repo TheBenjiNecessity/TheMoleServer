@@ -4,10 +4,10 @@ import '../../extensions/array';
 import PathChallengeData from './data';
 
 function getMockPathChallenge(): PathChallenge {
-	let room = RoomSampleService.getTestRoomWithTenPlayers();
-	let pathChallengeData = new PathChallengeData();
-	let pathChallenge = pathChallengeData.getModel(room.playersStillPlaying, 'en') as PathChallenge;
-	return pathChallenge;
+	const room = RoomSampleService.getTestRoomWithTenPlayers();
+	const pathChallengeData = new PathChallengeData();
+	pathChallengeData.initModel(room.playersStillPlaying, 'en');
+	return pathChallengeData.model as PathChallenge;
 }
 
 test('Checks initializing challenge model', () => {

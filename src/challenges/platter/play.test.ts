@@ -11,9 +11,10 @@ function getMockPlatterChallengeController(roomController: RoomController) {
 }
 
 function getMockRoom() {
-	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let platterChallenge = new PlatterChallengeData().getModel(room.playersStillPlaying, 'en') as PlatterChallenge;
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, platterChallenge);
+	const room = RoomSampleService.getTestRoomForNumPlayers(5);
+	const platterChallengeData = new PlatterChallengeData();
+	platterChallengeData.initModel(room.playersStillPlaying, 'en');
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, platterChallengeData);
 	return room;
 }
 

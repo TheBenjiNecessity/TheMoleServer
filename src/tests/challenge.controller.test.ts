@@ -5,6 +5,7 @@ import RoomController from '../controllers/room.controller';
 import Room from '../models/room.model';
 import WebSocketService from '../services/websocket.service';
 import Challenge from '../models/challenge.model';
+import ButtonChallengeController from '../challenges/button/controller';
 
 let rooms: { [id: string]: Room } = {};
 
@@ -30,7 +31,7 @@ function getMockRoom(numPlayers) {
 function getMockComponents(numPlayers) {
 	let room = getMockRoom(numPlayers);
 	let roomController = getMockRoomController();
-	let challengeController = new ChallengeController(roomController);
+	let challengeController = new ButtonChallengeController(roomController);
 
 	roomController.setRoom(room);
 

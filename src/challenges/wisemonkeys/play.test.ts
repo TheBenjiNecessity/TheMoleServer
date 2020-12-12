@@ -11,12 +11,10 @@ function getMockPlatterChallengeController(roomController: RoomController) {
 }
 
 function getMockRoom() {
-	let room = RoomSampleService.getTestRoomForNumPlayers(5);
-	let platterChallenge = new WiseMonkeysChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as WiseMonkeysChallenge;
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, platterChallenge);
+	const room = RoomSampleService.getTestRoomForNumPlayers(5);
+	const wiseMonkeysChallengeData = new WiseMonkeysChallengeData();
+	wiseMonkeysChallengeData.initModel(room.playersStillPlaying, 'en');
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, wiseMonkeysChallengeData);
 	return room;
 }
 

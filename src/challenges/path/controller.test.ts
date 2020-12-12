@@ -28,10 +28,9 @@ function getMockPathChallengeController(roomController: RoomController) {
 
 function getMockRoom() {
 	let room = RoomSampleService.getTestRoomForNumPlayers(4);
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, new PathChallengeData().getModel(
-		room.playersStillPlaying,
-		'en'
-	) as PathChallenge);
+	const pathChallengeData = new PathChallengeData();
+	pathChallengeData.initModel(room.playersStillPlaying, 'en');
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, pathChallengeData);
 	return room;
 }
 
