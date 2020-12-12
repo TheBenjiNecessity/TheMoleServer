@@ -9,4 +9,6 @@ export default class StacksChallengeController extends ChallengeController {
 	test(roomcode, player) {
 		return 'test';
 	}
+
+	stateDidChange() {}
 }

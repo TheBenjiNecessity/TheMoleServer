@@ -31,4 +31,6 @@ export default class OutAndSafeChallengeController extends ChallengeController {
 
 		return 'out-safe-card-selected';
 	}
+
+	stateDidChange() {}
 }

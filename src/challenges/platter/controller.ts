@@ -31,4 +31,6 @@ export default class PlatterChallengeController extends ChallengeController {
 
 		return 'took-money';
 	}
+
+	stateDidChange() {}
 }

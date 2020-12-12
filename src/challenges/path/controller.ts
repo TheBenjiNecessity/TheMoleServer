@@ -82,4 +82,6 @@ export default class PathChallengeController extends ChallengeController {
 
 		return message;
 	}
+
+	stateDidChange() {}
 }

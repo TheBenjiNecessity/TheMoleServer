@@ -33,4 +33,6 @@ export default class StacksChallengeController extends ChallengeController {
 
 		return message;
 	}
+
+	stateDidChange() {}
 }

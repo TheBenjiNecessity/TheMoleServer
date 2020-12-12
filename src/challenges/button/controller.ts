@@ -61,4 +61,6 @@ export default class ButtonChallengeController extends ChallengeController {
 
 		return message;
 	}
+
+	stateDidChange() {}
 }

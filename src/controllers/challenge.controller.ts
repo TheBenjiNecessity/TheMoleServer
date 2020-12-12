@@ -2,7 +2,11 @@ import RoomController from './room.controller';
 import { CHALLENGE_EVENTS, CHALLENGE_SOCKET_EVENTS } from '../contants/challenge.constants';
 import Challenge from '../models/challenge.model';
 
-export default abstract class ChallengeController {
+export interface IChallengeController {
+	stateDidChange(roomcode: string, previousState: string, newState: string);
+}
+
+export default class ChallengeController implements IChallengeController {
 	constructor(protected roomController: RoomController) {}
 
 	raiseHand(roomcode: string, playerName: string, roleName: string): string {
@@ -50,5 +54,5 @@ export default abstract class ChallengeController {
 		return this.roomController.performEventOnChallenge(roomcode, event, ...args);
 	}
 
-	abstract stateDidChange(roomcode: string, previousState: string, newState: string);
+	stateDidChange(roomcode: string, previousState: string, newState: string) {}
 }
