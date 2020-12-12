@@ -35,7 +35,15 @@ class SampleSocketHandler extends SocketHandler {
 	}
 }
 
+class SampleChallengeController extends ChallengeController {
+	constructor(roomController: RoomController) {
+		super(roomController);
+	}
+}
+
 class SampleChallengeData extends ChallengeData {
+	_type: string;
+
 	constructor() {
 		super({
 			en: {
@@ -53,7 +61,7 @@ class SampleChallengeData extends ChallengeData {
 	}
 
 	get type(): string {
-		return 'test';
+		return this._type;
 	}
 
 	get maxPlayers(): number {
