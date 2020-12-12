@@ -50,13 +50,8 @@ export default class ButtonChallenge extends Challenge {
 		return true;
 	}
 
-	getPointsForTime(
-		millisecondsPerSecond: number = DATETIME.MILLISECONDS_PER_SECONDS,
-		secondsPerMinute: number = DATETIME.SECONDS_PER_MINUTE
-	) {
-		let elapsedSeconds = this.challengeDiff / millisecondsPerSecond;
-		let elapsedMinutes = Math.floor(elapsedSeconds / secondsPerMinute);
-		return Math.floor(elapsedMinutes * POINTS_PER_MINUTE);
+	get pointsPerMinute() {
+		return POINTS_PER_MINUTE;
 	}
 
 	isPlayerAnswerCorrect(answer) {
@@ -74,7 +69,7 @@ export default class ButtonChallenge extends Challenge {
 		this.setPlayerButtonChanged(playerName, true);
 	}
 
-	setPlayerButtonChanged(playerName, pressed) {
+	private setPlayerButtonChanged(playerName, pressed) {
 		this.buttonPlayers[playerName].touchingButton = pressed;
 	}
 }

@@ -17,9 +17,6 @@ export default abstract class Challenge extends StateObject {
 	agreedPlayerNames: string[];
 	raisedHands: RaisedHand[];
 	votedPlayers: any;
-	challengeStart: number;
-	challengeCurrent: number;
-	challengeEnd: number;
 	isChallengeRunning: boolean;
 	timer: any;
 	currentTime: number;
@@ -44,11 +41,8 @@ export default abstract class Challenge extends StateObject {
 		this.agreedPlayerNames = [];
 		this.raisedHands = [];
 		this.votedPlayers = {};
-		this.challengeStart = -1;
-		this.challengeEnd = -1;
 		this.isChallengeRunning = false;
 		this.timer = null;
-		this.challengeCurrent = 0;
 	}
 
 	get hasMajorityVoteForAgreedPlayers() {
@@ -85,8 +79,8 @@ export default abstract class Challenge extends StateObject {
 		}
 	}
 
-	get challengeDiff() {
-		return this.challengeCurrent - this.challengeStart;
+	get pointsPerMinute() {
+		return 0;
 	}
 
 	addAgreedPlayer(playerName: string) {
@@ -152,6 +146,10 @@ export default abstract class Challenge extends StateObject {
 			default:
 				break;
 		}
+	}
+
+	setChallengeIsRunning() {
+		this.isChallengeRunning = true;
 	}
 
 	endChallenge() {

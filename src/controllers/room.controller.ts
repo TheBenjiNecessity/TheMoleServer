@@ -93,6 +93,7 @@ export default class RoomController {
 	/* ===================================== Challenge Events =====================================*/
 	endChallenge(roomcode: string) {
 		this.getCurrentChallenge(roomcode).endChallenge();
+		clearInterval(this.rooms[roomcode].timer);
 		this.moveNext(roomcode);
 	}
 
@@ -137,12 +138,13 @@ export default class RoomController {
 		return this.websocketService.sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
 	}
 
-	startTimer(roomcode: string, millisecondsFromNow: number, millisecondsInterval: number) {
-		this.rooms[roomcode].startTimerWithCallback(
-			millisecondsFromNow,
-			millisecondsInterval,
-			() => this.sendTimerTick(roomcode),
-			() => this.sendTimerDone(roomcode)
-		);
+	startTimer(
+		roomcode: string,
+		millisecondsFromNow: number,
+		millisecondsInterval: number,
+		tickCB: () => any = () => this.sendTimerTick(roomcode),
+		doneCB: () => any = () => this.sendTimerDone(roomcode)
+	) {
+		this.rooms[roomcode].startTimerWithCallback(millisecondsFromNow, millisecondsInterval, tickCB, doneCB);
 	}
 }

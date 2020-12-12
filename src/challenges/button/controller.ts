@@ -28,8 +28,8 @@ export default class ButtonChallengeController extends ChallengeController {
 		playerName: string,
 		interval: number = 1000,
 		timerLength: number = 600000,
-		tickCB: Function = () => {},
-		doneCB: Function = () => {}
+		tickCB = () => {},
+		doneCB = () => {}
 	) {
 		let message = 'button-player-pressed';
 		let event = 'setPlayerPressedButton';
@@ -38,7 +38,8 @@ export default class ButtonChallengeController extends ChallengeController {
 
 		// If it is the start of the game and everyone touches their button then the game begins
 		if (buttonChallenge.allButtonsPressed && !buttonChallenge.isChallengeRunning) {
-			this.startTimer(roomcode, timerLength, interval, tickCB, () => {
+			room = this.performEvent(roomcode, 'setChallengeIsRunning');
+			this.roomController.startTimer(roomcode, timerLength, interval, tickCB, () => {
 				doneCB();
 				this.roomController.endChallenge(roomcode);
 			});

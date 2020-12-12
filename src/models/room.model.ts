@@ -7,6 +7,7 @@ import ChallengeData from '../interfaces/challenge-data';
 import Player from './player.model';
 import StateObject from './stateObject.interface';
 import Question from './quiz/question.model';
+import { DATETIME } from '../contants/datetime.constants';
 
 export interface IMoleChooser {
 	getMoleIndex(players: Player[]);
@@ -106,6 +107,9 @@ export default class Room extends StateObject {
 		this.unusedChallenges = [];
 		this.isInProgress = false;
 		this.points = 0;
+		this.challengeCurrent = 0;
+		this.challengeStart = -1;
+		this.challengeEnd = 0;
 	}
 
 	get isFull() {
@@ -134,6 +138,10 @@ export default class Room extends StateObject {
 
 	get molePlayer() {
 		return this._players.find((p) => p.isMole);
+	}
+
+	get challengeDiff() {
+		return this.challengeCurrent - this.challengeStart;
 	}
 
 	get state() {
@@ -302,6 +310,16 @@ export default class Room extends StateObject {
 		this._players[this.moleChooser.getMoleIndex(this._players)].isMole = true;
 	}
 
+	getPointsForTime(
+		millisecondsPerSecond: number = DATETIME.MILLISECONDS_PER_SECONDS,
+		secondsPerMinute: number = DATETIME.SECONDS_PER_MINUTE
+	) {
+		let elapsedSeconds = this.challengeDiff / millisecondsPerSecond;
+		let elapsedMinutes = Math.floor(elapsedSeconds / secondsPerMinute);
+		const { pointsPerMinute } = this.currentEpisode.currentChallenge;
+		return Math.floor(elapsedMinutes * pointsPerMinute);
+	}
+
 	startTimerWithCallback(
 		millisecondsFromNow: number,
 		millisecondsInterval: number,
@@ -312,15 +330,14 @@ export default class Room extends StateObject {
 		this.challengeCurrent = this.challengeStart;
 		this.challengeEnd = this.challengeStart + millisecondsFromNow;
 
+		clearInterval(this.timer);
 		this.timer = setInterval(() => {
 			this.challengeCurrent += millisecondsInterval;
 			if (this.challengeCurrent >= this.challengeEnd) {
-				this.currentEpisode.currentChallenge.timerEnded();
-				timerTickCB();
+				timerDoneCB();
 				clearInterval(this.timer);
 			} else {
-				this.currentEpisode.currentChallenge.timerTicked();
-				timerDoneCB();
+				timerTickCB();
 			}
 		}, millisecondsInterval);
 	}
