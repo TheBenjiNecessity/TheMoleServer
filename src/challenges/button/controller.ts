@@ -16,7 +16,7 @@ export default class ButtonChallengeController extends ChallengeController {
 
 		// If all buttons are released then the game is over
 		if (buttonChallenge.allButtonsReleased) {
-			this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+			this.roomController.endChallenge(roomcode);
 			message = 'challenge-end';
 		}
 
@@ -55,7 +55,7 @@ export default class ButtonChallengeController extends ChallengeController {
 
 		if (buttonChallenge.isPlayerAnswerCorrect(answer)) {
 			this.roomController.giveObjectsToPlayer(roomcode, playerName, 'exemption', 1);
-			this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+			this.roomController.endChallenge(roomcode);
 			message = 'challenge-end';
 		}
 
