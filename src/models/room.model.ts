@@ -86,7 +86,7 @@ export default class Room extends StateObject {
 	unusedChallenges: ChallengeData[];
 	isInProgress: boolean;
 	points: number;
-	unaskedQuestions: any[];
+	unaskedQuestions: Question[];
 	challengeStart: number;
 	challengeCurrent: number;
 	challengeEnd: number;
@@ -195,7 +195,7 @@ export default class Room extends StateObject {
 			throw 'Cannot remove player from game in progress';
 		}
 
-		this._players = this._players.filter((p) => p.name === playerName);
+		this._players = this._players.filter((p) => p.name !== playerName);
 	}
 
 	hasPlayer(playerName): boolean {
