@@ -4,10 +4,34 @@ import EpisodeSampleService from '../../models/samples/episode.sample';
 import RoomController from '../../controllers/room.controller';
 import Room from '../../models/room.model';
 import WebSocketService from '../../services/websocket.service';
-import PathChallenge from './model';
+import PathChallenge, { Chest, IChestsGenerator, IWalkersGenerator } from './model';
 import PathChallengeData from './data';
+import Player from '../../models/player.model';
 
 let rooms: { [id: string]: Room } = {};
+
+class WalkersGenerator implements IWalkersGenerator {
+	constructor() {}
+
+	getNewWalker(players: Player[]): Player {
+		if (!players.length) {
+			return null;
+		}
+
+		return players[0];
+	}
+}
+
+class ChestsGenerator implements IChestsGenerator {
+	constructor() {}
+
+	getChests(possibleValues: string[]): Chest[] {
+		possibleValues = [ 'exemption', 'exemption', 'exemption', 'exemption', 'exemption' ];
+		return possibleValues.map((possibleValue) => {
+			return { left: 'continue', right: possibleValue };
+		});
+	}
+}
 
 function getMockRoomController() {
 	rooms = {};
@@ -30,6 +54,14 @@ function getMockRoom() {
 	let room = RoomSampleService.getTestRoomForNumPlayers(4);
 	const pathChallengeData = new PathChallengeData();
 	pathChallengeData.initModel(room.playersStillPlaying, 'en');
+	pathChallengeData.model = new PathChallenge(
+		room.playersStillPlaying,
+		'',
+		'',
+		[],
+		new WalkersGenerator(),
+		new ChestsGenerator()
+	);
 	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, pathChallengeData);
 	return room;
 }
@@ -61,13 +93,15 @@ test('Checks "chooseChest" method', () => {
 test('Checks "addVoteForChest" method', () => {
 	let { room, roomController, pathChallengeController } = getMockComponents();
 	let pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
-	let player = room.playersStillPlaying.find((p) => p.name !== pathChallenge.currentWalker.name);
-
-	expect(typeof player !== 'undefined').toBe(true);
+	let walker = pathChallenge.players[0];
+	let player1 = pathChallenge.players[1];
+	let player2 = pathChallenge.players[2];
+	let player3 = pathChallenge.players[3];
+	let result = null;
 
 	pathChallengeController.chooseChest(room.roomcode, 'left');
 
-	let result = pathChallengeController.addVoteForChest(room.roomcode, player, 'left');
+	result = pathChallengeController.addVoteForChest(room.roomcode, player1, 'left');
 
 	room = roomController.getRoom(room.roomcode);
 	pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
@@ -75,4 +109,7 @@ test('Checks "addVoteForChest" method', () => {
 	expect(pathChallenge.votes.left.length).toBe(1);
 	expect(pathChallenge.votes.right.length).toBe(0);
 	expect(result).toBe('path-vote-chest');
+	expect(pathChallenge.hasMajorityVote).toBeFalsy();
+
+	result = pathChallengeController.addVoteForChest(room.roomcode, player2, 'left');
 });
