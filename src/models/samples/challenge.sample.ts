@@ -21,8 +21,8 @@ class SampleRoleChallenge extends Challenge {
 			[],
 			Challenge.CHALLENGE_STATES.ROLE_SELECTION,
 			[
-				{ name: 'test 1', numPlayers: Math.floor(players.length / 2) },
-				{ name: 'test 2', numPlayers: Math.ceil(players.length / 2) }
+				{ name: 'test1', numPlayers: Math.floor(players.length / 2) },
+				{ name: 'test2', numPlayers: Math.ceil(players.length / 2) }
 			],
 			'Test type'
 		);
@@ -86,18 +86,26 @@ class SampleChallengeData extends ChallengeData {
 }
 
 export default class ChallengeSampleService {
-	static getTestChallenge(room) {
+	static getTestChallenge(room): SampleChallenge {
 		return this.getTestChallengeData(room).model;
 	}
 
-	static getTestChallengeWithRoles(room) {
+	static getTestChallengeWithRoles(room): SampleChallenge {
 		//TODO
 		return this.getTestChallengeData(room).model;
 	}
 
-	static getTestChallengeData(room) {
+	static getTestChallengeData(room, withRoles = false): SampleChallengeData {
 		const sampleChallengeData = new SampleChallengeData();
 		sampleChallengeData.initModel(room.playersStillPlaying, 'en');
+
+		if (withRoles) {
+			sampleChallengeData.model.roles = [
+				{ name: 'test1', numPlayers: Math.floor(room.playersStillPlaying.length / 2) },
+				{ name: 'test2', numPlayers: Math.ceil(room.playersStillPlaying.length / 2) }
+			];
+		}
+
 		return sampleChallengeData;
 	}
 }
