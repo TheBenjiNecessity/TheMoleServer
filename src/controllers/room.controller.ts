@@ -69,8 +69,8 @@ export default class RoomController {
 		return this.websocketService.sendToRoom(roomcode, 'add-player');
 	}
 
-	removePlayerFromRoom(roomcode: string, player: Player) {
-		this.rooms[roomcode].removePlayer(player.name);
+	removePlayerFromRoom(roomcode: string, playerName: string) {
+		this.rooms[roomcode].removePlayer(playerName);
 		return this.websocketService.sendToRoom(roomcode, 'remove-player');
 	}
 
