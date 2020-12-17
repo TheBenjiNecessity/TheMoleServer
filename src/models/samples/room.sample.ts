@@ -1,5 +1,7 @@
 import Player from '../player.model';
 import Room, { IMoleChooser } from '../room.model';
+import ChallengeSampleService from './challenge.sample';
+import EpisodeSampleService from './episode.sample';
 
 class MoleChooser implements IMoleChooser {
 	constructor() {}
@@ -35,6 +37,13 @@ export default class RoomSampleService {
 
 		room.chooseMole();
 
+		return room;
+	}
+
+	static getMockRoom(numPlayers, withRoles = false) {
+		const room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
+		const challengeData = ChallengeSampleService.getTestChallengeData(room, withRoles);
+		room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, challengeData);
 		return room;
 	}
 }
