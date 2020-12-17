@@ -1,6 +1,8 @@
 import Player from '../models/player.model';
 import Room from '../models/room.model';
+import ChallengeSampleService from '../models/samples/challenge.sample';
 import RoomSampleService from '../models/samples/room.sample';
+import Question from '../models/quiz/question.model';
 
 test('Tests room init', () => {
 	let room = new Room('TEST', 'en');
@@ -79,6 +81,30 @@ test('Tests adding player to room in progress', () => {
 	expect(room.playersStillPlaying.length).toBe(5);
 });
 
+test('Tests removing player', () => {
+	const room = RoomSampleService.getTestRoomWithTenPlayers();
+	const firstPlayer = room.playersStillPlaying[0];
+	const { name: firstName } = room.playersStillPlaying[0];
+	const { name: secondName } = room.playersStillPlaying[1];
+
+	expect(room.playersStillPlaying.find((p) => p.name === firstName)).toBeTruthy();
+	expect(room.playersStillPlaying.find((p) => p.name === secondName)).toBeTruthy();
+
+	room.removePlayer(firstName);
+
+	expect(room.playersStillPlaying).toHaveLength(9);
+	expect(room.playersStillPlaying.find((p) => p.name === firstName)).toBeFalsy();
+
+	room.isInProgress = true;
+
+	try {
+		room.removePlayer(secondName);
+	} catch (error) {}
+
+	expect(room.playersStillPlaying).toHaveLength(9);
+	expect(room.playersStillPlaying.find((p) => p.name === secondName)).toBeTruthy();
+});
+
 test('Tests "hasPlayer" method', () => {
 	let room = RoomSampleService.getTestRoomWithNoPlayers();
 	let newTestPlayer = new Player('test11');
@@ -88,6 +114,35 @@ test('Tests "hasPlayer" method', () => {
 	room.addPlayer(newTestPlayer);
 
 	expect(room.hasPlayer(newTestPlayer.name)).toBe(true);
+});
+
+test('Tests numRestrictedChallenges getter', () => {
+	const room = RoomSampleService.getTestRoomWithFivePlayers();
+	const challengeData = [
+		ChallengeSampleService.getTestChallengeData(room),
+		ChallengeSampleService.getTestChallengeData(room),
+		ChallengeSampleService.getTestChallengeData(room),
+		ChallengeSampleService.getTestChallengeData(room)
+	];
+	room.addChallengeData(challengeData);
+
+	const { numRestrictedChallenges } = room;
+
+	expect(numRestrictedChallenges.length).toBe(4);
+
+	for (const challengeData of numRestrictedChallenges) {
+		expect(challengeData.maxPlayers).toBeGreaterThanOrEqual(5);
+		expect(challengeData.minPlayers).toBeLessThanOrEqual(5);
+	}
+});
+
+test('Tests numRestrictedChallenges getter', () => {
+	const room = RoomSampleService.getTestRoomWithFivePlayers();
+	room.chooseMole();
+	const { molePlayer } = room;
+
+	expect(molePlayer).toBeTruthy();
+	expect(molePlayer.isMole).toBeTruthy();
 });
 
 test('Tests giveObjectsToPlayer (exemption)', () => {
@@ -187,4 +242,37 @@ test('Tests moveNext', () => {
 	expect(room.state).toBe('game-welcome');
 	room.moveNext();
 	expect(room.state).toBe('episode-start');
+});
+
+test('Tests moveNext', () => {
+	const room = RoomSampleService.getTestRoomWithFivePlayers();
+	const mockQuestion: Question = {
+		text: '',
+		type: '',
+		choices: [ '' ]
+	};
+	room.unaskedQuestions = [
+		{ ...mockQuestion, text: 'test1' },
+		{ ...mockQuestion, text: 'test2' },
+		{ ...mockQuestion, text: 'test3' },
+		{ ...mockQuestion, text: 'test4' }
+	];
+
+	expect(room.unaskedQuestions).toHaveLength(4);
+
+	room.removeUnaskedQuestion('test1');
+
+	expect(room.unaskedQuestions).toHaveLength(3);
+
+	room.removeUnaskedQuestion('test1');
+
+	expect(room.unaskedQuestions).toHaveLength(3);
+
+	room.removeUnaskedQuestion('test2');
+
+	expect(room.unaskedQuestions).toHaveLength(2);
+
+	room.removeUnaskedQuestion('blah');
+
+	expect(room.unaskedQuestions).toHaveLength(2);
 });

@@ -2,6 +2,7 @@ import Player from '../models/player.model';
 import RoomSampleService from '../models/samples/room.sample';
 import EpisodeSampleService from '../models/samples/episode.sample';
 import ChallengeSampleService from '../models/samples/challenge.sample';
+import Challenge from '../models/challenge.model';
 
 function getMockRoom(numPlayers) {
 	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
@@ -90,3 +91,84 @@ test('Checks "removeVotedPlayer" method', () => {
 	expect(Object.keys(challenge.votedPlayers).length).toBe(1);
 	expect(typeof challenge.votedPlayers['test1']).toBe('undefined');
 });
+
+test('Tests raisedHandsAreValid getter', () => {
+	let { challenge } = getMockComponents(10);
+
+	expect(challenge.raisedHandsAreValid).toBe(false);
+	challenge.raiseHandForPlayer(challenge.players[0].name, 'test1');
+	expect(challenge.raisedHandsAreValid).toBe(false);
+	challenge.raiseHandForPlayer(challenge.players[1].name, 'test1');
+	expect(challenge.raisedHandsAreValid).toBe(false);
+	challenge.raiseHandForPlayer(challenge.players[2].name, 'test1');
+	expect(challenge.raisedHandsAreValid).toBe(false);
+	challenge.raiseHandForPlayer(challenge.players[3].name, 'test1');
+	expect(challenge.raisedHandsAreValid).toBe(false);
+	challenge.raiseHandForPlayer(challenge.players[4].name, 'test1');
+	expect(challenge.raisedHandsAreValid).toBe(false);
+
+	challenge.raiseHandForPlayer(challenge.players[5].name, 'test2');
+	expect(challenge.raisedHandsAreValid).toBe(false);
+	challenge.raiseHandForPlayer(challenge.players[6].name, 'test2');
+	expect(challenge.raisedHandsAreValid).toBe(false);
+	challenge.raiseHandForPlayer(challenge.players[7].name, 'test2');
+	expect(challenge.raisedHandsAreValid).toBe(false);
+	challenge.raiseHandForPlayer(challenge.players[8].name, 'test2');
+	expect(challenge.raisedHandsAreValid).toBe(false);
+	challenge.raiseHandForPlayer(challenge.players[9].name, 'test2');
+	expect(challenge.raisedHandsAreValid).toBe(true);
+});
+
+test('Tests setRoles', () => {
+	let { challenge } = getMockComponents(10);
+
+	challenge.raiseHandForPlayer(challenge.players[0].name, 'test1');
+	challenge.raiseHandForPlayer(challenge.players[1].name, 'test1');
+	challenge.raiseHandForPlayer(challenge.players[2].name, 'test1');
+	challenge.raiseHandForPlayer(challenge.players[3].name, 'test1');
+	challenge.raiseHandForPlayer(challenge.players[4].name, 'test1');
+
+	challenge.setRoles();
+
+	for (const player of challenge.players) {
+		expect(player.currentRoleName).toBeNull();
+	}
+
+	challenge.raiseHandForPlayer(challenge.players[5].name, 'test2');
+	challenge.raiseHandForPlayer(challenge.players[6].name, 'test2');
+	challenge.raiseHandForPlayer(challenge.players[7].name, 'test2');
+	challenge.raiseHandForPlayer(challenge.players[8].name, 'test2');
+	challenge.raiseHandForPlayer(challenge.players[9].name, 'test2');
+
+	challenge.setRoles();
+
+	for (let i = 0; i < challenge.players.length; i++) {
+		const player = challenge.players[i];
+		const roleName = i < 5 ? 'test1' : 'test2';
+		expect(player.currentRoleName).toBe(roleName);
+	}
+});
+
+test('Tests moveNext', () => {
+	let { challenge } = getMockComponents(10);
+	challenge.state = Challenge.CHALLENGE_STATES.ROLE_SELECTION;
+	challenge.moveNext();
+	expect(challenge.state).toBe(Challenge.CHALLENGE_STATES.IN_GAME);
+	challenge.moveNext();
+	expect(challenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
+	challenge.moveNext();
+	expect(challenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
+});
+
+// moveNext() {
+// 	switch (this.state) {
+// 		case Challenge.CHALLENGE_STATES.ROLE_SELECTION:
+// 			this.state = Challenge.CHALLENGE_STATES.IN_GAME;
+// 			break;
+// 		case Challenge.CHALLENGE_STATES.IN_GAME:
+// 			this.state = Challenge.CHALLENGE_STATES.CHALLENGE_END;
+// 			break;
+// 		default:
+// 			break;
+// 	}
+// }

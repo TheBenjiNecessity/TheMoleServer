@@ -224,6 +224,20 @@ test('Checks "quizDone" method', () => {
 	expect(episodePlayer.quizAnswers).toEqual(quizAnswers);
 });
 
+test('Checks "removePlayerFromRoom" method', () => {
+	let { room, roomController } = getMockComponents(10);
+	let { roomcode } = room;
+	let player1Name = room.playersStillPlaying[0].name;
+
+	expect(room.playersStillPlaying).toHaveLength(10);
+	expect(room.playersStillPlaying.find((p) => p.name === player1Name)).toBeTruthy();
+
+	roomController.removePlayerFromRoom(roomcode, player1Name);
+
+	expect(room.playersStillPlaying).toHaveLength(9);
+	expect(room.playersStillPlaying.find((p) => p.name === player1Name)).toBeFalsy();
+});
+
 test('Runs scenario where all players have given in quiz answers and checks against mole player (no ties)', () => {
 	let { room, roomController } = getMockComponents(4);
 	let { roomcode } = room;
