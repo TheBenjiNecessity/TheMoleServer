@@ -1,5 +1,5 @@
 import Room from '../../models/room.model';
-import RoomSampleService from '../../models/samples/room.sample';
+import RoomSampleService from '../../services/sample/room.sample';
 import OutAndSafeChallengeData from './data';
 import OutAndSafeChallenge from './model';
 

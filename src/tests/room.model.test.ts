@@ -1,7 +1,7 @@
 import Player from '../models/player.model';
 import Room from '../models/room.model';
-import ChallengeSampleService from '../models/samples/challenge.sample';
-import RoomSampleService from '../models/samples/room.sample';
+import ChallengeSampleService from '../services/sample/challenge.sample';
+import RoomSampleService from '../services/sample/room.sample';
 import Question from '../models/quiz/question.model';
 
 test('Tests room init', () => {

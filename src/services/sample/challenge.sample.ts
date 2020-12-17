@@ -2,9 +2,9 @@ import ChallengeController from '../../controllers/challenge.controller';
 import RoomController from '../../controllers/room.controller';
 import ChallengeData from '../../interfaces/challenge-data';
 import SocketHandler from '../../interfaces/socket-handler';
-import WebSocketService from '../../services/websocket.service';
-import Challenge from '../challenge.model';
-import Player from '../player.model';
+import WebSocketService from '../websocket.service';
+import Challenge from '../../models/challenge.model';
+import Player from '../../models/player.model';
 
 class SampleChallenge extends Challenge {
 	constructor(players: Player[]) {

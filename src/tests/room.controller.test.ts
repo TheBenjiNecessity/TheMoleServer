@@ -2,13 +2,13 @@ import RoomController from '../controllers/room.controller';
 import Player from '../models/player.model';
 import Room from '../models/room.model';
 import RoomService from '../services/room/room.service';
-import RoomSampleService from '../models/samples/room.sample';
+import RoomSampleService from '../services/sample/room.sample';
 import WebSocketService from '../services/websocket.service';
-import EpisodeSampleService from '../models/samples/episode.sample';
+import EpisodeSampleService from '../services/sample/episode.sample';
 import QuizAnswers from '../models/quiz/quiz-answers.model';
 import Answer from '../models/quiz/quiz-answer.model';
 import Quiz from '../models/quiz/quiz.model';
-import QuizSampleService from '../models/samples/quiz.sample';
+import QuizSampleService from '../services/sample/quiz.sample';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
 

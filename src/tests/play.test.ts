@@ -1,5 +1,4 @@
 import ButtonChallengeController from '../challenges/button/controller';
-import ChallengeController from '../controllers/challenge.controller';
 import RoomController from '../controllers/room.controller';
 import ChallengeData from '../interfaces/challenge-data';
 import Challenge from '../models/challenge.model';
@@ -9,9 +8,8 @@ import Question from '../models/quiz/question.model';
 import Answer from '../models/quiz/quiz-answer.model';
 import QuizAnswers from '../models/quiz/quiz-answers.model';
 import Room, { IEpisodeGenerator, IMoleChooser } from '../models/room.model';
-import ChallengeSampleService from '../models/samples/challenge.sample';
-import { getMockRoomController } from '../models/samples/room-controller.sample';
-import RoomSampleService from '../models/samples/room.sample';
+import ChallengeSampleService from '../services/sample/challenge.sample';
+import { getMockRoomController } from '../services/sample/room-controller.sample';
 import ChallengeService from '../services/game/challenge.service';
 
 jest.useFakeTimers();

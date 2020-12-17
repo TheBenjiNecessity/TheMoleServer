@@ -1,6 +1,6 @@
-import RoomSampleService from '../models/samples/room.sample';
+import RoomSampleService from '../services/sample/room.sample';
 import Challenge from '../models/challenge.model';
-import { getMockRoomController } from '../models/samples/room-controller.sample';
+import { getMockRoomController } from '../services/sample/room-controller.sample';
 
 function getMockComponents(numPlayers, withRoles = false) {
 	let room = RoomSampleService.getMockRoom(numPlayers, withRoles);

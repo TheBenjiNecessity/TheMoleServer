@@ -1,6 +1,6 @@
-import Player from '../player.model';
-import Room, { IMoleChooser } from '../room.model';
-import ChallengeSampleService from './challenge.sample';
+import Player from '../../models/player.model';
+import Room, { IMoleChooser } from '../../models/room.model';
+import ChallengeSampleService from '../../services/sample/challenge.sample';
 import EpisodeSampleService from './episode.sample';
 
 class MoleChooser implements IMoleChooser {

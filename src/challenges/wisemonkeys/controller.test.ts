@@ -1,7 +1,7 @@
-import RoomSampleService from '../../models/samples/room.sample';
-import EpisodeSampleService from '../../models/samples/episode.sample';
+import RoomSampleService from '../../services/sample/room.sample';
+import EpisodeSampleService from '../../services/sample/episode.sample';
 import RoomController from '../../controllers/room.controller';
-import { getMockRoomController } from '../../models/samples/room-controller.sample';
+import { getMockRoomController } from '../../services/sample/room-controller.sample';
 import WiseMonkeysChallengeData from './data';
 
 const SAMPLE_RIDDLE_ANSWER = 'I am going to stop the mole';

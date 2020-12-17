@@ -1,7 +1,7 @@
-import Question from '../quiz/question.model';
-import Quiz from '../quiz/quiz.model';
-import QuizAnswers from '../quiz/quiz-answers.model';
-import Answer from '../quiz/quiz-answer.model';
+import Question from '../../models/quiz/question.model';
+import Quiz from '../../models/quiz/quiz.model';
+import QuizAnswers from '../../models/quiz/quiz-answers.model';
+import Answer from '../../models/quiz/quiz-answer.model';
 
 export default class QuizSampleService {
 	static getTestQuiz(): Quiz {

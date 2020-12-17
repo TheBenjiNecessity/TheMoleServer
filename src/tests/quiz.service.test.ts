@@ -1,5 +1,5 @@
 import ChallengeService from '../services/game/challenge.service';
-import RoomSampleService from '../models/samples/room.sample';
+import RoomSampleService from '../services/sample/room.sample';
 import questionData from '../models/quiz/question.data';
 import { MAX_NUM_QUESTIONS } from '../contants/quiz.constants';
 import QuizService from '../services/game/quiz.service';

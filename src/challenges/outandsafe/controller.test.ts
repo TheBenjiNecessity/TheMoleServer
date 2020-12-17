@@ -1,4 +1,4 @@
-import RoomSampleService from '../../models/samples/room.sample';
+import RoomSampleService from '../../services/sample/room.sample';
 import OutAndSafeChallengeData from './data';
 import OutAndSafeChallenge from './model';
 import Room from '../../models/room.model';
@@ -6,7 +6,7 @@ import WebSocketService from '../../services/websocket.service';
 import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import OutAndSafeChallengeController from './controller';
-import EpisodeSampleService from '../../models/samples/episode.sample';
+import EpisodeSampleService from '../../services/sample/episode.sample';
 
 let rooms: { [id: string]: Room } = {};
 

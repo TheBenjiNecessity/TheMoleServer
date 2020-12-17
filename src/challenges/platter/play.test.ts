@@ -1,7 +1,7 @@
-import RoomSampleService from '../../models/samples/room.sample';
-import EpisodeSampleService from '../../models/samples/episode.sample';
+import RoomSampleService from '../../services/sample/room.sample';
+import EpisodeSampleService from '../../services/sample/episode.sample';
 import RoomController from '../../controllers/room.controller';
-import { getMockRoomController } from '../../models/samples/room-controller.sample';
+import { getMockRoomController } from '../../services/sample/room-controller.sample';
 import PlatterChallengeController from './controller';
 import PlatterChallengeData from './data';
 import PlatterChallenge from './model';

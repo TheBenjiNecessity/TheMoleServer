@@ -1,12 +1,8 @@
-import ButtonChallenge from '../challenges/button/model';
-import Challenge from '../models/challenge.model';
 import Episode from '../models/episode.model';
-import Player from '../models/player.model';
 import Room from '../models/room.model';
-import EpisodeSampleService from '../models/samples/episode.sample';
-import RoomSampleService from '../models/samples/room.sample';
+import RoomSampleService from '../services/sample/room.sample';
 import questionData from '../models/quiz/question.data';
-import QuizSampleService from '../models/samples/quiz.sample';
+import QuizSampleService from '../services/sample/quiz.sample';
 import ChallengeData from '../interfaces/challenge-data';
 import ButtonChallengeData from '../challenges/button/data';
 

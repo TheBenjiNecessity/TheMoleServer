@@ -1,5 +1,5 @@
 import PathChallenge from './model';
-import RoomSampleService from '../../models/samples/room.sample';
+import RoomSampleService from '../../services/sample/room.sample';
 import '../../extensions/array';
 import PathChallengeData from './data';
 

@@ -1,10 +1,10 @@
 import ButtonChallenge from './model';
-import RoomSampleService from '../../models/samples/room.sample';
-import EpisodeSampleService from '../../models/samples/episode.sample';
+import RoomSampleService from '../../services/sample/room.sample';
+import EpisodeSampleService from '../../services/sample/episode.sample';
 import RoomController from '../../controllers/room.controller';
 import ButtonChallengeController from './controller';
 import ButtonChallengeData from './data';
-import { getMockRoomController } from '../../models/samples/room-controller.sample';
+import { getMockRoomController } from '../../services/sample/room-controller.sample';
 
 const SAMPLE_RIDDLE_ANSWER = 'I am going to stop the mole';
 

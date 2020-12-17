@@ -1,5 +1,5 @@
 import ButtonChallengeData from './data';
-import RoomSampleService from '../../models/samples/room.sample';
+import RoomSampleService from '../../services/sample/room.sample';
 import PlatterChallenge from './model';
 import Room from '../../models/room.model';
 import PlatterChallengeData from './data';

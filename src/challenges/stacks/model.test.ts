@@ -1,6 +1,6 @@
 import Player from '../../models/player.model';
 import Room from '../../models/room.model';
-import RoomSampleService from '../../models/samples/room.sample';
+import RoomSampleService from '../../services/sample/room.sample';
 import StacksChallenge, { IPilesGenerator, Pile } from './model';
 
 class PilesGenerator implements IPilesGenerator {
@@ -106,14 +106,38 @@ test('Checks goToNextRound method', () => {
 });
 
 test('Checks resetPiles method', () => {
-    let { room, stacksChallenge } = getMockComponents();
+	let { room, stacksChallenge } = getMockComponents();
 
-	stacksChallenge.piles[room.playersStillPlaying[0].name] = {player: room.playersStillPlaying[0], numSelected: 1, amount: 5};
-	stacksChallenge.piles[room.playersStillPlaying[1].name] = {player: room.playersStillPlaying[1], numSelected: 2, amount: 3};
-	stacksChallenge.piles[room.playersStillPlaying[2].name] = {player: room.playersStillPlaying[2], numSelected: 2, amount: 1};
-	stacksChallenge.piles[room.playersStillPlaying[3].name] = {player: room.playersStillPlaying[3], numSelected: 1, amount: -1};
-	stacksChallenge.piles[room.playersStillPlaying[4].name] = {player: room.playersStillPlaying[4], numSelected: 3, amount: -3};
-	stacksChallenge.piles[room.playersStillPlaying[5].name] = {player: room.playersStillPlaying[5], numSelected: 3, amount: -5};
+	stacksChallenge.piles[room.playersStillPlaying[0].name] = {
+		player: room.playersStillPlaying[0],
+		numSelected: 1,
+		amount: 5
+	};
+	stacksChallenge.piles[room.playersStillPlaying[1].name] = {
+		player: room.playersStillPlaying[1],
+		numSelected: 2,
+		amount: 3
+	};
+	stacksChallenge.piles[room.playersStillPlaying[2].name] = {
+		player: room.playersStillPlaying[2],
+		numSelected: 2,
+		amount: 1
+	};
+	stacksChallenge.piles[room.playersStillPlaying[3].name] = {
+		player: room.playersStillPlaying[3],
+		numSelected: 1,
+		amount: -1
+	};
+	stacksChallenge.piles[room.playersStillPlaying[4].name] = {
+		player: room.playersStillPlaying[4],
+		numSelected: 3,
+		amount: -3
+	};
+	stacksChallenge.piles[room.playersStillPlaying[5].name] = {
+		player: room.playersStillPlaying[5],
+		numSelected: 3,
+		amount: -5
+	};
 
 	for (let player of room.playersStillPlaying) {
 		expect(stacksChallenge.piles[player.name].numSelected > 0).toBe(true);
@@ -124,7 +148,6 @@ test('Checks resetPiles method', () => {
 	for (let player of room.playersStillPlaying) {
 		expect(stacksChallenge.piles[player.name].numSelected).toBe(0);
 	}
-	
 });
 
 test('Checks selectNumberOfTilesForPlayer method', () => {
@@ -151,5 +174,4 @@ test('Checks selectNumberOfTilesForPlayer method', () => {
 
 	stacksChallenge.selectNumberOfTilesForPlayer(room.playersStillPlaying[5].name, 3);
 	expect(stacksChallenge.piles[room.playersStillPlaying[5].name].numSelected).toBe(3);
-
 });
