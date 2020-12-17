@@ -1,6 +1,5 @@
 import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
-import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
 import ButtonChallenge from './model';
 
 export default class ButtonChallengeController extends ChallengeController {

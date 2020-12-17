@@ -12,7 +12,7 @@ export default class ChallengeController implements IChallengeController {
 	raiseHand(roomcode: string, playerName: string, roleName: string): string {
 		let room = this.roomController.getRoom(roomcode);
 		if (room.currentEpisode.currentChallenge.state !== Challenge.CHALLENGE_STATES.ROLE_SELECTION) {
-			return null;
+			return;
 		}
 
 		this.performEvent(roomcode, CHALLENGE_EVENTS.RAISE_HAND_FOR_PLAYER, playerName, roleName);
