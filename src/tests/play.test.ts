@@ -1,5 +1,3 @@
-import ButtonChallengeController from '../challenges/button/controller';
-import RoomController from '../controllers/room.controller';
 import ChallengeData from '../interfaces/challenge-data';
 import Challenge from '../models/challenge.model';
 import Episode from '../models/episode.model';
@@ -9,15 +7,11 @@ import Answer from '../models/quiz/quiz-answer.model';
 import QuizAnswers from '../models/quiz/quiz-answers.model';
 import Room, { IEpisodeGenerator, IMoleChooser } from '../models/room.model';
 import ChallengeSampleService from '../services/sample/challenge.sample';
-import { getMockRoomController, getMockRoomControllerWithRoom } from '../services/sample/room-controller.sample';
+import { getMockRoomControllerWithRoom } from '../services/sample/room-controller.sample';
 import ChallengeService from '../services/game/challenge.service';
 import QuizSampleService from '../services/sample/quiz.sample';
 
 jest.useFakeTimers();
-
-function getMockChallengeController(roomController: RoomController) {
-	return new ButtonChallengeController(roomController);
-}
 
 function getMockComponents() {
 	const room = new Room('TEST', 'en', new MoleChooser(), new EpisodeGenerator());
@@ -25,9 +19,8 @@ function getMockComponents() {
 	withRoles[0] = true;
 	const challengeData = ChallengeSampleService.getTestChallengeData(room.playersStillPlaying, withRoles);
 	const roomController = getMockRoomControllerWithRoom(room, challengeData);
-	const challengeController = getMockChallengeController(roomController);
 
-	return { room, roomController, challengeController };
+	return { room, roomController };
 }
 
 class MoleChooser implements IMoleChooser {
@@ -71,7 +64,7 @@ class EpisodeGenerator implements IEpisodeGenerator {
 }
 
 test('Plays through the entire game', () => {
-	let { room, roomController, challengeController } = getMockComponents();
+	let { room, roomController } = getMockComponents();
 	const { roomcode } = room;
 
 	// Room created
@@ -119,6 +112,9 @@ test('Plays through the entire game', () => {
 
 	// All players raise their hands for different roles
 	let players = roomController.getRoom(roomcode).playersStillPlaying;
+	const challengeController = roomController
+		.getRoom(roomcode)
+		.currentEpisode.getCurrentChallengeController(roomController);
 	challengeController.raiseHand(roomcode, players[0].name, currentChallenge.roles[0].name);
 	challengeController.raiseHand(roomcode, players[1].name, currentChallenge.roles[0].name);
 	challengeController.raiseHand(roomcode, players[2].name, currentChallenge.roles[0].name);
