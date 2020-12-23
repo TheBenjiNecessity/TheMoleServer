@@ -20,29 +20,28 @@ export default abstract class Challenge extends StateObject {
 	isChallengeRunning: boolean;
 	timer: any;
 	currentTime: number;
+	roles: Role[];
 
 	constructor(
 		public players: Player[],
 		public title: string,
 		public description: string,
 		public questions: Question[],
-		initialState: string,
-		public roles: Role[],
-		public type: string
+		initialState: string = Challenge.CHALLENGE_STATES.IN_GAME
 	) {
 		super(initialState);
 
 		this.players = players;
 		this.title = title;
-		this.type = type;
 		this.description = description;
-		this.roles = roles;
 		this.questions = questions;
 		this.agreedPlayerNames = [];
 		this.raisedHands = [];
 		this.votedPlayers = {};
 		this.isChallengeRunning = false;
 		this.timer = null;
+
+		this.roles = this.getRoles(this.players.length);
 	}
 
 	get hasMajorityVoteForAgreedPlayers() {
@@ -119,6 +118,10 @@ export default abstract class Challenge extends StateObject {
 				delete this.votedPlayers[playerName];
 			}
 		}
+	}
+
+	getRoles(numPlayers: number): Role[] {
+		return [];
 	}
 
 	setRoles() {
