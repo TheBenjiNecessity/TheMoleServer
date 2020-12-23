@@ -8,7 +8,7 @@ export default class OutAndSafeChallenge extends Challenge {
 	currentRound: number;
 
 	constructor(players, title, description, questions) {
-		super(players, title, description, questions, 'game', [], type);
+		super(players, title, description, questions, 'game');
 
 		this.currentRound = 1;
 

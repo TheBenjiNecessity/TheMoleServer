@@ -1,5 +1,6 @@
 import Challenge from '../../models/challenge.model';
 import Riddle from '../../models/riddle.model';
+import Role from '../../models/role.model';
 import RiddleService from '../../services/game/riddle.service';
 
 const type = 'wisemonkeys';
@@ -10,7 +11,7 @@ export default class WiseMonkeysChallenge extends Challenge {
 	currentRiddleIndex: number;
 
 	constructor(players, title, description, questions) {
-		super(players, title, description, questions, 'game', [], type);
+		super(players, title, description, questions, 'game');
 
 		this.currentRiddleIndex = 0;
 
@@ -25,6 +26,23 @@ export default class WiseMonkeysChallenge extends Challenge {
 
 	get challengeIsOver(): Riddle {
 		return this.riddles[this.currentRiddleIndex];
+	}
+
+	getRoles(numPlayers: number): Role[] {
+		return [
+			{
+				name: 'See no evil',
+				numPlayers: 2
+			},
+			{
+				name: 'Hear no evil',
+				numPlayers: 2
+			},
+			{
+				name: 'Speak no evil',
+				numPlayers: 2
+			}
+		];
 	}
 
 	goToNextRiddle() {

@@ -3,7 +3,6 @@ import Player from '../../models/player.model';
 import riddles from './riddles.data';
 import '../../extensions/array';
 import '../../extensions/string';
-import { DATETIME } from '../../contants/datetime.constants';
 
 const type = 'button';
 const POINTS_PER_MINUTE = 2;
@@ -15,7 +14,7 @@ export default class ButtonChallenge extends Challenge {
 	exemptionWasTaken: boolean;
 
 	constructor(players, title, description, questions) {
-		super(players, title, description, questions, 'game', [], type);
+		super(players, title, description, questions, 'game');
 
 		let shuffledRiddles = JSON.parse(JSON.stringify(riddles['en'])); // TODO lang
 		shuffledRiddles.shuffle();
