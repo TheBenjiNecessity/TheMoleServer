@@ -40,10 +40,17 @@ export default class RoomSampleService {
 		return room;
 	}
 
-	static getMockRoom(numPlayers, withRoles = false) {
+	static getMockRoom(numPlayers, withRoles: boolean[] = [ false ]) {
 		const room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
-		const challengeData = ChallengeSampleService.getTestChallengeData(room, withRoles);
-		room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, challengeData);
+		const challengeData = ChallengeSampleService.getTestChallengeData(room.playersStillPlaying, withRoles);
+		room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallengeData(
+			room.playersStillPlaying,
+			challengeData
+		);
 		return room;
+	}
+
+	static getMockRoomWithOneChallenge(numPlayers, withRoles = false) {
+		return RoomSampleService.getMockRoom(numPlayers, [ withRoles ]);
 	}
 }

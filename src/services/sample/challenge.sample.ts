@@ -1,31 +1,28 @@
 import ChallengeController from '../../controllers/challenge.controller';
 import RoomController from '../../controllers/room.controller';
-import ChallengeData from '../../interfaces/challenge-data';
+import ChallengeData, { ChallengeLanguageData, ChallengeLocalization } from '../../interfaces/challenge-data';
 import SocketHandler from '../../interfaces/socket-handler';
 import WebSocketService from '../websocket.service';
 import Challenge from '../../models/challenge.model';
 import Player from '../../models/player.model';
+import Role from '../../models/role.model';
 
 class SampleChallenge extends Challenge {
 	constructor(players: Player[]) {
-		super(players, 'Test title', 'Test description', [], Challenge.CHALLENGE_STATES.IN_GAME, [], 'Test type');
+		super(players, 'Test title', 'Test description', [], Challenge.CHALLENGE_STATES.IN_GAME);
 	}
 }
 
 class SampleRoleChallenge extends Challenge {
 	constructor(players: Player[]) {
-		super(
-			players,
-			'Test title',
-			'Test description',
-			[],
-			Challenge.CHALLENGE_STATES.ROLE_SELECTION,
-			[
-				{ name: 'test1', numPlayers: Math.floor(players.length / 2) },
-				{ name: 'test2', numPlayers: Math.ceil(players.length / 2) }
-			],
-			'Test type'
-		);
+		super(players, 'Test', '', [], Challenge.CHALLENGE_STATES.ROLE_SELECTION);
+	}
+
+	getRoles(numPlayers: number): Role[] {
+		return [
+			{ name: 'test1', numPlayers: Math.floor(numPlayers / 2) },
+			{ name: 'test2', numPlayers: Math.ceil(numPlayers / 2) }
+		];
 	}
 }
 
@@ -41,23 +38,23 @@ class SampleChallengeController extends ChallengeController {
 	}
 }
 
+const challengeLanguageData = {
+	title: 'Test',
+	description: '',
+	questions: [
+		{
+			text: 'Test?',
+			type: 'choices',
+			choices: [ 'Yes', 'No' ]
+		}
+	]
+} as ChallengeLanguageData;
+
 class SampleChallengeData extends ChallengeData {
 	_type: string;
 
-	constructor() {
-		super({
-			en: {
-				title: 'Test',
-				description: '',
-				questions: [
-					{
-						text: 'Test?',
-						type: 'choices',
-						choices: [ 'Yes', 'No' ]
-					}
-				]
-			}
-		});
+	constructor(private withRoles = false) {
+		super(new ChallengeLocalization({ en: challengeLanguageData }));
 	}
 
 	get type(): string {
@@ -80,32 +77,24 @@ class SampleChallengeData extends ChallengeData {
 		return new SampleChallengeController(roomController);
 	}
 
-	initModel(players, lang) {
-		this.model = new SampleRoleChallenge(players);
+	initModel(players, languageCode: string) {
+		this.model = this.withRoles ? new SampleRoleChallenge(players) : new SampleChallenge(players);
 	}
 }
 
 export default class ChallengeSampleService {
-	static getTestChallenge(room): SampleChallenge {
-		return this.getTestChallengeData(room).model;
+	static getTestChallenge(players: Player[], withRoles = false): SampleChallenge {
+		return this.getTestChallengeDatum(players, 'type', withRoles).model;
 	}
 
-	static getTestChallengeWithRoles(room): SampleChallenge {
-		//TODO
-		return this.getTestChallengeData(room).model;
-	}
-
-	static getTestChallengeData(room, withRoles = false): SampleChallengeData {
-		const sampleChallengeData = new SampleChallengeData();
-		sampleChallengeData.initModel(room.playersStillPlaying, 'en');
-
-		if (withRoles) {
-			sampleChallengeData.model.roles = [
-				{ name: 'test1', numPlayers: Math.floor(room.playersStillPlaying.length / 2) },
-				{ name: 'test2', numPlayers: Math.ceil(room.playersStillPlaying.length / 2) }
-			];
-		}
-
+	static getTestChallengeDatum(players: Player[], type: string = 'type', withRoles = false): SampleChallengeData {
+		const sampleChallengeData = new SampleChallengeData(withRoles);
+		sampleChallengeData.initModel(players, 'en');
+		sampleChallengeData._type = type;
 		return sampleChallengeData;
+	}
+
+	static getTestChallengeData(players: Player[], withRoles: boolean[] = []): SampleChallengeData[] {
+		return withRoles.map((r, i) => ChallengeSampleService.getTestChallengeDatum(players, 'test ' + i, r));
 	}
 }

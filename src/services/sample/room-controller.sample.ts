@@ -7,7 +7,7 @@ let rooms: { [id: string]: Room } = {};
 
 export function getMockRoomController(challengeData: ChallengeData[] = []) {
 	rooms = {};
-	return new RoomController(
+	const roomController = new RoomController(
 		new WebSocketService(null),
 		challengeData,
 		() => rooms,
@@ -15,4 +15,19 @@ export function getMockRoomController(challengeData: ChallengeData[] = []) {
 			rooms = r;
 		}
 	);
+
+	return roomController;
+}
+
+export function getMockRoomControllerWithRoom(room: Room, challengeData: ChallengeData[] = []) {
+	rooms = {};
+
+	const roomController = getMockRoomController(challengeData);
+	roomController.setRoom(room);
+
+	if (challengeData.length) {
+		roomController.setChallengeDataForRoom(room.roomcode);
+	}
+
+	return roomController;
 }

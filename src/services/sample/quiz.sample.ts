@@ -3,20 +3,26 @@ import Quiz from '../../models/quiz/quiz.model';
 import QuizAnswers from '../../models/quiz/quiz-answers.model';
 import Answer from '../../models/quiz/quiz-answer.model';
 
+const MAX_QUIZ_QUESTION = 20;
+
 export default class QuizSampleService {
-	static getTestQuiz(): Quiz {
-		let question = {
+	static getQuestionList(numQuestions): Question[] {
+		const question = {
 			text: 'Question text?',
 			type: 'choices',
 			choices: [ 'Choice 1', 'Choice 2', 'Choice 3', 'Choice 4', 'Choice 5' ]
 		};
 		let questions: Question[] = [];
 
-		for (let i = 0; i < 20; i++) {
+		for (let i = 0; i < numQuestions; i++) {
 			questions.push(question);
 		}
 
-		return { questions };
+		return questions;
+	}
+
+	static getTestQuiz(): Quiz {
+		return { questions: QuizSampleService.getQuestionList(MAX_QUIZ_QUESTION) };
 	}
 
 	static getQuizAnswers(quiz: Quiz, indices: number[]): QuizAnswers {
