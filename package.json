@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "npm run build && node ./dist/server.js",
-		"test": "jest",
+		"test": "jest --watch",
 		"customTests": "npm run build && node ./dist/tests.js",
 		"build": "npx tsc"
 	},
