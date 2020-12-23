@@ -35,7 +35,11 @@ export default class QuizService {
 		}
 	}
 
-	static generateQuiz(playersStillPlaying: Player[], challengeQuestions: Question[], unusedGeneralQuestions: Question[]): Quiz {
+	static generateQuiz(
+		playersStillPlaying: Player[],
+		challengeQuestions: Question[],
+		unusedGeneralQuestions: Question[]
+	): Quiz {
 		let questions = [];
 		challengeQuestions.shuffle();
 		unusedGeneralQuestions.shuffle();
