@@ -5,17 +5,24 @@ import RoomController from '../controllers/room.controller';
 import WebSocketService from '../services/websocket.service';
 import SocketHandler from './socket-handler';
 import ChallengeController from '../controllers/challenge.controller';
+import Localization, { LanguageData } from '../models/l10n.model';
 
-interface LanguageData {
+export interface ChallengeLanguageData extends LanguageData {
 	title: string;
 	description: string;
 	questions: Question[];
 }
 
+export class ChallengeLocalization extends Localization {
+	constructor(languageData: { [code: string]: ChallengeLanguageData }) {
+		super(languageData);
+	}
+}
+
 export default abstract class ChallengeData {
 	model: Challenge;
 
-	constructor(public lang: { [code: string]: LanguageData }) {}
+	constructor(private localization: ChallengeLocalization) {}
 
 	abstract get type(): string;
 	abstract get maxPlayers(): number;
@@ -26,10 +33,18 @@ export default abstract class ChallengeData {
 		webSocketService: WebSocketService,
 		socket: any
 	): SocketHandler;
-	abstract initModel(players: Player[], lang: string);
+	abstract initModel(players: Player[], languageCode: string);
 	abstract getController(roomController: RoomController): ChallengeController;
 
-	getQuestions(language: string): Question[] {
-		return this.lang[language].questions;
+	getQuestions(languageCode: string): Question[] {
+		return this.localization.getText(languageCode, 'questions');
+	}
+
+	getDescription(languageCode: string): string {
+		return this.localization.getText(languageCode, 'description');
+	}
+
+	getTitle(languageCode: string): string {
+		return this.localization.getText(languageCode, 'title');
 	}
 }
