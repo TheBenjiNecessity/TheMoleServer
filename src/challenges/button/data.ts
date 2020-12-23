@@ -1,5 +1,4 @@
-import ChallengeData from '../../interfaces/challenge-data';
-import Challenge from '../../models/challenge.model';
+import ChallengeData, { ChallengeLanguageData, ChallengeLocalization } from '../../interfaces/challenge-data';
 import ButtonChallengeController from './controller';
 import ButtonChallenge from './model';
 import ButtonChallengeSocketHandler from './socket-handler';
@@ -7,8 +6,9 @@ import RoomController from '../../controllers/room.controller';
 import SocketHandler from '../../interfaces/socket-handler';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
+import Player from '../../models/player.model';
 
-const language = {
+const challengeLanguageData = {
 	en: {
 		title: 'The Button',
 		description: '',
@@ -19,12 +19,12 @@ const language = {
 				choices: [ 'Yes', 'No' ]
 			}
 		]
-	}
+	} as ChallengeLanguageData
 };
 
 export default class ButtonChallengeData extends ChallengeData {
 	constructor() {
-		super(language);
+		super(new ChallengeLocalization(challengeLanguageData));
 	}
 
 	get type(): string {
@@ -48,8 +48,12 @@ export default class ButtonChallengeData extends ChallengeData {
 		return new ButtonChallengeController(roomController);
 	}
 
-	initModel(players, lang) {
-		let { title, description, questions } = this.lang[lang];
-		this.model = new ButtonChallenge(players, title, description, questions);
+	initModel(players: Player[], languageCode: string) {
+		this.model = new ButtonChallenge(
+			players,
+			this.getTitle(languageCode),
+			this.getDescription(languageCode),
+			this.getQuestions(languageCode)
+		);
 	}
 }

@@ -1,5 +1,4 @@
-import ChallengeData from '../../interfaces/challenge-data';
-import Challenge from '../../models/challenge.model';
+import ChallengeData, { ChallengeLanguageData, ChallengeLocalization } from '../../interfaces/challenge-data';
 import PlatterChallengeController from './controller';
 import PlatterChallenge from './model';
 import PlatterChallengeSocketHandler from './socket-handler';
@@ -7,8 +6,9 @@ import SocketHandler from '../../interfaces/socket-handler';
 import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
+import Player from '../../models/player.model';
 
-const language = {
+const challengeLanguageData = {
 	en: {
 		title: 'The Platter',
 		description: '',
@@ -24,12 +24,12 @@ const language = {
 				choices: [ 'The mole did not take points' ]
 			}
 		]
-	}
+	} as ChallengeLanguageData
 };
 
 export default class PlatterChallengeData extends ChallengeData {
 	constructor() {
-		super(language);
+		super(new ChallengeLocalization(challengeLanguageData));
 	}
 
 	get type(): string {
@@ -53,8 +53,12 @@ export default class PlatterChallengeData extends ChallengeData {
 		return new PlatterChallengeController(roomController);
 	}
 
-	initModel(players, lang) {
-		let { title, description, questions } = this.lang[lang];
-		this.model = new PlatterChallenge(players, title, description, questions);
+	initModel(players: Player[], languageCode: string) {
+		this.model = new PlatterChallenge(
+			players,
+			this.getTitle(languageCode),
+			this.getDescription(languageCode),
+			this.getQuestions(languageCode)
+		);
 	}
 }
