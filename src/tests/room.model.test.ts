@@ -118,13 +118,9 @@ test('Tests "hasPlayer" method', () => {
 
 test('Tests numRestrictedChallenges getter', () => {
 	const room = RoomSampleService.getTestRoomWithFivePlayers();
-	const challengeData = [
-		ChallengeSampleService.getTestChallengeData(room),
-		ChallengeSampleService.getTestChallengeData(room),
-		ChallengeSampleService.getTestChallengeData(room),
-		ChallengeSampleService.getTestChallengeData(room)
-	];
-	room.addChallengeData(challengeData);
+	const withRoles = new Array(4);
+	withRoles.fill(false);
+	room.addChallengeData(ChallengeSampleService.getTestChallengeData(room.playersStillPlaying, withRoles));
 
 	const { numRestrictedChallenges } = room;
 
@@ -136,7 +132,7 @@ test('Tests numRestrictedChallenges getter', () => {
 	}
 });
 
-test('Tests numRestrictedChallenges getter', () => {
+test('Tests molePlayer getter', () => {
 	const room = RoomSampleService.getTestRoomWithFivePlayers();
 	room.chooseMole();
 	const { molePlayer } = room;

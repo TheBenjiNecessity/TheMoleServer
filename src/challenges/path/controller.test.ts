@@ -62,7 +62,9 @@ function getMockRoom() {
 		new WalkersGenerator(),
 		new ChestsGenerator()
 	);
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, pathChallengeData);
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallengeData(room.playersStillPlaying, [
+		pathChallengeData
+	]);
 	return room;
 }
 

@@ -14,7 +14,9 @@ function getMockRoom() {
 	const room = RoomSampleService.getTestRoomForNumPlayers(5);
 	const platterChallengeData = new PlatterChallengeData();
 	platterChallengeData.initModel(room.playersStillPlaying, 'en');
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, platterChallengeData);
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallengeData(room.playersStillPlaying, [
+		platterChallengeData
+	]);
 	return room;
 }
 

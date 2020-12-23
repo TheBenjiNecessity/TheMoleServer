@@ -49,7 +49,9 @@ function getMockRoom(): Room {
 	const stacksChallengeData = new StacksChallengeData();
 	stacksChallengeData.initModel(room.playersStillPlaying, 'en');
 	stacksChallengeData.model = new StacksChallenge(room.playersStillPlaying, '', '', [], new PilesGenerator());
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, stacksChallengeData);
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallengeData(room.playersStillPlaying, [
+		stacksChallengeData
+	]);
 
 	return room;
 }

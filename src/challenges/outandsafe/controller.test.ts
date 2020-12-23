@@ -31,7 +31,9 @@ function getMockRoom() {
 	let room = RoomSampleService.getTestRoomForNumPlayers(5);
 	const outAndSafeChallengeData = new OutAndSafeChallengeData();
 	outAndSafeChallengeData.initModel(room.playersStillPlaying, 'en');
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, outAndSafeChallengeData);
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallengeData(room.playersStillPlaying, [
+		outAndSafeChallengeData
+	]);
 	return room;
 }
 

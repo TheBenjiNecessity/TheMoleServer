@@ -33,7 +33,9 @@ function getMockRoom() {
 	let room = RoomSampleService.getTestRoomForNumPlayers(4);
 	const buttonChallengeData = new ButtonChallengeData();
 	buttonChallengeData.initModel(room.playersStillPlaying, 'en');
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, buttonChallengeData);
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallengeData(room.playersStillPlaying, [
+		buttonChallengeData
+	]);
 	return room;
 }
 

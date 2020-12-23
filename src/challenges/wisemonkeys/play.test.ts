@@ -14,7 +14,9 @@ function getMockRoom() {
 	const room = RoomSampleService.getTestRoomForNumPlayers(5);
 	const wiseMonkeysChallengeData = new WiseMonkeysChallengeData();
 	wiseMonkeysChallengeData.initModel(room.playersStillPlaying, 'en');
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, wiseMonkeysChallengeData);
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallengeData(room.playersStillPlaying, [
+		wiseMonkeysChallengeData
+	]);
 	return room;
 }
 

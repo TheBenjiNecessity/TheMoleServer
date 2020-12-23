@@ -7,7 +7,7 @@ import QuizService from '../services/game/quiz.service';
 test('Checks generateQuiz method', async () => {
 	let room = RoomSampleService.getTestRoomWithTenPlayers();
 	let challengeData = await ChallengeService.listChallengeData();
-	let questions = challengeData.map((c) => c.lang.en.questions);
+	let questions = challengeData.map((c) => c.getQuestions('en'));
 	let challengeQuestions = [].concat(...questions).map((q) => {
 		return { text: q.text, type: q.type, choices: q.choices };
 	});

@@ -6,13 +6,13 @@ import Challenge from '../models/challenge.model';
 
 function getMockRoom(numPlayers) {
 	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
-	room.currentEpisode = EpisodeSampleService.getTestEpisode(room);
+	room.currentEpisode = EpisodeSampleService.getTestEpisode(room.playersStillPlaying);
 	return room;
 }
 
-function getMockComponents(numPlayers) {
+function getMockComponents(numPlayers, withRoles = false) {
 	let room = getMockRoom(numPlayers);
-	let challenge = ChallengeSampleService.getTestChallenge(room);
+	let challenge = ChallengeSampleService.getTestChallenge(room.playersStillPlaying, withRoles);
 
 	return { challenge };
 }
@@ -93,7 +93,9 @@ test('Checks "removeVotedPlayer" method', () => {
 });
 
 test('Tests raisedHandsAreValid getter', () => {
-	let { challenge } = getMockComponents(10);
+	let { challenge } = getMockComponents(10, true);
+
+	expect(challenge.roles.length).toBeGreaterThan(0);
 
 	expect(challenge.raisedHandsAreValid).toBe(false);
 	challenge.raiseHandForPlayer(challenge.players[0].name, 'test1');
@@ -120,7 +122,9 @@ test('Tests raisedHandsAreValid getter', () => {
 });
 
 test('Tests setRoles', () => {
-	let { challenge } = getMockComponents(10);
+	let { challenge } = getMockComponents(10, true);
+
+	expect(challenge.roles.length).toBeGreaterThan(0);
 
 	challenge.raiseHandForPlayer(challenge.players[0].name, 'test1');
 	challenge.raiseHandForPlayer(challenge.players[1].name, 'test1');

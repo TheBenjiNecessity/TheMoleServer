@@ -20,7 +20,9 @@ function getMockRoom() {
 	buttonChallenge.riddleAnswer = SAMPLE_RIDDLE_ANSWER;
 	buttonChallenge.riddle = buttonChallenge.riddleAnswer.randomCypherText();
 	buttonChallengeData.model = buttonChallenge;
-	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallenge(room, buttonChallengeData);
+	room.currentEpisode = EpisodeSampleService.getTestEpisodeWithChallengeData(room.playersStillPlaying, [
+		buttonChallengeData
+	]);
 	return room;
 }
 

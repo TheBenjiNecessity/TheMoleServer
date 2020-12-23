@@ -3,7 +3,7 @@ import Challenge from '../models/challenge.model';
 import { getMockRoomController } from '../services/sample/room-controller.sample';
 
 function getMockComponents(numPlayers, withRoles = false) {
-	let room = RoomSampleService.getMockRoom(numPlayers, withRoles);
+	let room = RoomSampleService.getMockRoomWithOneChallenge(numPlayers, withRoles);
 	let roomController = getMockRoomController();
 	let challengeController = room.currentEpisode.getCurrentChallengeController(roomController);
 
