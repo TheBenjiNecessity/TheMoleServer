@@ -1,11 +1,11 @@
 export interface LanguageData {
-    text: string;
+	text: string;
 }
 
 export default abstract class Localization {
-    constructor(private languageData: { [code: string]: LanguageData }) {}
+	constructor(private languageData: { [code: string]: LanguageData }) {}
 
-    getText(language: string): string {
-        return this.languageData[language].text;
-    }
+	getText(language: string, type: string): any {
+		return this.languageData[language][type];
+	}
 }
