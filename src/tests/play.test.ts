@@ -143,6 +143,8 @@ test('Plays through the entire game', () => {
 	roomController.addPoints(roomcode, 10);
 	roomController.endChallenge(roomcode);
 
+	expect(roomController.getRoom(roomcode).points).toBe(10);
+
 	// Expect the room state to now be in between challenges (intermission)
 	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.CHALLENGE_INTERMISSION);
 
@@ -237,6 +239,7 @@ test('Plays through the entire game', () => {
 	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.EXECUTION);
 	let eliminatedPlayer = roomController.getRoom(roomcode).playersStillPlaying.find((p) => p.name === 'test3');
 	expect(eliminatedPlayer).toBeFalsy();
+	expect(roomController.getRoom(roomcode).playersStillPlaying).toHaveLength(9);
 
 	// Simulate the execution to be concluded
 	roomController.moveNext(roomcode);
@@ -249,4 +252,73 @@ test('Plays through the entire game', () => {
 
 	// Expect the room to now be back in the episode start state
 	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.EPISODE_START);
+
+	roomController.moveNext(roomcode);
+
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.IN_CHALLENGE);
+
+	roomController.addPoints(roomcode, 5);
+	roomController.endChallenge(roomcode);
+
+	expect(roomController.getRoom(roomcode).points).toBe(15);
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.CHALLENGE_INTERMISSION);
+
+	roomController.moveNext(roomcode);
+
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.IN_CHALLENGE);
+
+	roomController.endChallenge(roomcode);
+
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.CHALLENGE_INTERMISSION);
+
+	roomController.moveNext(roomcode);
+
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.IN_CHALLENGE);
+
+	roomController.endChallenge(roomcode);
+
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.CHALLENGE_INTERMISSION);
+
+	roomController.moveNext(roomcode);
+
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.PRE_QUIZ_INTERMISSION);
+
+	roomController.moveNext(roomcode);
+
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.IN_QUIZ);
+
+	room = roomController.getRoom(roomcode);
+	quiz = room.currentEpisode.quiz;
+
+	moleAnswers = quiz.questions.map((q) => new Answer(q, 0));
+	greatAnswers = quiz.questions.map((q, i) => {
+		if (i < 3) {
+			return new Answer(q, 1);
+		} else {
+			return new Answer(q, 0);
+		}
+	});
+	loserAnswers = quiz.questions.map((q) => new Answer(q, 1));
+
+	for (let i = 0; i < room.playersStillPlaying.length; i++) {
+		let player = room.playersStillPlaying[i];
+
+		if (i === 0) {
+			roomController.quizDone(roomcode, player.name, new QuizAnswers(moleAnswers, 1));
+		} else if (i === 1) {
+			roomController.quizDone(roomcode, player.name, new QuizAnswers(loserAnswers, 100));
+		} else if (i === 2) {
+			roomController.quizDone(roomcode, player.name, new QuizAnswers(loserAnswers, 1));
+		} else {
+			roomController.quizDone(roomcode, player.name, new QuizAnswers(greatAnswers, 50));
+		}
+	}
+
+	expect(roomController.getRoom(roomcode).state).toBe(Room.ROOM_STATES.POST_QUIZ_INTERMISSION);
+	expect(roomController.getRoom(roomcode).currentEpisode.eliminatedPlayer.name).toBe('test2');
 });
+
+/*
+ * episode start => in challenge => challenge intermission => ... => in challenge => challenge intermission => 
+ * pre quiz intermission => in quiz => post quiz intermission => execution => execution wrap up => episode start
+ */
