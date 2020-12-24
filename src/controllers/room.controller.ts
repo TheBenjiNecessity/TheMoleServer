@@ -120,7 +120,7 @@ export default class RoomController {
 	}
 
 	quizDone(roomcode: string, playerName: string, quizAnswers: QuizAnswers) {
-		let message = null;
+		let message = 'quiz-done';
 		this.rooms[roomcode].currentEpisode.setQuizResultsForPlayer(playerName, quizAnswers);
 
 		if (this.rooms[roomcode].currentEpisode.allPlayersFinishedQuiz) {
