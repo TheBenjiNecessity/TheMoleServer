@@ -126,8 +126,11 @@ export default class Room extends StateObject {
 
 	set currentEpisode(episode) {
 		this._currentEpisode = episode;
-		for (let type of episode.challengeTypes) {
-			this.removeUnusedChallenge(type);
+
+		if (episode) {
+			for (let type of episode.challengeTypes) {
+				this.removeUnusedChallenge(type);
+			}
 		}
 	}
 
