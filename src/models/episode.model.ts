@@ -8,6 +8,11 @@ import Question from './quiz/question.model';
 import QuizAnswers from './quiz/quiz-answers.model';
 import Quiz from './quiz/quiz.model';
 
+interface EpisodePlayer {
+	player: Player;
+	quizAnswers: QuizAnswers;
+}
+
 /**
  * Stores things to do with an episode
  * @property {array<Object>} challenges the list of challenges in this episode
@@ -16,10 +21,8 @@ import Quiz from './quiz/quiz.model';
  * @property {Object} quiz the quiz at the end of this episode
  */
 export default class Episode {
-	private _eliminatedPlayer: Player;
-
 	currentChallengeIndex: number;
-	players: Player[];
+	players: EpisodePlayer[];
 	quiz: Quiz;
 
 	constructor(
@@ -28,10 +31,12 @@ export default class Episode {
 		unusedGeneralQuizQuestions: Question[]
 	) {
 		this.currentChallengeIndex = 0;
-		this.players = playersStillPlaying;
+		this.players = playersStillPlaying.map((p) => {
+			return { player: p, quizAnswers: null };
+		});
 
 		let questionsArray = [].concat(...this.challengeData.map((c) => c.model.questions));
-		this.quiz = QuizService.generateQuiz(this.players, questionsArray, unusedGeneralQuizQuestions);
+		this.quiz = QuizService.generateQuiz(playersStillPlaying, questionsArray, unusedGeneralQuizQuestions);
 	}
 
 	get currentChallenge(): Challenge {
@@ -46,26 +51,21 @@ export default class Episode {
 		return this.currentChallengeIndex >= this.challengeData.length;
 	}
 
-	get molePlayer(): Player {
-		return this.players.find((p) => p.isMole);
+	get molePlayer(): EpisodePlayer {
+		return this.players.find((p) => p.player.isMole);
 	}
 
 	get eliminatedPlayer(): Player {
 		if (!this.episodeIsOver) {
-			this._eliminatedPlayer = null;
 			return null;
-		}
-
-		if (this._eliminatedPlayer) {
-			return this._eliminatedPlayer;
 		}
 
 		let eliminatedPlayer = null;
 		let totalCorrectAll = 1000; // Keep track of the score for the worst test
-		let timeAll = 0;
+		let timeAll = 0; // Keep track of the worst time
 		let correctAnswers = this.molePlayer.quizAnswers.answers;
-		let playersConsidered = this.players.filter((p) => !p.isMole);
-		let blackExemptionPlayed = typeof this.players.find((p) => p.quizAnswers.usedBlackExemption) !== 'undefined';
+		let playersConsidered = this.players.filter((p) => !p.player.isMole);
+		const blackExemptionPlayed = this.players.some((p) => p.quizAnswers.usedBlackExemption);
 
 		if (!blackExemptionPlayed) {
 			// Remove players from list of considered players to be eliminated if that player played
@@ -91,8 +91,7 @@ export default class Episode {
 			}
 		}
 
-		this._eliminatedPlayer = eliminatedPlayer;
-		return eliminatedPlayer;
+		return eliminatedPlayer.player;
 	}
 
 	get allPlayersFinishedQuiz(): boolean {
@@ -108,8 +107,9 @@ export default class Episode {
 
 	setQuizResultsForPlayer(playerName: string, quizAnswers: QuizAnswers) {
 		for (let i = 0; i < this.players.length; i++) {
-			if (this.players[i].name === playerName) {
+			if (this.players[i].player.name === playerName) {
 				this.players[i].quizAnswers = quizAnswers;
+				this.players[i].player.resetObjectsFromQuizAnswers(quizAnswers);
 				break;
 			}
 		}

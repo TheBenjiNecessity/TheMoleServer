@@ -9,8 +9,6 @@ export interface PlayerInventory {
 }
 
 export default class Player {
-	private _quizAnswers: QuizAnswers;
-
 	eliminated: boolean;
 	isMole: boolean;
 	currentRoleName: string;
@@ -20,7 +18,6 @@ export default class Player {
 		this.eliminated = false;
 		this.isMole = false;
 		this.currentRoleName = null;
-		this._quizAnswers = null;
 		this.objects = {
 			exemption: 0,
 			joker: 0,
@@ -38,19 +35,6 @@ export default class Player {
 
 	get numJoker(): number {
 		return this.objects.joker;
-	}
-
-	get quizAnswers() {
-		return this._quizAnswers;
-	}
-
-	set quizAnswers(value: QuizAnswers) {
-		this._quizAnswers = value;
-		if (this.objects && value) {
-			this.objects.exemption -= value.usedExemption ? 1 : 0;
-			this.objects['black-exemption'] -= value.usedBlackExemption ? 1 : 0;
-			this.objects.joker -= value.numJokersUsed;
-		}
 	}
 
 	setObjects(object, quantity = 1) {
@@ -71,5 +55,11 @@ export default class Player {
 		if (this.objects[object] < 0) {
 			this.objects[object] = 0;
 		}
+	}
+
+	resetObjectsFromQuizAnswers(quizAnswers: QuizAnswers) {
+		this.objects.exemption -= quizAnswers.usedExemption ? 1 : 0;
+		this.objects['black-exemption'] -= quizAnswers.usedBlackExemption ? 1 : 0;
+		this.objects.joker -= quizAnswers.numJokersUsed;
 	}
 }
