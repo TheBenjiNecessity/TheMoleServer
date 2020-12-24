@@ -43,7 +43,7 @@ test('Tests getter and setters', () => {
 
 	expect(episode.currentChallenge).toEqual(challengeData.model);
 	expect(episode.episodeIsOver).toEqual(false);
-	expect(episode.molePlayer.isMole).toBeTruthy();
+	expect(episode.molePlayer.player.isMole).toBeTruthy();
 	expect(episode.eliminatedPlayer).toBeFalsy();
 	expect(episode.allPlayersFinishedQuiz).toBeFalsy();
 
@@ -59,7 +59,7 @@ test('Tests setQuizResultsForPlayer', () => {
 	let moleQuizAnswers = QuizSampleService.getMoleQuizAnswers(quiz);
 	let greatQuizAnswers = QuizSampleService.getGreatQuizAnswers(moleQuizAnswers, 1);
 
-	episode.setQuizResultsForPlayer(episode.players[0].name, greatQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[0].player.name, greatQuizAnswers);
 
 	expect(episode.players[0].quizAnswers).toEqual(greatQuizAnswers);
 });
@@ -75,18 +75,21 @@ test('Tests eliminatedPlayer getter (all players have same time)', () => {
 	let badQuizAnswers = QuizSampleService.getBadQuizAnswers(moleQuizAnswers, 1);
 	let loserQuizAnswers = QuizSampleService.getLoserQuizAnswers(moleQuizAnswers, 1);
 
+	expect(episode.allPlayersFinishedQuiz).toBeFalsy();
+
 	// It's assumed that player[0] is the mole
-	episode.setQuizResultsForPlayer(episode.players[0].name, moleQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[1].name, greatQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[2].name, goodQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[3].name, badQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[4].name, loserQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[0].player.name, moleQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[1].player.name, greatQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[2].player.name, goodQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[3].player.name, badQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[4].player.name, loserQuizAnswers);
 
 	expect(episode.allPlayersFinishedQuiz).toBeTruthy();
 
-	let eliminatedPlayer = episode.eliminatedPlayer;
+	const { eliminatedPlayer } = episode;
 
-	expect(eliminatedPlayer.name).toBe(episode.players[4].name);
+	expect(eliminatedPlayer).toBeTruthy();
+	expect(eliminatedPlayer.name).toBe(episode.players[4].player.name);
 });
 
 test('Tests eliminatedPlayer getter (all players have same quiz answers)', () => {
@@ -101,17 +104,17 @@ test('Tests eliminatedPlayer getter (all players have same quiz answers)', () =>
 	let greatQuizAnswers4 = QuizSampleService.getGreatQuizAnswers(moleQuizAnswers, 4);
 
 	// It's assumed that player[0] is the mole
-	episode.setQuizResultsForPlayer(episode.players[0].name, moleQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[1].name, greatQuizAnswers1);
-	episode.setQuizResultsForPlayer(episode.players[2].name, greatQuizAnswers2);
-	episode.setQuizResultsForPlayer(episode.players[3].name, greatQuizAnswers3);
-	episode.setQuizResultsForPlayer(episode.players[4].name, greatQuizAnswers4);
+	episode.setQuizResultsForPlayer(episode.players[0].player.name, moleQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[1].player.name, greatQuizAnswers1);
+	episode.setQuizResultsForPlayer(episode.players[2].player.name, greatQuizAnswers2);
+	episode.setQuizResultsForPlayer(episode.players[3].player.name, greatQuizAnswers3);
+	episode.setQuizResultsForPlayer(episode.players[4].player.name, greatQuizAnswers4);
 
 	expect(episode.allPlayersFinishedQuiz).toBeTruthy();
 
 	let eliminatedPlayer = episode.eliminatedPlayer;
 
-	expect(eliminatedPlayer.name).toBe(episode.players[4].name);
+	expect(eliminatedPlayer.name).toBe(episode.players[4].player.name);
 });
 
 test("Tests eliminatedPlayer getter (everyone is tied but doesn't matter as one player loses)", () => {
@@ -126,17 +129,17 @@ test("Tests eliminatedPlayer getter (everyone is tied but doesn't matter as one 
 	let loserQuizAnswers = QuizSampleService.getLoserQuizAnswers(moleQuizAnswers, 1);
 
 	// It's assumed that player[0] is the mole
-	episode.setQuizResultsForPlayer(episode.players[0].name, moleQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[1].name, greatQuizAnswers1);
-	episode.setQuizResultsForPlayer(episode.players[2].name, greatQuizAnswers2);
-	episode.setQuizResultsForPlayer(episode.players[3].name, greatQuizAnswers3);
-	episode.setQuizResultsForPlayer(episode.players[4].name, loserQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[0].player.name, moleQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[1].player.name, greatQuizAnswers1);
+	episode.setQuizResultsForPlayer(episode.players[2].player.name, greatQuizAnswers2);
+	episode.setQuizResultsForPlayer(episode.players[3].player.name, greatQuizAnswers3);
+	episode.setQuizResultsForPlayer(episode.players[4].player.name, loserQuizAnswers);
 
 	expect(episode.allPlayersFinishedQuiz).toBeTruthy();
 
 	let eliminatedPlayer = episode.eliminatedPlayer;
 
-	expect(eliminatedPlayer.name).toBe(episode.players[4].name);
+	expect(eliminatedPlayer.name).toBe(episode.players[4].player.name);
 });
 
 test.skip('Tests eliminatedPlayer getter (two players have identical low scores)', () => {
@@ -148,15 +151,17 @@ test.skip('Tests eliminatedPlayer getter (two players have identical low scores)
 	let loserQuizAnswers = QuizSampleService.getLoserQuizAnswers(moleQuizAnswers, 1);
 
 	// It's assumed that player[0] is the mole
-	episode.setQuizResultsForPlayer(episode.players[0].name, moleQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[1].name, loserQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[2].name, loserQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[3].name, loserQuizAnswers);
-	episode.setQuizResultsForPlayer(episode.players[4].name, loserQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[0].player.name, moleQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[1].player.name, loserQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[2].player.name, loserQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[3].player.name, loserQuizAnswers);
+	episode.setQuizResultsForPlayer(episode.players[4].player.name, loserQuizAnswers);
 
 	expect(episode.allPlayersFinishedQuiz).toBeTruthy();
 
 	let eliminatedPlayer = episode.eliminatedPlayer;
 
-	expect(eliminatedPlayer.name).toBe(episode.players[4].name);
+	expect(eliminatedPlayer.name).toBe(episode.players[4].player.name);
 });
+
+test('Tests allPlayersFinishedQuiz getter', () => {});
