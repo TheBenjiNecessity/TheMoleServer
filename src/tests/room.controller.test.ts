@@ -1,31 +1,15 @@
-import RoomController from '../controllers/room.controller';
 import Player from '../models/player.model';
 import Room from '../models/room.model';
 import RoomService from '../services/room/room.service';
 import RoomSampleService from '../services/sample/room.sample';
-import WebSocketService from '../services/websocket.service';
 import EpisodeSampleService from '../services/sample/episode.sample';
 import QuizAnswers from '../models/quiz/quiz-answers.model';
 import Answer from '../models/quiz/quiz-answer.model';
 import Quiz from '../models/quiz/quiz.model';
 import QuizSampleService from '../services/sample/quiz.sample';
+import { getMockRoomController, getMockRoomControllerWithRoom } from '../services/sample/room-controller.sample';
 
 const ROOMCODE_REGEX = /[A-Z]{4}/;
-
-let rooms: { [id: string]: Room } = {};
-
-function getMockRoomController() {
-	rooms = {};
-	let webSocketService = new WebSocketService(null);
-	return new RoomController(
-		webSocketService,
-		[],
-		() => rooms,
-		(r) => {
-			rooms = r;
-		}
-	);
-}
 
 function getMockRoom(numPlayers) {
 	let room = RoomSampleService.getTestRoomForNumPlayers(numPlayers);
@@ -36,9 +20,7 @@ function getMockRoom(numPlayers) {
 
 function getMockComponents(numPlayers) {
 	let room = getMockRoom(numPlayers);
-	let roomController = getMockRoomController();
-
-	roomController.setRoom(room);
+	let roomController = getMockRoomControllerWithRoom(room);
 
 	return { room, roomController };
 }
