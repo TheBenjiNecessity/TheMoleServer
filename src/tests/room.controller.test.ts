@@ -219,7 +219,7 @@ test('Checks "quizDone" method', () => {
 
 	expect(room.currentEpisode.allPlayersFinishedQuiz).toBe(false);
 
-	let episodePlayer = room.currentEpisode.players.find((p) => p.name === player1.name);
+	let episodePlayer = room.currentEpisode.players.find((p) => p.player.name === player1.name);
 	expect(episodePlayer).toBeTruthy();
 	expect(episodePlayer.quizAnswers).toEqual(quizAnswers);
 });
