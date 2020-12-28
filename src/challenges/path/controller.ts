@@ -3,6 +3,7 @@ import PathChallenge, { PATH_CHALLENGE_EVENTS } from './model';
 import ChallengeController from '../../controllers/challenge.controller';
 import Player from '../../models/player.model';
 import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
+import Challenge from '../../models/challenge.model';
 
 const POINTS_FOR_CONTINUING = 7;
 
@@ -83,5 +84,9 @@ export default class PathChallengeController extends ChallengeController {
 		return message;
 	}
 
-	stateDidChange() {}
+	stateDidChange(roomcode: string, previousState: string, newState: string) {}
+
+	getCurrentChallenge(roomcode: string): Challenge {
+		throw new Error('Method not implemented.');
+	}
 }

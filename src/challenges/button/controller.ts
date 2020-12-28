@@ -1,6 +1,7 @@
 import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import ButtonChallenge from './model';
+import Challenge from '../../models/challenge.model';
 
 export default class ButtonChallengeController extends ChallengeController {
 	constructor(protected roomController: RoomController) {
@@ -62,5 +63,9 @@ export default class ButtonChallengeController extends ChallengeController {
 		return message;
 	}
 
-	stateDidChange() {}
+	stateDidChange(roomcode: string, previousState: string, newState: string) {}
+
+	getCurrentChallenge(roomcode: string): Challenge {
+		throw new Error('Method not implemented.');
+	}
 }

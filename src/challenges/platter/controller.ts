@@ -2,6 +2,7 @@ import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
 import PlatterChallenge from './model';
+import Challenge from '../../models/challenge.model';
 
 const POINTS = 3;
 
@@ -32,5 +33,9 @@ export default class PlatterChallengeController extends ChallengeController {
 		return 'took-money';
 	}
 
-	stateDidChange() {}
+	stateDidChange(roomcode: string, previousState: string, newState: string) {}
+
+	getCurrentChallenge(roomcode: string): Challenge {
+		throw new Error('Method not implemented.');
+	}
 }

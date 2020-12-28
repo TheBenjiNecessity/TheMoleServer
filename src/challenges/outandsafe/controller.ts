@@ -2,6 +2,7 @@ import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import OutAndSafeChallenge from './model';
 import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
+import Challenge from '../../models/challenge.model';
 
 const POINTS = 10;
 
@@ -32,5 +33,9 @@ export default class OutAndSafeChallengeController extends ChallengeController {
 		return 'out-safe-card-selected';
 	}
 
-	stateDidChange() {}
+	stateDidChange(roomcode: string, previousState: string, newState: string) {}
+
+	getCurrentChallenge(roomcode: string): Challenge {
+		throw new Error('Method not implemented.');
+	}
 }

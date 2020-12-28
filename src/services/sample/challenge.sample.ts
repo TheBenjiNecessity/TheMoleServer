@@ -36,6 +36,12 @@ class SampleChallengeController extends ChallengeController {
 	constructor(roomController: RoomController) {
 		super(roomController);
 	}
+
+	stateDidChange(roomcode: string, previousState: string, newState: string) {}
+
+	getCurrentChallenge(roomcode: string): Challenge {
+		throw new Error('Method not implemented.');
+	}
 }
 
 const challengeLanguageData = {

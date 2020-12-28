@@ -13,7 +13,7 @@ export default class WiseMonkeysChallengeController extends ChallengeController 
 
 	enterRiddleAnswer(roomcode: string, playerName: string, answerText: string) {
 		let room = this.roomController.getRoom(roomcode);
-		let wiseMonkeysChallenge = room.currentEpisode.currentChallenge as WiseMonkeysChallenge;
+		let wiseMonkeysChallenge = this.getCurrentChallenge(roomcode); //room.currentEpisode.currentChallenge as WiseMonkeysChallenge;
 
 		if (wiseMonkeysChallenge.isAnswerCorrect(answerText, room.language)) {
 			room = this.performEvent(roomcode, 'goToNextRiddle');
@@ -27,12 +27,16 @@ export default class WiseMonkeysChallengeController extends ChallengeController 
 			}
 		}
 
-		return 'entered-riddle';
+		return 'wisemonkeys-entered-riddle';
 	}
 
 	stateDidChange(roomcode: string, previousState: string, newState: string) {
 		if (newState === Challenge.CHALLENGE_STATES.IN_GAME) {
 			this.roomController.startTimer(roomcode, 1000 * 60 * 5, 1000);
 		}
+	}
+
+	getCurrentChallenge(roomcode: string): WiseMonkeysChallenge {
+		return this.roomController.getCurrentChallenge(roomcode) as WiseMonkeysChallenge;
 	}
 }

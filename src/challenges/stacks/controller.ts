@@ -2,6 +2,7 @@ import RoomController from '../../controllers/room.controller';
 import ChallengeController from '../../controllers/challenge.controller';
 import StacksChallenge from './model';
 import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
+import Challenge from '../../models/challenge.model';
 
 export default class StacksChallengeController extends ChallengeController {
 	constructor(protected roomController: RoomController) {
@@ -34,5 +35,9 @@ export default class StacksChallengeController extends ChallengeController {
 		return message;
 	}
 
-	stateDidChange() {}
+	stateDidChange(roomcode: string, previousState: string, newState: string) {}
+
+	getCurrentChallenge(roomcode: string): Challenge {
+		throw new Error('Method not implemented.');
+	}
 }

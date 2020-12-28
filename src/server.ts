@@ -39,7 +39,7 @@ async function run() {
 			rooms = r;
 		}
 	);
-	let challengeController = new ChallengeController(roomController);
+
 	let requestService = new RequestService(app, roomController);
 
 	io.on('connection', async (socket) => {
@@ -50,7 +50,7 @@ async function run() {
 		});
 
 		new RoomSocketHandler(roomController, webSocketService, socket);
-		new ChallengeSocketHandler(roomController, webSocketService, socket, challengeController);
+		new ChallengeSocketHandler(roomController, webSocketService, socket);
 
 		for (let challengeDatum of challengeData) {
 			challengeDatum.setupSocketHandler(roomController, webSocketService, socket);

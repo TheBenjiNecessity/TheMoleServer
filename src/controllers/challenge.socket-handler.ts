@@ -2,17 +2,27 @@ import RoomController from './room.controller';
 import WebSocketService from '../services/websocket.service';
 import SocketHandler from '../interfaces/socket-handler';
 import ChallengeController from './challenge.controller';
+import Challenge from '../models/challenge.model';
 
-const MILLISECONDS_IN_SECOND = 1000;
+class TempChallengeController extends ChallengeController {
+	stateDidChange(roomcode: string, previousState: string, newState: string) {}
+
+	getCurrentChallenge(roomcode: string): Challenge {
+		throw new Error('Method not implemented.');
+	}
+}
 
 export default class ChallengeSocketHandler extends SocketHandler {
+	challengeController: TempChallengeController;
+
 	constructor(
 		protected roomController: RoomController,
 		protected webSocketService: WebSocketService,
-		protected socket: any,
-		private challengeController: ChallengeController
+		protected socket: any
 	) {
 		super(roomController, webSocketService, socket);
+
+		this.challengeController = new TempChallengeController(this.roomController);
 
 		socket.on('raise-hand', this.raiseHand);
 		socket.on('agree-to-roles', this.agreeToRoles);

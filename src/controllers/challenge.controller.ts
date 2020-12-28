@@ -6,7 +6,7 @@ export interface IChallengeController {
 	stateDidChange(roomcode: string, previousState: string, newState: string);
 }
 
-export default class ChallengeController implements IChallengeController {
+export default abstract class ChallengeController implements IChallengeController {
 	constructor(protected roomController: RoomController) {}
 
 	raiseHand(roomcode: string, playerName: string, roleName: string): string {
@@ -54,5 +54,7 @@ export default class ChallengeController implements IChallengeController {
 		return this.roomController.performEventOnChallenge(roomcode, event, ...args);
 	}
 
-	stateDidChange(roomcode: string, previousState: string, newState: string) {}
+	abstract stateDidChange(roomcode: string, previousState: string, newState: string);
+
+	abstract getCurrentChallenge(roomcode: string): Challenge;
 }
