@@ -13,7 +13,7 @@ export default class StacksChallengeController extends ChallengeController {
 		let event = 'selectNumberOfTilesForPlayer';
 		let message = 'stacks-player-selected';
 		let room = this.performEvent(roomcode, event, playerName, numSelected);
-		let stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
+		let stacksChallenge = this.getCurrentChallenge(roomcode);
 
 		if (stacksChallenge.allStackAmountsSelected) {
 			let { pointsForRound } = stacksChallenge;
@@ -24,7 +24,7 @@ export default class StacksChallengeController extends ChallengeController {
 			}
 
 			room = this.performEvent(roomcode, 'goToNextRound');
-			stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
+			stacksChallenge = this.getCurrentChallenge(roomcode);
 
 			if (stacksChallenge.isChallengeOver) {
 				this.roomController.endChallenge(roomcode);

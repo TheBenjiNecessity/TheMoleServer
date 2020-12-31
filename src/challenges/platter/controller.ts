@@ -20,10 +20,10 @@ export default class PlatterChallengeController extends ChallengeController {
 
 	chooseMoney(roomcode: string, playerName: string) {
 		let room = this.roomController.getRoom(roomcode);
-		let platterChallenge = room.currentEpisode.currentChallenge as PlatterChallenge;
+		let platterChallenge = this.getCurrentChallenge(roomcode);
 		if (!platterChallenge.playerTookMoney(playerName)) {
 			room = this.performEvent(roomcode, 'takeMoney', playerName);
-			platterChallenge = room.currentEpisode.currentChallenge as PlatterChallenge;
+			platterChallenge = this.getCurrentChallenge(roomcode);
 			this.roomController.addPoints(roomcode, POINTS);
 			if (platterChallenge.allMoneyWasTaken) {
 				this.roomController.endChallenge(roomcode);
