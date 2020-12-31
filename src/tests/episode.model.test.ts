@@ -78,7 +78,11 @@ beforeEach(() => {
 	let { room, roomController } = getMockComponents();
 	testRoom = room;
 	testRoomController = roomController;
-	testEpisode = room.currentEpisode;
+	testRoomController.moveNext(testRoom.roomcode);
+	testRoomController.moveNext(testRoom.roomcode);
+	testRoomController.moveNext(testRoom.roomcode);
+	testRoom = testRoomController.getRoom(testRoom.roomcode);
+	testEpisode = testRoom.currentEpisode;
 });
 
 test('Tests episode init', () => {
