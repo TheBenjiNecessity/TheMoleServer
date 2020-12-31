@@ -23,10 +23,13 @@ export function getMockRoomControllerWithRoom(room: Room, challengeData: Challen
 	rooms = {};
 
 	const roomController = getMockRoomController(challengeData);
+
 	roomController.setRoom(room);
 
 	if (challengeData.length) {
 		roomController.setChallengeDataForRoom(room.roomcode);
+		room.generateCurrentEpisode();
+		roomController.setRoom(room);
 	}
 
 	return roomController;
