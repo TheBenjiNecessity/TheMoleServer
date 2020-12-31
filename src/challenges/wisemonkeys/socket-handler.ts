@@ -16,7 +16,7 @@ export default class WiseMonkeysChallengeSocketHandlerInstance extends SocketHan
 	}
 
 	enterRiddleAnswer({ roomcode, playerName, answerText }) {
-		let message = this.wiseMonkeysChallengeController.enterRiddleAnswer(roomcode, playerName, answerText);
+		let message = this.wiseMonkeysChallengeController.enterRiddleAnswer(roomcode, answerText);
 		return this.webSocketService.sendToRoom(roomcode, message);
 	}
 }

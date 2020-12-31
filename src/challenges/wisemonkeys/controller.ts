@@ -11,11 +11,11 @@ export default class WiseMonkeysChallengeController extends ChallengeController 
 		super(roomController);
 	}
 
-	enterRiddleAnswer(roomcode: string, playerName: string, answerText: string) {
+	enterRiddleAnswer(roomcode: string, answerText: string) {
 		let room = this.roomController.getRoom(roomcode);
 		let wiseMonkeysChallenge = this.getCurrentChallenge(roomcode); //room.currentEpisode.currentChallenge as WiseMonkeysChallenge;
 
-		if (wiseMonkeysChallenge.isAnswerCorrect(answerText, room.language)) {
+		if (wiseMonkeysChallenge.isAnswerCorrect(answerText)) {
 			room = this.performEvent(roomcode, 'goToNextRiddle');
 			wiseMonkeysChallenge = room.currentEpisode.currentChallenge as WiseMonkeysChallenge;
 			if (wiseMonkeysChallenge.challengeIsOver) {
