@@ -40,7 +40,7 @@ export default class Episode {
 	}
 
 	get currentChallenge(): Challenge {
-		if (this.episodeIsOver) {
+		if (this.currentChallengeIndex >= this.challengeData.length) {
 			return null;
 		}
 
