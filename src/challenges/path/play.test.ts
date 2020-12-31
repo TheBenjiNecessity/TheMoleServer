@@ -82,40 +82,38 @@ function getMockComponents() {
 test('Plays through an entire game where all players make it to the end', () => {
 	let { room, roomController, pathChallengeController } = getMockComponents();
 	let { roomcode } = room;
-	let pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
+	let pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
 
 	while (pathChallenge && !pathChallenge.challengeIsDone) {
-		let direction = pathChallenge.currentChest.left === 'continue' ? 'left' : 'right';
-		pathChallengeController.chooseChest(roomcode, direction);
+		pathChallengeController.chooseChest(roomcode, 'left');
 		for (let player of pathChallenge.playersNotWalker) {
-			pathChallengeController.addVoteForChest(roomcode, player, direction);
-			room = roomController.getRoom(roomcode);
-			pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
-			if (pathChallenge.hasMajorityVote) {
+			pathChallengeController.addVoteForChest(roomcode, player, 'left');
+			pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
+			if (pathChallenge && pathChallenge.hasMajorityVote) {
 				break;
 			}
 		}
 	}
 
 	room = roomController.getRoom(roomcode);
-	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge as PathChallenge;
+	pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
 
-	expect(pathChallenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
+	expect(pathChallenge).toBeFalsy();
 	expect(room.points).toBe(35);
 });
 
-test('Plays through an entire game where all but one player makes it to the end', () => {
+test('Plays through an entire game where all but one player makes it to the endl', () => {
 	let { room, roomController, pathChallengeController } = getMockComponents();
 	let { roomcode } = room;
-	let pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
+	let pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
 	while (pathChallenge && pathChallenge.walkers.length > 0) {
 		let direction = pathChallenge.currentChest.left === 'continue' ? 'left' : 'right';
 		pathChallengeController.chooseChest(roomcode, direction);
 		for (let player of pathChallenge.playersNotWalker) {
 			pathChallengeController.addVoteForChest(roomcode, player, direction);
 			room = roomController.getRoom(roomcode);
-			pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
-			if (pathChallenge.hasMajorityVote) {
+			pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
+			if (pathChallenge && pathChallenge.hasMajorityVote) {
 				break;
 			}
 		}
@@ -125,16 +123,16 @@ test('Plays through an entire game where all but one player makes it to the end'
 	for (let player of pathChallenge.playersNotWalker) {
 		pathChallengeController.addVoteForChest(roomcode, player, 'right');
 		room = roomController.getRoom(roomcode);
-		pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
-		if (pathChallenge.hasMajorityVote) {
+		pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
+		if (pathChallenge && pathChallenge.hasMajorityVote) {
 			break;
 		}
 	}
 
 	room = roomController.getRoom(roomcode);
-	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge as PathChallenge;
+	pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
 
-	expect(pathChallenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
+	expect(pathChallenge).toBeFalsy();
 	expect(room.points).toBe(28);
 	expect(room.playersStillPlaying[4].numExemptions).toBe(1);
 });
@@ -142,23 +140,23 @@ test('Plays through an entire game where all but one player makes it to the end'
 test('Plays through an entire game where no players make it though', () => {
 	let { room, roomController, pathChallengeController } = getMockComponents();
 	let { roomcode } = room;
-	let pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
+	let pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
 	while (pathChallenge && !pathChallenge.challengeIsDone) {
 		pathChallengeController.chooseChest(roomcode, 'left');
 		for (let player of pathChallenge.playersNotWalker) {
 			pathChallengeController.addVoteForChest(roomcode, player, 'right');
 			room = roomController.getRoom(roomcode);
-			pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
-			if (pathChallenge.hasMajorityVote) {
+			pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
+			if (pathChallenge && pathChallenge.hasMajorityVote) {
 				break;
 			}
 		}
 	}
 
 	room = roomController.getRoom(roomcode);
-	pathChallenge = roomController.getRoom(roomcode).currentEpisode.currentChallenge as PathChallenge;
+	pathChallenge = pathChallengeController.getCurrentChallenge(roomcode);
 
-	expect(pathChallenge.state).toBe(Challenge.CHALLENGE_STATES.CHALLENGE_END);
+	expect(pathChallenge).toBeFalsy();
 	expect(room.points).toBe(0);
 	for (let player of room.playersStillPlaying) {
 		expect(player.numExemptions).toBe(1);
