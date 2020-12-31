@@ -39,7 +39,6 @@ export default abstract class Challenge extends StateObject {
 		this.raisedHands = [];
 		this.votedPlayers = {};
 		this.isChallengeRunning = false;
-		this.timer = null;
 
 		this.roles = this.getRoles(this.players.length);
 	}
@@ -70,7 +69,6 @@ export default abstract class Challenge extends StateObject {
 				this.setRoles();
 				break;
 			case Challenge.CHALLENGE_STATES.CHALLENGE_END:
-				clearInterval(this.timer);
 				this.isChallengeRunning = false;
 				break;
 			default:
