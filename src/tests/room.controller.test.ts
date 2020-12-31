@@ -139,8 +139,6 @@ describe('Room Controller Tests', () => {
 		expect(roomController.getRoom('TEST').playersStillPlaying[1].name).toBe('test12');
 	});
 
-	test('Checks "removePlayerToRoom" method', () => {}); //TODO
-
 	test('Checks "giveObjectsToPlayer/removeObjectsFromPlayer" methods', () => {
 		let { room, roomController } = getMockComponents(10);
 		let { roomcode } = room;
