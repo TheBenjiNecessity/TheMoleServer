@@ -117,6 +117,10 @@ export default class Episode {
 
 	goToNextChallenge() {
 		this.currentChallengeIndex++;
+
+		if (this.currentChallengeIndex >= this.challengeData.length) {
+			this.currentChallengeIndex = this.challengeData.length - 1;
+		}
 	}
 
 	getCurrentChallengeController(roomController: RoomController): ChallengeController {
