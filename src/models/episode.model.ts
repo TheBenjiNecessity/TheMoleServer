@@ -48,7 +48,10 @@ export default class Episode {
 	}
 
 	get episodeIsOver(): boolean {
-		return this.currentChallengeIndex >= this.challengeData.length;
+		return (
+			this.currentChallengeIndex === this.challengeData.length - 1 &&
+			this.currentChallenge.state === Challenge.CHALLENGE_STATES.CHALLENGE_END
+		);
 	}
 
 	get molePlayer(): EpisodePlayer {
