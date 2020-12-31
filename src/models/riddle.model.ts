@@ -1,29 +1,12 @@
-import Localization, { LanguageData } from './l10n.model';
-
-interface RiddleLanguageData extends LanguageData {
-	answer: string;
-	type: string;
-}
-
-export default class Riddle extends Localization {
+export default class Riddle {
 	static RIDDLE_TYPE = {
 		WORD: 'word',
 		WORD_LIST: 'word-list'
 	};
 
-	constructor(private riddleLanguageData: { [code: string]: RiddleLanguageData }) {
-		super(riddleLanguageData);
-	}
+	constructor(public text: string, public answer: string, public type: string) {}
 
-	getAnswer(language: string): string {
-		return this.riddleLanguageData[language].answer;
-	}
-
-	getType(language: string): string {
-		return this.riddleLanguageData[language].answer;
-	}
-
-	isInputCorrent(inputText: string, language: string): boolean {
-		return this.getAnswer(language) === inputText;
+	isInputCorrect(inputText: string): boolean {
+		return this.answer === inputText;
 	}
 }
