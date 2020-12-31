@@ -127,10 +127,6 @@ export default class Episode {
 	}
 
 	getCurrentChallengeController(roomController: RoomController): ChallengeController {
-		if (this.episodeIsOver) {
-			return null;
-		}
-
 		return this.challengeData[this.currentChallengeIndex].getController(roomController);
 	}
 }
