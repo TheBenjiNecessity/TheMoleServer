@@ -1,31 +1,22 @@
 import Challenge from '../../models/challenge.model';
 import Riddle from '../../models/riddle.model';
 import Role from '../../models/role.model';
-import RiddleService from '../../services/game/riddle.service';
-
-const type = 'wisemonkeys';
-const MAX_NUM_RIDDLES = 3;
 
 export default class WiseMonkeysChallenge extends Challenge {
-	riddles: Riddle[];
 	currentRiddleIndex: number;
 
-	constructor(players, title, description, questions) {
+	constructor(players, title, description, questions, private riddles: Riddle[]) {
 		super(players, title, description, questions, 'game');
 
 		this.currentRiddleIndex = 0;
-
-		for (let i = 0; i < MAX_NUM_RIDDLES; i++) {
-			this.riddles.push(RiddleService.getRandomRiddle(Riddle.RIDDLE_TYPE.WORD));
-		}
 	}
 
 	get currentRiddle(): Riddle {
 		return this.riddles[this.currentRiddleIndex];
 	}
 
-	get challengeIsOver(): Riddle {
-		return this.riddles[this.currentRiddleIndex];
+	get challengeIsOver(): boolean {
+		return this.currentRiddleIndex >= this.riddles.length;
 	}
 
 	getRoles(numPlayers: number): Role[] {
@@ -49,8 +40,8 @@ export default class WiseMonkeysChallenge extends Challenge {
 		this.currentRiddleIndex++;
 	}
 
-	isAnswerCorrect(answerText: string, language: string): boolean {
-		return this.currentRiddle.isInputCorrent(answerText, language);
+	isAnswerCorrect(answerText: string): boolean {
+		return this.currentRiddle.isInputCorrect(answerText);
 	}
 
 	moveNext() {

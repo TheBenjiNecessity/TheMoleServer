@@ -7,6 +7,8 @@ import RoomController from '../../controllers/room.controller';
 import WebSocketService from '../../services/websocket.service';
 import ChallengeController from '../../controllers/challenge.controller';
 import Player from '../../models/player.model';
+import RiddleService, { IRiddleService } from '../../services/game/riddle.service';
+import Riddle from '../../models/riddle.model';
 
 const challengeLanguageData = {
 	en: {
@@ -22,8 +24,10 @@ const challengeLanguageData = {
 	} as ChallengeLanguageData
 };
 
+const MAX_NUM_RIDDLES = 3;
+
 export default class WiseMonkeysChallengeData extends ChallengeData {
-	constructor() {
+	constructor(private riddleService: IRiddleService = new RiddleService()) {
 		super(new ChallengeLocalization(challengeLanguageData));
 	}
 
@@ -53,7 +57,8 @@ export default class WiseMonkeysChallengeData extends ChallengeData {
 			players,
 			this.getTitle(languageCode),
 			this.getDescription(languageCode),
-			this.getQuestions(languageCode)
+			this.getQuestions(languageCode),
+			this.riddleService.getRiddleList(languageCode, Riddle.RIDDLE_TYPE.WORD, MAX_NUM_RIDDLES)
 		);
 	}
 }
