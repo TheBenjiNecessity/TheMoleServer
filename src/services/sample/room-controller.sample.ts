@@ -28,8 +28,6 @@ export function getMockRoomControllerWithRoom(room: Room, challengeData: Challen
 
 	if (challengeData.length) {
 		roomController.setChallengeDataForRoom(room.roomcode);
-		room.generateCurrentEpisode();
-		roomController.setRoom(room);
 	}
 
 	return roomController;
