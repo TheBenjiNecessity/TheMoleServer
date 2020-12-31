@@ -125,6 +125,10 @@ export default class RoomController {
 	}
 
 	quizDone(roomcode: string, playerName: string, quizAnswers: QuizAnswers) {
+		if (this.rooms[roomcode].state !== Room.ROOM_STATES.IN_QUIZ) {
+			return null;
+		}
+
 		let message = 'quiz-done';
 		this.rooms[roomcode].currentEpisode.setQuizResultsForPlayer(playerName, quizAnswers);
 
