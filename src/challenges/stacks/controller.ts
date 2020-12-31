@@ -27,7 +27,7 @@ export default class StacksChallengeController extends ChallengeController {
 			stacksChallenge = room.currentEpisode.currentChallenge as StacksChallenge;
 
 			if (stacksChallenge.isChallengeOver) {
-				this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+				this.roomController.endChallenge(roomcode);
 				message = 'challenge-end';
 			}
 		}

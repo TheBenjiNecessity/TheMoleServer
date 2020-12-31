@@ -14,7 +14,7 @@ export default class PlatterChallengeController extends ChallengeController {
 	chooseExemption(roomcode: string, playerName: string) {
 		this.performEvent(roomcode, 'takeExemption', playerName);
 		this.roomController.giveObjectsToPlayer(roomcode, playerName, 'exemption', 1);
-		this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+		this.roomController.endChallenge(roomcode);
 		return 'took-exemption';
 	}
 
@@ -26,7 +26,7 @@ export default class PlatterChallengeController extends ChallengeController {
 			platterChallenge = room.currentEpisode.currentChallenge as PlatterChallenge;
 			this.roomController.addPoints(roomcode, POINTS);
 			if (platterChallenge.allMoneyWasTaken) {
-				this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+				this.roomController.endChallenge(roomcode);
 			}
 		}
 

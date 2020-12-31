@@ -78,7 +78,7 @@ export default class PathChallengeController extends ChallengeController {
 		}
 
 		if (pathChallenge.challengeIsDone) {
-			this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+			this.roomController.endChallenge(roomcode);
 		}
 
 		return message;

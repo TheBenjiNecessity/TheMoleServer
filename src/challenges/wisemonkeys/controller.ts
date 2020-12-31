@@ -20,7 +20,7 @@ export default class WiseMonkeysChallengeController extends ChallengeController 
 			wiseMonkeysChallenge = room.currentEpisode.currentChallenge as WiseMonkeysChallenge;
 			if (wiseMonkeysChallenge.challengeIsOver) {
 				this.roomController.addPoints(roomcode, POINTS);
-				this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+				this.roomController.endChallenge(roomcode);
 				return 'wisemonkeys-challenge-over';
 			} else {
 				return 'wisemonkeys-move-next';

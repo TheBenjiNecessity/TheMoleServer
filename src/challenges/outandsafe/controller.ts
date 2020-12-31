@@ -19,10 +19,10 @@ export default class OutAndSafeChallengeController extends ChallengeController {
 		if (outAndSafeChallenge.allCardsPlayed) {
 			if (outAndSafeChallenge.numOutCards === 1) {
 				this.roomController.addPoints(roomcode, POINTS);
-				this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+				this.roomController.endChallenge(roomcode);
 				return 'challenge-end';
 			} else if (outAndSafeChallenge.numOutCards > 1) {
-				this.performEvent(roomcode, CHALLENGE_EVENTS.END_CHALLENGE);
+				this.roomController.endChallenge(roomcode);
 				return 'challenge-end';
 			} else {
 				room = this.performEvent(roomcode, 'increaseRoundNumber');
