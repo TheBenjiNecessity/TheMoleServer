@@ -35,7 +35,7 @@ export default class OutAndSafeChallengeController extends ChallengeController {
 
 	stateDidChange(roomcode: string, previousState: string, newState: string) {}
 
-	getCurrentChallenge(roomcode: string): Challenge {
-		throw new Error('Method not implemented.');
+	getCurrentChallenge(roomcode: string): OutAndSafeChallenge {
+		return this.roomController.getCurrentChallenge(roomcode) as OutAndSafeChallenge;
 	}
 }

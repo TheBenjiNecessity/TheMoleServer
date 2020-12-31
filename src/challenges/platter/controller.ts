@@ -35,7 +35,7 @@ export default class PlatterChallengeController extends ChallengeController {
 
 	stateDidChange(roomcode: string, previousState: string, newState: string) {}
 
-	getCurrentChallenge(roomcode: string): Challenge {
-		throw new Error('Method not implemented.');
+	getCurrentChallenge(roomcode: string): PlatterChallenge {
+		return this.roomController.getCurrentChallenge(roomcode) as PlatterChallenge;
 	}
 }

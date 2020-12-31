@@ -65,7 +65,7 @@ export default class ButtonChallengeController extends ChallengeController {
 
 	stateDidChange(roomcode: string, previousState: string, newState: string) {}
 
-	getCurrentChallenge(roomcode: string): Challenge {
-		throw new Error('Method not implemented.');
+	getCurrentChallenge(roomcode: string): ButtonChallenge {
+		return this.roomController.getCurrentChallenge(roomcode) as ButtonChallenge;
 	}
 }

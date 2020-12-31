@@ -86,7 +86,7 @@ export default class PathChallengeController extends ChallengeController {
 
 	stateDidChange(roomcode: string, previousState: string, newState: string) {}
 
-	getCurrentChallenge(roomcode: string): Challenge {
-		throw new Error('Method not implemented.');
+	getCurrentChallenge(roomcode: string): PathChallenge {
+		return this.roomController.getCurrentChallenge(roomcode) as PathChallenge;
 	}
 }
