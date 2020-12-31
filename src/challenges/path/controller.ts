@@ -2,8 +2,6 @@ import RoomController from '../../controllers/room.controller';
 import PathChallenge, { PATH_CHALLENGE_EVENTS } from './model';
 import ChallengeController from '../../controllers/challenge.controller';
 import Player from '../../models/player.model';
-import { CHALLENGE_EVENTS } from '../../contants/challenge.constants';
-import Challenge from '../../models/challenge.model';
 
 const POINTS_FOR_CONTINUING = 7;
 
@@ -25,7 +23,12 @@ export default class PathChallengeController extends ChallengeController {
 		let room = this.performEvent(roomcode, event, player);
 		let message = 'path-vote-chest';
 
-		let pathChallenge = room.currentEpisode.currentChallenge as PathChallenge;
+		let pathChallenge = this.getCurrentChallenge(roomcode);
+
+		if (!pathChallenge) {
+			return null;
+		}
+
 		if (pathChallenge.hasMajorityVote) {
 			let { contentsOfVotedChest } = pathChallenge;
 
