@@ -1,5 +1,5 @@
 import Player from '../models/player.model';
-import Room, { IEpisodeGenerator, IMoleChooser } from '../models/room.model';
+import Room from '../models/room.model';
 import RoomService from '../services/room/room.service';
 import QuizAnswers from '../models/quiz/quiz-answers.model';
 import Answer from '../models/quiz/quiz-answer.model';
