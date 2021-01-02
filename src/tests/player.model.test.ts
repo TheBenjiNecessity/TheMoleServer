@@ -1,8 +1,11 @@
 import Player from '../models/player.model';
 
-test('Checks player', () => {
-	let player = new Player('test');
+let player: Player = null;
+beforeEach(() => {
+	player = new Player('test');
+});
 
+test('Checks player', () => {
 	expect(player.name).toEqual('test');
 	expect(player.objects['exemption']).toBe(0);
 	expect(player.objects['joker']).toBe(0);
@@ -10,8 +13,6 @@ test('Checks player', () => {
 });
 
 test('Checks add exemptions', () => {
-	let player = new Player('test');
-
 	player.setObjects('exemption');
 	expect(player.objects['exemption']).toBe(1);
 	player.setObjects('exemption', 2);
@@ -19,8 +20,6 @@ test('Checks add exemptions', () => {
 });
 
 test('Checks removing exemptions', () => {
-	let player = new Player('test');
-
 	player.objects['exemption'] = 2;
 	player.removeObjects('exemption', 1);
 	expect(player.objects['exemption']).toBe(1);
@@ -35,8 +34,6 @@ test('Checks removing exemptions', () => {
 });
 
 test('Checks add jokers', () => {
-	let player = new Player('test');
-
 	player.setObjects('joker');
 	expect(player.objects['joker']).toBe(1);
 	player.setObjects('joker', 2);
@@ -44,8 +41,6 @@ test('Checks add jokers', () => {
 });
 
 test('Checks removing jokers', () => {
-	let player = new Player('test');
-
 	player.objects['joker'] = 2;
 	player.removeObjects('joker', 1);
 	expect(player.objects['joker']).toBe(1);
@@ -60,7 +55,6 @@ test('Checks removing jokers', () => {
 });
 
 test('Checks add black exemptions', () => {
-	let player = new Player('test');
 	player.setObjects('black-exemption');
 	expect(player.objects['black-exemption']).toBe(1);
 	player.setObjects('black-exemption', 2);
@@ -68,8 +62,6 @@ test('Checks add black exemptions', () => {
 });
 
 test('Checks removing black exemptions', () => {
-	let player = new Player('test');
-
 	player.objects['black-exemption'] = 2;
 	player.removeObjects('black-exemption', 1);
 	expect(player.objects['black-exemption']).toBe(1);
@@ -84,8 +76,6 @@ test('Checks removing black exemptions', () => {
 });
 
 test('Checks numExemptions getter', () => {
-	let player = new Player('test');
-
 	expect(player.numExemptions).toBe(0);
 
 	player.objects = {
@@ -98,8 +88,6 @@ test('Checks numExemptions getter', () => {
 });
 
 test('Checks numBlackExemptions getter', () => {
-	let player = new Player('test');
-
 	expect(player.numBlackExemptions).toBe(0);
 
 	player.objects = {
@@ -112,8 +100,6 @@ test('Checks numBlackExemptions getter', () => {
 });
 
 test('Checks numJoker getter', () => {
-	let player = new Player('test');
-
 	expect(player.numJoker).toBe(0);
 
 	player.objects = {
@@ -126,8 +112,6 @@ test('Checks numJoker getter', () => {
 });
 
 test('Checks setObjects setter', () => {
-	let player = new Player('test');
-
 	expect(player.objects.joker).toBe(0);
 
 	player.setObjects('joker', -1);
@@ -172,8 +156,6 @@ test('Checks setObjects setter', () => {
 });
 
 test('Checks removeObjects setter', () => {
-	let player = new Player('test');
-
 	expect(player.objects.joker).toBe(0);
 
 	player.removeObjects('joker', -1);
