@@ -1,14 +1,5 @@
 import '../extensions/array';
 
-test('Checks shuffle method', () => {
-	let unshuffledArray = [ 1, 2, 3, 4, 5, 6 ];
-	unshuffledArray.shuffle();
-	expect(unshuffledArray.length).toBe(6);
-	for (let number of unshuffledArray) {
-		expect(unshuffledArray.indexOf(number) >= 0).toBe(true);
-	}
-});
-
 test('Checks getRandomElement method', () => {
 	let array = [ 1, 2, 3, 4, 5, 6 ];
 	let randomElement = array.getRandomElement();

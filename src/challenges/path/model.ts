@@ -1,5 +1,8 @@
 import Challenge from '../../models/challenge.model';
 import Player from '../../models/player.model';
+import '../../extensions/array';
+
+import * as _ from 'lodash';
 
 const MAX_CHESTS = 5;
 
@@ -59,7 +62,7 @@ class ChestsGenerator implements IChestsGenerator {
 
 	getChests(possibleValues: string[]): Chest[] {
 		let returnedChests: Chest[] = [];
-		possibleValues.shuffle();
+		possibleValues = _.shuffle(possibleValues);
 
 		for (let i = 0; i < MAX_CHESTS; i++) {
 			let value = possibleValues.pop();

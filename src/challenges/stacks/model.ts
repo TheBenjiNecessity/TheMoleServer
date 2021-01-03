@@ -2,6 +2,8 @@ import Challenge from '../../models/challenge.model';
 import Player from '../../models/player.model';
 import '../../extensions/array';
 
+import * as _ from 'lodash';
+
 const type = 'stacks';
 const MAX_ROUND = 3;
 const AMOUNTS = [ 5, 3, 1, -1, -3, -5 ];
@@ -23,7 +25,7 @@ class PilesGenerator implements IPilesGenerator {
 		let piles: { [id: string]: Pile } = {};
 		let tempAmounts = JSON.parse(JSON.stringify(AMOUNTS));
 
-		tempAmounts.shuffle();
+		tempAmounts = _.shuffle(tempAmounts);
 		for (let i = 0; i < players.length; i++) {
 			let player = players[i];
 			let pile = { player: players[i], amount: tempAmounts[i], numSelected: 0 };

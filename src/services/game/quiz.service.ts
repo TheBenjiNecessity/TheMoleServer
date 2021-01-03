@@ -4,6 +4,8 @@ import { MAX_NUM_QUESTIONS, RANKS } from '../../contants/quiz.constants';
 import Player from '../../models/player.model';
 import Room from '../../models/room.model';
 
+import * as _ from 'lodash';
+
 export default class QuizService {
 	constructor() {}
 
@@ -41,14 +43,14 @@ export default class QuizService {
 		unusedGeneralQuestions: Question[]
 	): Quiz {
 		let questions = [];
-		challengeQuestions.shuffle();
-		unusedGeneralQuestions.shuffle();
+		challengeQuestions = _.shuffle(challengeQuestions);
+		unusedGeneralQuestions = _.shuffle(unusedGeneralQuestions);
 
 		challengeQuestions = challengeQuestions.slice(0, Room.MAX_CHALLENGE_QUESTIONS);
 		questions = challengeQuestions;
 		unusedGeneralQuestions = unusedGeneralQuestions.slice(0, MAX_NUM_QUESTIONS - questions.length - 1);
 		questions = questions.concat(unusedGeneralQuestions);
-		questions.shuffle();
+		questions = _.shuffle(questions);
 		questions.push(QuizService.getFinalQuizQuestion(playersStillPlaying));
 
 		return { questions };

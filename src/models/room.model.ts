@@ -2,12 +2,13 @@ import questionData from './quiz/question.data';
 import EpisodeService from '../services/game/episode.service';
 import ChallengeService from '../services/game/challenge.service';
 import Episode from './episode.model';
-import '../extensions/array';
 import ChallengeData from '../interfaces/challenge-data';
 import Player from './player.model';
 import StateObject from './stateObject.interface';
 import Question from './quiz/question.model';
 import { DATETIME } from '../contants/datetime.constants';
+
+import * as _ from 'lodash';
 
 export interface IMoleChooser {
 	getMoleIndex(players: Player[]);
@@ -54,8 +55,8 @@ class EpisodeGenerator implements IEpisodeGenerator {
 				continue;
 			}
 
-			numRestrictedChallenges.shuffle();
-			const randomChallenge = numRestrictedChallenges[0];
+			const shuffledNumRestrictedChallenges = _.shuffle(numRestrictedChallenges);
+			const randomChallenge = shuffledNumRestrictedChallenges[0];
 			randomChallenge.initModel(playersStillPlaying, language);
 			challenges.push(randomChallenge);
 		}

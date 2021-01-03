@@ -35,16 +35,6 @@ Array.prototype.removeElementByValue = function<T>(element: T): T[] {
 	return this.splice(index, 1)[0];
 };
 
-Array.prototype.shuffle = function<T>(): void {
-	if (this.length < 2) return;
-
-	for (let i = 0; i < this.length; i++) {
-		let r = Math.floor(Math.random() * this.length);
-
-		[ this[i], this[r] ] = [ this[r], this[i] ];
-	}
-};
-
 Array.prototype.getRandomElement = function<T>(): T {
 	if (!this.length) {
 		return null;
