@@ -16,9 +16,9 @@ const challengeLanguageData = {
 		description: '',
 		questions: [
 			{
-				text: 'In the "WiseMonkeys" challenge, did the mole take the exemption?',
-				type: 'boolean',
-				choices: [ 'Yes', 'No' ]
+				text: 'In the "WiseMonkeys" challenge, what was the mole\'s role?',
+				type: 'choice',
+				choices: [ 'See no evil', 'Hear no evil', 'Speak no evil' ]
 			}
 		]
 	} as ChallengeLanguageData
