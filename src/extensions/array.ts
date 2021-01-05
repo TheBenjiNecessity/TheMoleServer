@@ -10,7 +10,6 @@ declare global {
 		randomIndex(): number;
 		removeElementAtIndex(index: number): Array<T>;
 		removeElementByValue(element: any): Array<T>;
-		shuffle(): void;
 		getRandomElement(): T;
 		removeRandomElement(): Array<T>;
 		range(start: number, end: number): number[];
