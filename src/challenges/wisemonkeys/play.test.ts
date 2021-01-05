@@ -118,9 +118,20 @@ test('Plays through the challenge where the players get through all riddles', ()
 	jest.runAllTimers();
 });
 
-test("Plays through the challenge where the players don't get through all riddles", () => {});
+test("Plays through the challenge where the players don't get through all riddles", () => {
+	const { roomcode } = room;
+	let tick = 0;
 
-// Run a challenge with a timer where nothing happens during the challenge
-// roomController.startTimer(roomcode, 10, 1, () => {}, doneCB);
+	const mockCallback = jest.fn(() => {});
 
-// jest.runAllTimers();
+	function tickCB() {
+		tick++;
+	}
+
+	roomController.startTimer(roomcode, 10, 1, tickCB, mockCallback);
+
+	jest.runAllTimers();
+
+	expect(mockCallback.mock.calls).toHaveLength(1);
+	expect(room.points).toBe(0);
+});
