@@ -19,6 +19,9 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 
 let rooms: { [id: string]: Room } = {};
+let requestService: RequestService;
+let roomSocketHandler: RoomSocketHandler;
+let challengeSocketHandler: ChallengeSocketHandler;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,7 +39,7 @@ ChallengeService.listChallengeData().then((challengeData: ChallengeData[]) => {
 		}
 	);
 
-	let requestService = new RequestService(app, roomController);
+	requestService = new RequestService(app, roomController);
 
 	io.on('connection', async (socket) => {
 		socket.on('join', (roomcode) => {
@@ -45,8 +48,8 @@ ChallengeService.listChallengeData().then((challengeData: ChallengeData[]) => {
 			}
 		});
 
-		new RoomSocketHandler(roomController, webSocketService, socket);
-		new ChallengeSocketHandler(roomController, webSocketService, socket);
+		roomSocketHandler = new RoomSocketHandler(roomController, webSocketService, socket);
+		challengeSocketHandler = new ChallengeSocketHandler(roomController, webSocketService, socket);
 
 		for (let challengeDatum of challengeData) {
 			challengeDatum.setupSocketHandler(roomController, webSocketService, socket);
