@@ -24,10 +24,10 @@ export default class ChallengeSocketHandler extends SocketHandler {
 
 		this.challengeController = new TempChallengeController(this.roomController);
 
-		socket.on('raise-hand', this.raiseHand);
-		socket.on('agree-to-roles', this.agreeToRoles);
-		socket.on('add-player-vote', this.addPlayerVote);
-		socket.on('remove-player-vote', this.removePlayerVote);
+		socket.on('raise-hand', this.raiseHand.bind(this));
+		socket.on('agree-to-roles', this.agreeToRoles.bind(this));
+		socket.on('add-player-vote', this.addPlayerVote.bind(this));
+		socket.on('remove-player-vote', this.removePlayerVote.bind(this));
 	}
 
 	raiseHand({ roomcode, player, role }) {

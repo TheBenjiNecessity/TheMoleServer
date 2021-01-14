@@ -12,7 +12,7 @@ export default class WiseMonkeysChallengeSocketHandlerInstance extends SocketHan
 	) {
 		super(roomController, webSocketService, socket);
 
-		socket.on('wisemonkeys-enter-riddle', this.enterRiddleAnswer);
+		socket.on('wisemonkeys-enter-riddle', this.enterRiddleAnswer.bind(this));
 	}
 
 	enterRiddleAnswer({ roomcode, playerName, answerText }) {

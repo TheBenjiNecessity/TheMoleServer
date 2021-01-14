@@ -12,8 +12,8 @@ export default class PlatterChallengeSocketHandlerInstance extends SocketHandler
 	) {
 		super(roomController, webSocketService, socket);
 
-		socket.on('platter-choose-exemption', this.chooseExemption);
-		socket.on('platter-choose-money', this.chooseMoney);
+		socket.on('platter-choose-exemption', this.chooseExemption.bind(this));
+		socket.on('platter-choose-money', this.chooseMoney.bind(this));
 	}
 
 	chooseExemption({ roomcode, playerName }) {

@@ -12,7 +12,7 @@ export default class TradersChallengeSocketHandler extends SocketHandler {
 	) {
 		super(roomController, webSocketService, socket);
 
-		socket.on('test', this.test);
+		socket.on('test', this.test.bind(this));
 	}
 
 	test({ roomcode, playerName }) {

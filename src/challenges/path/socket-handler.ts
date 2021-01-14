@@ -12,8 +12,8 @@ export default class PathChallengeSocketHandlerInstance extends SocketHandler {
 	) {
 		super(roomController, webSocketService, socket);
 
-		socket.on('path-choose-chest', this.chooseChest);
-		socket.on('path-add-vote-chest', this.addVoteForChest);
+		socket.on('path-choose-chest', this.chooseChest.bind(this));
+		socket.on('path-add-vote-chest', this.addVoteForChest.bind(this));
 	}
 
 	chooseChest({ roomcode, choice }) {

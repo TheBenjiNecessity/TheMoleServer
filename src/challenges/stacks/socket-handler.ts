@@ -12,7 +12,7 @@ export default class StacksChallengeSocketHandler extends SocketHandler {
 	) {
 		super(roomController, webSocketService, socket);
 
-		socket.on('stacks-select-amount', this.selectAmount);
+		socket.on('stacks-select-amount', this.selectAmount.bind(this));
 	}
 
 	selectAmount({ roomcode, playerName, numSelected }) {

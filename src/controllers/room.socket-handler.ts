@@ -10,8 +10,8 @@ export default class RoomSocketHandler extends SocketHandler {
 	) {
 		super(roomController, webSocketService, socket);
 
-		socket.on('move-next', this.moveNext);
-		socket.on('quiz-done', this.quizDone);
+		socket.on('move-next', this.moveNext.bind(this));
+		socket.on('quiz-done', this.quizDone.bind(this));
 	}
 
 	/* ===================================== Socket Events ===================================== */

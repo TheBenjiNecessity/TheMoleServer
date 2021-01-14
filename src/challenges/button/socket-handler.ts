@@ -13,9 +13,9 @@ export default class ButtonChallengeSocketHandlerInstance extends SocketHandler 
 	) {
 		super(roomController, webSocketService, socket);
 
-		socket.on('button-released-button', this.releasedButton);
-		socket.on('button-touched-button', this.touchedButton);
-		socket.on('button-received-answer', this.receivedPuzzleAnswer);
+		socket.on('button-released-button', this.releasedButton.bind(this));
+		socket.on('button-touched-button', this.touchedButton.bind(this));
+		socket.on('button-received-answer', this.receivedPuzzleAnswer.bind(this));
 	}
 
 	releasedButton({ roomcode, playerName }) {

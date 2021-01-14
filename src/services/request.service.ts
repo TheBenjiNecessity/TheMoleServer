@@ -6,11 +6,11 @@ const PORT = process.env.PORT || 8999;
 
 export default class RequestService {
 	constructor(private app, private roomController: RoomController) {
-		app.post('/create', this.createRoom);
-		app.put('/join/:roomcode', this.joinRoom);
-		app.get('/room/:roomcode', this.getRoom);
+		this.app.post('/room', this.createRoom.bind(this));
+		this.app.put('/room/:roomcode/join', this.joinRoom.bind(this));
+		this.app.get('/room/:roomcode', this.getRoom.bind(this));
 
-		app.listen(process.env.PORT || 3001);
+		this.app.listen(process.env.PORT || 3001);
 	}
 
 	createRoom(req, res): void {
