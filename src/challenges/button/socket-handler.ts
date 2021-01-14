@@ -20,24 +20,30 @@ export default class ButtonChallengeSocketHandlerInstance extends SocketHandler 
 
 	releasedButton({ roomcode, playerName }) {
 		let message = this.buttonChallengeController.releasedButton(roomcode, playerName);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 
 	touchedButton({ roomcode, playerName }) {
 		let message = this.buttonChallengeController.touchedButton(roomcode, playerName);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 
 	receivedPuzzleAnswer({ roomcode, playerName, answer }) {
 		let message = this.buttonChallengeController.receivedPuzzleAnswer(roomcode, playerName, answer);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 
 	timerTickCallback(roomcode) {
-		return this.webSocketService.sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
+		return this.webSocketService.sendToRoom(
+			this.roomController.getRoom(roomcode),
+			CHALLENGE_SOCKET_EVENTS.TIMER_TICK
+		);
 	}
 
 	timerDoneCallback(roomcode) {
-		return this.webSocketService.sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_OVER);
+		return this.webSocketService.sendToRoom(
+			this.roomController.getRoom(roomcode),
+			CHALLENGE_SOCKET_EVENTS.TIMER_OVER
+		);
 	}
 }

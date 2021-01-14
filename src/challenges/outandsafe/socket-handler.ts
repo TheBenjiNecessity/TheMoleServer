@@ -17,6 +17,6 @@ export default class OutAndSafeChallengeSocketHandler extends SocketHandler {
 
 	selectCard({ roomcode, playerName, card }) {
 		let message = this.outAndSafeChallengeController.selectCard(roomcode, playerName, card);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 }

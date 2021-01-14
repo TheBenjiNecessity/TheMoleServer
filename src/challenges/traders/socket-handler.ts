@@ -17,6 +17,6 @@ export default class TradersChallengeSocketHandler extends SocketHandler {
 
 	test({ roomcode, playerName }) {
 		let message = this.stacksChallengeController.test(roomcode, playerName);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 }

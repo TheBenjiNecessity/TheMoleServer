@@ -32,21 +32,21 @@ export default class ChallengeSocketHandler extends SocketHandler {
 
 	raiseHand({ roomcode, player, role }) {
 		let message = this.challengeController.raiseHand(roomcode, player, role);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 
 	agreeToRoles({ roomcode, player }) {
 		let message = this.challengeController.agreeToRoles(roomcode, player);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 
 	addPlayerVote({ roomcode, player }) {
 		let message = this.challengeController.addPlayerVote(roomcode, player);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 
 	removePlayerVote({ roomcode, player }) {
 		let message = this.challengeController.removePlayerVote(roomcode, player);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 }

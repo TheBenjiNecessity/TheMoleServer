@@ -17,12 +17,12 @@ export default class RoomSocketHandler extends SocketHandler {
 	/* ===================================== Socket Events ===================================== */
 	moveNext({ roomcode }) {
 		let message = this.roomController.moveNext(roomcode);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 
 	// A player has finished their quiz and clicked on the last question
 	quizDone({ roomcode, playerName, quizAnswers }) {
 		let message = this.roomController.quizDone(roomcode, playerName, quizAnswers);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 }

@@ -17,6 +17,6 @@ export default class StacksChallengeSocketHandler extends SocketHandler {
 
 	selectAmount({ roomcode, playerName, numSelected }) {
 		let message = this.stacksChallengeController.selectAmount(roomcode, playerName, numSelected);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 }

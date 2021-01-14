@@ -18,11 +18,11 @@ export default class PlatterChallengeSocketHandlerInstance extends SocketHandler
 
 	chooseExemption({ roomcode, playerName }) {
 		let message = this.platterChallengeController.chooseExemption(roomcode, playerName);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 
 	chooseMoney({ roomcode, playerName }) {
 		let message = this.platterChallengeController.chooseMoney(roomcode, playerName);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 }

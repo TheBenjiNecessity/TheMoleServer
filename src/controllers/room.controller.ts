@@ -66,12 +66,12 @@ export default class RoomController {
 
 	addPlayerToRoom(roomcode: string, player: Player) {
 		this.rooms[roomcode].addPlayer(player);
-		return this.websocketService.sendToRoom(roomcode, 'add-player');
+		return this.websocketService.sendToRoom(this.getRoom(roomcode));
 	}
 
 	removePlayerFromRoom(roomcode: string, playerName: string) {
 		this.rooms[roomcode].removePlayer(playerName);
-		return this.websocketService.sendToRoom(roomcode, 'remove-player');
+		return this.websocketService.sendToRoom(this.getRoom(roomcode));
 	}
 
 	giveObjectsToPlayer(roomcode: string, playerName: string, obj: string, quantity: number) {
@@ -140,11 +140,11 @@ export default class RoomController {
 	}
 
 	sendTimerTick(roomcode: string) {
-		return this.websocketService.sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
+		return this.websocketService.sendToRoom(this.getRoom(roomcode), CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
 	}
 
 	sendTimerDone(roomcode: string) {
-		return this.websocketService.sendToRoom(roomcode, CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
+		return this.websocketService.sendToRoom(this.getRoom(roomcode), CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
 	}
 
 	startTimer(

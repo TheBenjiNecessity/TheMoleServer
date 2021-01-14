@@ -18,11 +18,11 @@ export default class PathChallengeSocketHandlerInstance extends SocketHandler {
 
 	chooseChest({ roomcode, choice }) {
 		let message = this.pathChallengeController.chooseChest(roomcode, choice);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 
 	addVoteForChest({ roomcode, player, choice }) {
 		let message = this.pathChallengeController.addVoteForChest(roomcode, player, choice);
-		return this.webSocketService.sendToRoom(roomcode, message);
+		return this.webSocketService.sendToRoom(this.roomController.getRoom(roomcode));
 	}
 }
