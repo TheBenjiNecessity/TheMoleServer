@@ -22,6 +22,8 @@ let rooms: { [id: string]: Room } = {};
 let requestService: RequestService;
 let roomSocketHandler: RoomSocketHandler;
 let challengeSocketHandler: ChallengeSocketHandler;
+let roomController: RoomController;
+let webSocketService: WebSocketService;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,8 +31,8 @@ app.use(methodOverride());
 app.use(cors());
 
 ChallengeService.listChallengeData().then((challengeData: ChallengeData[]) => {
-	let webSocketService = new WebSocketService(io);
-	let roomController = new RoomController(
+	webSocketService = new WebSocketService(io);
+	roomController = new RoomController(
 		webSocketService,
 		challengeData,
 		() => rooms,
