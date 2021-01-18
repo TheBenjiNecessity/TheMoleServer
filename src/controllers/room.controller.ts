@@ -139,6 +139,16 @@ export default class RoomController {
 		return message;
 	}
 
+	addAgreeToMoveNextPlayer(roomcode, playerName) {
+		this.rooms[roomcode].addAgreeToMoveNextPlayer(playerName);
+
+		if (this.rooms[roomcode].canMoveNext) {
+			this.moveNext(roomcode);
+		}
+
+		return 'agree-to-move-next';
+	}
+
 	sendTimerTick(roomcode: string) {
 		return this.websocketService.sendToRoom(this.getRoom(roomcode), CHALLENGE_SOCKET_EVENTS.TIMER_TICK);
 	}
