@@ -92,6 +92,7 @@ export default class Room extends StateObject {
 	challengeCurrent: number;
 	challengeEnd: number;
 	timer: any;
+	moveNextAgreedPlayers: Player[];
 
 	constructor(
 		public roomcode: string,
@@ -179,6 +180,10 @@ export default class Room extends StateObject {
 			default:
 				break;
 		}
+	}
+
+	get canMoveNext() {
+		return this.moveNextAgreedPlayers.length === this.playersStillPlaying.length;
 	}
 
 	addPlayer(player): boolean {
@@ -344,5 +349,17 @@ export default class Room extends StateObject {
 				timerTickCB();
 			}
 		}, millisecondsInterval);
+	}
+
+	addAgreeToMoveNextPlayer(playerName: string) {
+		const player = this.playersStillPlaying.find((p) => p.name === playerName);
+
+		if (player && !this.moveNextAgreedPlayers.some((p) => p.name === playerName)) {
+			this.moveNextAgreedPlayers.push(player);
+		}
+	}
+
+	clearMoveNextAgreedPlayers() {
+		this.moveNextAgreedPlayers = [];
 	}
 }
