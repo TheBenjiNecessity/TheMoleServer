@@ -71,6 +71,7 @@ export default class Room extends StateObject {
 	static ROOM_STATES = {
 		LOBBY: 'lobby',
 		WELCOME: 'game-welcome',
+		MOLE_REVEAL: 'mole-reveal',
 		EPISODE_START: 'episode-start',
 		CHALLENGE_INTERMISSION: 'challenge-intermission',
 		IN_CHALLENGE: 'in-challenge',
@@ -260,6 +261,9 @@ export default class Room extends StateObject {
 				this.state = Room.ROOM_STATES.WELCOME;
 				break;
 			case Room.ROOM_STATES.WELCOME:
+				this.state = Room.ROOM_STATES.MOLE_REVEAL;
+				break;
+			case Room.ROOM_STATES.MOLE_REVEAL:
 				this.state = Room.ROOM_STATES.EPISODE_START;
 				break;
 			case Room.ROOM_STATES.EPISODE_START:
