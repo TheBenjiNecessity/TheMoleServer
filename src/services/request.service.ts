@@ -1,4 +1,3 @@
-import RoomControllerCreator from '../controllers/room.controller';
 import Player from '../models/player.model';
 import RoomController from '../controllers/room.controller';
 
@@ -20,7 +19,7 @@ export default class RequestService {
 
 		res.send({
 			success: true,
-			room: room,
+			room: room.simplifiedRoom,
 			web_socket_url: `ws://localhost:${PORT}`
 		});
 	}
@@ -129,8 +128,8 @@ export default class RequestService {
 
 		res.send({
 			success: true,
-			room: room,
-			player: newPlayer,
+			room: room.simplifiedRoom,
+			player: newPlayer.simplifiedPlayer,
 			web_socket_url: `ws://localhost:${PORT}`
 		});
 	}
@@ -169,7 +168,7 @@ export default class RequestService {
 
 		res.send({
 			success: true,
-			room: room
+			room: room.simplifiedRoom
 		});
 	}
 }

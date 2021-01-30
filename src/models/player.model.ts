@@ -1,6 +1,5 @@
 import QuizAnswers from './quiz/quiz-answers.model';
-import Quiz from './quiz/quiz.model';
-import Role from './role.model';
+import SimplifiedPlayer from './simplified/player-simplified.model';
 
 export interface PlayerInventory {
 	exemption: number;
@@ -35,6 +34,10 @@ export default class Player {
 
 	get numJoker(): number {
 		return this.objects.joker;
+	}
+
+	get simplifiedPlayer(): SimplifiedPlayer {
+		return new SimplifiedPlayer(this);
 	}
 
 	setObjects(object, quantity = 1) {

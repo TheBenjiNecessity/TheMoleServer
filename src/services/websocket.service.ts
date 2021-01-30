@@ -5,7 +5,7 @@ export default class WebSocketService {
 
 	sendToRoom(room: Room, action: string = 'room-event') {
 		if (this.socketObj) {
-			this.socketObj.in(room.roomcode).emit(action, room);
+			this.socketObj.in(room.roomcode).emit(action, room.simplifiedRoom);
 		}
 
 		return { room, action };

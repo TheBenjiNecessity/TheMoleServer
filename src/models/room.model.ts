@@ -7,7 +7,7 @@ import Player from './player.model';
 import StateObject from './stateObject.interface';
 import Question from './quiz/question.model';
 import { DATETIME } from '../contants/datetime.constants';
-
+import SimplifiedRoom from './simplified/room-simplified.model';
 import * as _ from 'lodash';
 
 export interface IMoleChooser {
@@ -113,6 +113,7 @@ export default class Room extends StateObject {
 		this.challengeCurrent = 0;
 		this.challengeStart = -1;
 		this.challengeEnd = 0;
+		this.moveNextAgreedPlayers = [];
 	}
 
 	get isFull() {
@@ -185,6 +186,10 @@ export default class Room extends StateObject {
 
 	get canMoveNext() {
 		return this.moveNextAgreedPlayers.length === this.playersStillPlaying.length;
+	}
+
+	get simplifiedRoom(): SimplifiedRoom {
+		return new SimplifiedRoom(this, this._players);
 	}
 
 	addPlayer(player): boolean {

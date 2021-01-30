@@ -7,6 +7,7 @@ import Player from './player.model';
 import Question from './quiz/question.model';
 import QuizAnswers from './quiz/quiz-answers.model';
 import Quiz from './quiz/quiz.model';
+import SimplifiedEpisode from './simplified/episode-simplified.model';
 
 interface EpisodePlayer {
 	player: Player;
@@ -106,6 +107,10 @@ export default class Episode {
 
 	get challengeTypes(): string[] {
 		return this.challengeData.map((cd) => cd.type);
+	}
+
+	get simplifiedEpisode(): SimplifiedEpisode {
+		return new SimplifiedEpisode(this);
 	}
 
 	setQuizResultsForPlayer(playerName: string, quizAnswers: QuizAnswers) {

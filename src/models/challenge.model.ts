@@ -5,6 +5,7 @@ import Player from './player.model';
 
 import '../extensions/date';
 import StateObject from './stateObject.interface';
+import SimplifiedChallenge from './simplified/challenge-simplified.model';
 
 export default abstract class Challenge extends StateObject {
 	static CHALLENGE_STATES = {
@@ -78,6 +79,10 @@ export default abstract class Challenge extends StateObject {
 
 	get pointsPerMinute() {
 		return 0;
+	}
+
+	get simplifiedChallenge(): SimplifiedChallenge {
+		return new SimplifiedChallenge(this);
 	}
 
 	addAgreedPlayer(playerName: string) {
