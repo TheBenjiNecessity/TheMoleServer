@@ -222,6 +222,7 @@ export default class Room extends StateObject {
 		for (let i = 0; i < this._players.length; i++) {
 			if (this._players[i].name === playerName) {
 				this._players[i].setObjects(object, quantity);
+				this.currentEpisode.currentChallenge.addObjectsOfTypeWon(object, quantity);
 				break;
 			}
 		}
@@ -231,18 +232,27 @@ export default class Room extends StateObject {
 		for (let i = 0; i < this._players.length; i++) {
 			if (this._players[i].name === playerName) {
 				this._players[i].removeObjects(object, quantity);
+				this.currentEpisode.currentChallenge.addObjectsOfTypeWon(object, -1 * quantity);
 				break;
 			}
 		}
 	}
 
 	addPoints(points = 1): void {
-		this.points += Math.abs(points);
+		this.updatePoints(Math.abs(points));
 	}
 
 	removePoints(points = 1): void {
-		this.points -= Math.abs(points);
+		this.updatePoints(-1 * Math.abs(points));
 
+		if (this.points < 0) {
+			this.points = 0;
+		}
+	}
+
+	private updatePoints(points: number) {
+		this.points += points;
+		this.currentEpisode.currentChallenge.updatePoints(points);
 		if (this.points < 0) {
 			this.points = 0;
 		}

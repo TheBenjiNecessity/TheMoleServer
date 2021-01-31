@@ -22,6 +22,8 @@ export default abstract class Challenge extends StateObject {
 	timer: any;
 	currentTime: number;
 	roles: Role[];
+	pointsWon: number;
+	objectsWon: any;
 
 	constructor(
 		public players: Player[],
@@ -160,5 +162,21 @@ export default abstract class Challenge extends StateObject {
 
 	endChallenge() {
 		this.state = Challenge.CHALLENGE_STATES.CHALLENGE_END;
+	}
+
+	updatePoints(points: number) {
+		this.pointsWon += points;
+
+		if (this.pointsWon < 0) {
+			this.pointsWon = 0;
+		}
+	}
+
+	addObjectsOfTypeWon(type: string, numObjects: number) {
+		this.objectsWon[type] += numObjects;
+
+		if (this.objectsWon[type] < 0) {
+			this.objectsWon[type] = 0;
+		}
 	}
 }
