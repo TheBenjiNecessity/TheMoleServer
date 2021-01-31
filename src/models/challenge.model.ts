@@ -19,7 +19,6 @@ export default abstract class Challenge extends StateObject {
 	raisedHands: RaisedHand[];
 	votedPlayers: any;
 	isChallengeRunning: boolean;
-	timer: any;
 	currentTime: number;
 	roles: Role[];
 	pointsWon: number;

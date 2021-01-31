@@ -84,11 +84,11 @@ export default class Room extends StateObject {
 
 	private _currentEpisode: Episode;
 	private _players: Player[];
+	private _unusedChallenges: ChallengeData[];
+	private _unaskedQuestions: Question[];
 
-	unusedChallenges: ChallengeData[];
 	isInProgress: boolean;
 	points: number;
-	unaskedQuestions: Question[];
 	challengeStart: number;
 	challengeCurrent: number;
 	challengeEnd: number;
@@ -103,11 +103,11 @@ export default class Room extends StateObject {
 	) {
 		super(Room.ROOM_STATES.LOBBY);
 
-		this.unaskedQuestions = questionData[language];
+		this._unaskedQuestions = questionData[language];
 
 		this._players = [];
 		this._currentEpisode = null;
-		this.unusedChallenges = [];
+		this._unusedChallenges = [];
 		this.isInProgress = false;
 		this.points = 0;
 		this.challengeCurrent = 0;
@@ -140,7 +140,7 @@ export default class Room extends StateObject {
 
 	get numRestrictedChallenges() {
 		let numPlayers = this.playersStillPlaying.length;
-		return this.unusedChallenges.filter((c) => c.maxPlayers >= numPlayers && c.minPlayers <= numPlayers);
+		return this._unusedChallenges.filter((c) => c.maxPlayers >= numPlayers && c.minPlayers <= numPlayers);
 	}
 
 	get molePlayer() {
@@ -259,15 +259,15 @@ export default class Room extends StateObject {
 	}
 
 	removeUnaskedQuestion(text): void {
-		this.unaskedQuestions = this.unaskedQuestions.filter((q) => q.text !== text);
+		this._unaskedQuestions = this._unaskedQuestions.filter((q) => q.text !== text);
 	}
 
 	removeUnusedChallenge(type): void {
-		this.unusedChallenges = this.unusedChallenges.filter((c) => c.type !== type);
+		this._unusedChallenges = this._unusedChallenges.filter((c) => c.type !== type);
 	}
 
 	addChallengeData(challengeData: ChallengeData[]): void {
-		this.unusedChallenges = challengeData;
+		this._unusedChallenges = challengeData;
 	}
 
 	moveNext(): boolean {
@@ -320,8 +320,8 @@ export default class Room extends StateObject {
 		this.currentEpisode = this.episodeGenerator.generateCurrentEpisode(
 			numChallenges,
 			this.playersStillPlaying,
-			this.unusedChallenges,
-			this.unaskedQuestions,
+			this._unusedChallenges,
+			this._unaskedQuestions,
 			this.language
 		);
 	}
