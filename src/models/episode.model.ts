@@ -48,6 +48,14 @@ export default class Episode {
 		return this.challengeData[this.currentChallengeIndex].model;
 	}
 
+	get previousChallenge(): Challenge {
+		if (this.currentChallengeIndex === 0) {
+			return null;
+		}
+
+		return this.challengeData[this.currentChallengeIndex - 1].model;
+	}
+
 	get episodeIsOver(): boolean {
 		return (
 			this.currentChallengeIndex === this.challengeData.length - 1 &&
