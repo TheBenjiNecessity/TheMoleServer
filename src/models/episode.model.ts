@@ -9,7 +9,7 @@ import QuizAnswers from './quiz/quiz-answers.model';
 import Quiz from './quiz/quiz.model';
 import SimplifiedEpisode from './simplified/episode-simplified.model';
 
-interface EpisodePlayer {
+export interface EpisodePlayer {
 	player: Player;
 	quizAnswers: QuizAnswers;
 }
