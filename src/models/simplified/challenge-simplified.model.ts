@@ -10,6 +10,7 @@ export default class SimplifiedChallenge {
 	timer: any;
 	currentTime: number;
 	roles: Role[];
+	intermissionText: string;
 
 	constructor(challenge: Challenge) {
 		this.agreedPlayerNames = challenge.agreedPlayerNames;
@@ -18,5 +19,6 @@ export default class SimplifiedChallenge {
 		this.isChallengeRunning = challenge.isChallengeRunning;
 		this.currentTime = challenge.currentTime;
 		this.roles = challenge.roles;
+		this.intermissionText = challenge.intermissionText;
 	}
 }

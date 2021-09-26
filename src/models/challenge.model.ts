@@ -82,6 +82,10 @@ export default abstract class Challenge extends StateObject {
 		return 0;
 	}
 
+	get intermissionText() {
+		return '';
+	}
+
 	get simplifiedChallenge(): SimplifiedChallenge {
 		return new SimplifiedChallenge(this);
 	}
