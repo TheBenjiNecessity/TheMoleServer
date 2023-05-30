@@ -5,8 +5,8 @@ import Role from '../../models/role.model';
 export default class WiseMonkeysChallenge extends Challenge {
 	currentRiddleIndex: number;
 
-	constructor(players, title, description, questions, private riddles: Riddle[]) {
-		super(players, title, description, questions, 'game');
+	constructor(players, questions, private riddles: Riddle[]) {
+		super(players, questions, 'game');
 
 		this.currentRiddleIndex = 0;
 	}

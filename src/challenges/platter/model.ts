@@ -7,8 +7,8 @@ export default class PlatterChallenge extends Challenge {
 	playerWhoTookExemption: Player;
 	playersWhoTookMoney: Player[];
 
-	constructor(players, title, description, questions) {
-		super(players, title, description, questions, 'game');
+	constructor(players, questions) {
+		super(players, questions, 'game');
 
 		this.playerWhoTookExemption = null;
 		this.playersWhoTookMoney = [];

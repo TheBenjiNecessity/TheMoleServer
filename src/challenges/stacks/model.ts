@@ -40,14 +40,8 @@ export default class StacksChallenge extends Challenge {
 	currentRound: number;
 	piles: { [id: string]: Pile };
 
-	constructor(
-		players,
-		title,
-		description,
-		questions,
-		private pilesGenerator: IPilesGenerator = new PilesGenerator()
-	) {
-		super(players, title, description, questions, 'game');
+	constructor(players, questions, private pilesGenerator: IPilesGenerator = new PilesGenerator()) {
+		super(players, questions, 'game');
 
 		this.currentRound = 1;
 
