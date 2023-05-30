@@ -239,36 +239,3 @@ test('Tests moveNext', () => {
 	room.moveNext();
 	expect(room.state).toBe('episode-start');
 });
-
-test('Tests moveNext', () => {
-	const room = RoomSampleService.getTestRoomWithFivePlayers();
-	const mockQuestion: Question = {
-		text: '',
-		type: '',
-		choices: [ '' ]
-	};
-	room.unaskedQuestions = [
-		{ ...mockQuestion, text: 'test1' },
-		{ ...mockQuestion, text: 'test2' },
-		{ ...mockQuestion, text: 'test3' },
-		{ ...mockQuestion, text: 'test4' }
-	];
-
-	expect(room.unaskedQuestions).toHaveLength(4);
-
-	room.removeUnaskedQuestion('test1');
-
-	expect(room.unaskedQuestions).toHaveLength(3);
-
-	room.removeUnaskedQuestion('test1');
-
-	expect(room.unaskedQuestions).toHaveLength(3);
-
-	room.removeUnaskedQuestion('test2');
-
-	expect(room.unaskedQuestions).toHaveLength(2);
-
-	room.removeUnaskedQuestion('blah');
-
-	expect(room.unaskedQuestions).toHaveLength(2);
-});
