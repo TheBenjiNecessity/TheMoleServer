@@ -1,5 +1,5 @@
 import ChallengeData from '../../interfaces/challenge-data';
-import Room, { IEpisodeGenerator, IMoleChooser } from '../../models/room.model';
+import Room from '../../models/room.model';
 import ChallengeSampleService from './challenge.sample';
 import QuizSampleService from './quiz.sample';
 import Episode from '../../models/episode.model';
@@ -7,6 +7,8 @@ import Player from '../../models/player.model';
 import ChallengeService from '../game/challenge.service';
 import Question from '../../models/quiz/question.model';
 import { getMockRoomControllerWithRoom } from './room-controller.sample';
+import { IMoleChooser } from '../../models/generators/moleChooser.generator';
+import { IEpisodeGenerator } from '../../models/generators/episode.generator';
 
 class MoleChooser implements IMoleChooser {
 	constructor() {}
